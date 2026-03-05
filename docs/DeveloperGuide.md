@@ -357,7 +357,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **MSS**
 
 1.  User chooses to filter the candidate list by tags.
-
 2.  HireLens requests for a minimum one tag to filter.
 3. User provides the tags to filter the candidates by. 
 4. HireLens filters the candidate list and shows a message informing the user the list has been filtered successfully.
@@ -378,16 +377,26 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Non-Functional Requirements
 
-1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
-2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
-3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+1. Efficiency 
+   * System should be able to process commands such as add, edit, delete, and list within 1 second.
+   * System should be able to handle at least 1000 contacts without significant performance loss
+2. Capacity
+   * System should be able to store at least 1000 contacts.
+   * System should be able to read and enter at least 100 contacts from a csv file at a time.
+3. Quality
+   * System should be able to be used by a beginner who has never used the system before.
+   * System should have clear error messages that explain the source of the error and how to correct the error.
+4. Reliability
+   * Data should persist between usage sessions.
+   * Data should not be corruptible.
+5. Compatibility
+   * System should run on Windows, macOS, and Linux with Java 17 and above installed.
 
 *{More to be added}*
 
 ### Glossary
+*{None as of yet}*
 
-* **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Private contact detail**: A contact detail that is not meant to be shared with others
 
 --------------------------------------------------------------------------------------------------------------------
 
