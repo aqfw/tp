@@ -270,7 +270,12 @@ _{Explain here how the data archiving feature will be implemented}_
 * Strongly values punctuality and is strict about lateness, while still aiming to remain fair
 
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
+**Value proposition**: 
+* Fast and easy search/filter that can check different fields such as salary, qualifications, positions and more. 
+* Pin certain entries for fast comparison or easy access.
+* Take an input of a .csv file with the correct format and with relevant data and automatically add the candidates to the list. 
+* Quickly filter through the candidates for those with the ideal skills (and any other factors). 
+* Calculate the distance between a candidate’s address and the available offices such that the candidate can be sent to the nearest office.
 
 
 ### User stories
