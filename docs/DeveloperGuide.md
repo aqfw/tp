@@ -282,20 +282,37 @@ _{Explain here how the data archiving feature will be implemented}_
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                     | So that I can…​                                                        |
-| -------- | ------------------------------------------ | ------------------------------ | ---------------------------------------------------------------------- |
-| `* * *`  | new user                                   | see usage instructions         | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person               |                                                                        |
-| `* * *`  | user                                       | delete a person                | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name          | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details   | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name           | locate a person easily                                                 |
+| Priority | As a …​                                                                | I want to …​                                                                         | So that I can…​                                                    |
+|----------|------------------------------------------------------------------------|--------------------------------------------------------------------------------------|--------------------------------------------------------------------|
+| `* * *`  | new recruiter                                                          | auto fill-in suggestions with tooltips explaining what each field means              | correctly enter candidate information without making mistakes      |
+| `* * *`  | recruiter                                                              | add candidates with their names, phone numbers, email addresses                      | easily contact them for future job openings                        |
+| `* * *`  | recruiter                                                              | be able to edit contacts                                                             | fix any minor mistakes I make                                      |
+| `* * *`  | recruiter                                                              | be able to delete contacts                                                           | un-track candidates I am no longer interested in                   |
+| `* * *`  | recruiter                                                              | be able to filter contacts                                                           | search for tags I am interested in                                 |
+| `* * *`  | recruiter                                                              | be able to view all candidates                                                       | know who I have added to the addressbook                           |
+| `* * *`  | recruiter                                                              | tag candidates by their skills                                                       | categorise them by their skills                                    |
+| `* * *`  | recruiter facing candidates with a variety of names                    | be able to add two candidates with the same name                                     |                                                                    |
+| `* * *`  | recruiter                                                              | filter candidates by multiple tags simultaneously                                    | immediately get a shortlisted list of candidates for a job opening |
+| `* * *`  | time-pressed recruiter                                                 | be able to use a spreadsheet to add many candidates to this address book all at once | save time adding entries                                           |
+| `* *`    | recruiter                                                              | have a log of recent changes made to a candidate                                     | check for mistakes                                                 |
+| `* *`    | careless recruiter                                                     | be able to undo my commands                                                          | my mistakes can be amended quickly                                 |
+| `* *`    | careless recruiter                                                     | be able to copy candidate details for use in another program                         | reduce my chance of mis-typing                                     |
+| `* *`    | recruiter                                                              | be able to create common tag combinations                                            | reuse the same filters easily                                      |
+| `* *`    | recruiter                                                              | be able to assign a status to candidates in the pipeline                             | manage the hiring progress for a particular opening                |
+| `* *`    | recruiter examining hiring options                                     | be able to compare more than one candidate with each other                           | judge correctly while avoiding manual error                        |
+| `* *`    | recruiter                                                              | be able to view recently viewed candidates                                           | save time from not searching again                                 |
+| `* *`    | recruiter                                                              | be able to assign a rating score to each candidate and filter by rating score        | compare in a quick and objective manner during the final selection |
+| `*`      | recruiter                                                              | have an email template popup in one click                                            | contact candidates easily                                          |
+| `*`      | recruiter bulk importing data                                          | be notified if there already exists an identical record                              | don’t mistakenly add duplicates and bloat the database             |
+| `*`      | time-pressed recruiter                                                 | be able to edit multiple entries at once                                             | efficiently manage large batches of candidates                     |
+| `*`      | be able to see a quick summary of the most common tags in the database | understand the talent pool better                                                    |                                                                    |
+| `*`      | recruiter                                                              | be able to compare candidates’ living addresses with potential work addresses        | understand how best to hire and deploy them across our many office |
 
 *{More to be added}*
 
 ### Use cases
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+(For all use cases below, the **System** is the `HireLens` and the **Actor** is the `user`, unless specified otherwise)
 
 **Use case: Delete a person**
 
