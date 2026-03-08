@@ -15,7 +15,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 [[github](https://github.com/tortin)]
 
-* Role: Developer
+* Role: Team Lead, Developer
 
 ### Heather Marie Lee Wen Xin
 
@@ -23,7 +23,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 [[github](https://github.com/CaIraith)]
 
-* Role: Developer
+* Role: Documentation, Developer
 
 ### Ryan Justyn
 
@@ -31,5 +31,13 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 [[github](https://github.com/rjustyn1)]
 
-* Role: Developer 
+* Role: Testing, Developer 
+
+### Aaron Quak
+
+<img src="images/aqfw.png" width="200px">
+
+[[github](https://github.com/aqfw)]
+
+* Role: Code Quality, Developer
  
