@@ -315,65 +315,260 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 (For all use cases below, the **System** is the `HireLens` and the **Actor** is the `user`, unless specified otherwise)
 
-**Use case: Add Contact**
+**Use case: UC01 - Add Contact**
 
 **MSS**
 
 1. User enters necessary information, such as name, phone number, address, email and any optional tags.
-2. HireLens displays a help menu for formatting guidance. 
-3. HireLens adds the candidate to the list of saved candidates and displays the information of the new candidate added.
-4. HireLens shows the updated list of the full candidate list with the new candidate added
+2. HireLens adds the candidate to the list of saved candidates and displays the information of the new candidate added.
+3. HireLens displays the updated list of the full candidate list with the new candidate added.
 
-    Use case ends.
+Use case ends.
 
 **Extensions**
 
-* 1a. HireLens detects missing or invalid data.
+1a. HireLens detects missing or invalid data.  
+1a1. HireLens informs the user of the error made and requests corrected information.  
+1a2. User enters corrected data.  
+Steps 1a1-1a2 are repeated until the data entered are correct.
 
-    * 1a1. HireLens informs the user of the error made and requests corrected information.
-    * 1a2. User enters corrected data.
-    *
-      Steps 1a1-1a2 are repeated until the data entered are correct.
-      Use case resumes at step 2.
+Use case resumes from step 2.
 
-    
-**Use case: Edit Contact**
+**Use case: UC02 - Edit Contact**
 
 **MSS**
 
 1. User provides the requested data above and the modified data.
-2. HireLens edits the details of the candidate and displays the modified details of the candidate.
-3. HireLens shows the updated list of the candidate list with all filters intact.
+2. HireLens displays the current view of the candidate book, with the specific candidate's details updated.
 
-    Use case ends.
-
-
-**Use case: Filter by Tag**
-
-**MSS**
-
-1. User provides the tags to filter the candidates by.
-2. HireLens filters the candidate list and shows a message informing the user the list has been filtered successfully.
-3. HireLens shows the filtered candidate list.
-
-   Use case ends.
+Use case ends.
 
 **Extensions**
 
-* 2a. Filter returns empty list (no candidates match the tags given)
+1a. User provides an invalid index.<br>
+1a1. HireLens informs the user of the error made and requests corrected information.<br>
+1a2. User enters corrected data.<br>
+Steps 1a1-1a2 are repeated until the data entered are correct.
 
-    * 2a1. HireLens detects that no candidates match the tags provided.
-    * 2a2. HireLens informs the user that the filter resulted in an empty list.
-    * 2a3. HireLens shows the full candidate list without any filters.
+Use case resumes from step 2.
 
+**Use case: UC03 - Filter by Tag/Tag Combination**
 
-*{More to be added}*
+**MSS**
+
+1. User provides the tags/tag combination to filter the candidates by.
+2. HireLens filters the candidate list and shows a message informing the user the list has been filtered successfully.
+3. HireLens displays the current view of the candidate book with the filter applied.
+
+Use case ends.
+
+**Extensions**
+
+1a. Filter returns empty list (no candidates match the tags given).<br>
+1a1. HireLens informs the user that the filter resulted in an empty list.<br>
+1a2. HireLens shows the current view of the candidate list.
+
+Use case ends.
+
+1b. The specified tag/tag combination does not exist.<br>
+1b1. HireLens informs the user that the tag/tag combination does not exist.<br>
+1b2. HireLens shows the current view of the candidate list.
+
+Use case ends.
+
+**Use case: UC04 - Request for help**
+
+**MSS**
+
+1. User requests for the list of available commands.
+2. HireLens displays the list of commands available.
+
+Use case ends.
+
+**Use case: UC05 - Undo previous action**
+
+**MSS**
+
+1. User requests to undo the previous action they performed.
+2. HireLens restores the state of the contact list before the last action was performed and displays the view of the candidate book one command ago.
+
+Use case ends.
+
+**Extensions**
+
+1a. There was no command performed before.<br>
+1a1. HireLens informs the user no command has been performed.<br>
+1a2. HireLens retains the current view of the candidate list.
+
+Use case ends.
+
+**Use case: UC06 - View all candidates**
+
+**MSS**
+
+1. User requests to view the full list of candidates.
+2. HireLens displays the full list of candidates.
+3. User requests to <u>sort the list of candidates (UC07)</u>.
+
+Use case ends.
+
+**Use case: UC07 - Sort candidate list**
+
+**MSS**
+
+1. User requests to sort the list of candidates by a certain attribute (Name etc.)
+2. HireLens displays the current view of the candidate list sorted by the attribute specified.
+
+Use case ends.
+
+**Use case: UC08 - Delete Tag Combination**
+
+**MSS**
+
+1. User requests to delete a tag combination.
+2. HireLens displays the tag combination along with its associated tags and informs the user it has been deleted.
+
+Use case ends.
+
+**Extensions**
+
+1a. The tag combination does not exist.<br>
+1a1. HireLens informs the user the tag combination does not exist, and displays the list of existing tag combinations.
+
+Use case ends.
+
+**Use case: UC09 - Add Tag Combination**
+
+**MSS**
+
+1. User requests to save a combination of tags under a tag combination.
+2. HireLens saves the tag combination and displays the tags linked to the tag combination.
+
+Use case ends.
+
+**Use case: UC10 - View Tag Combinations**
+
+**MSS**
+
+1. User requests to view all tag combinations.
+2. HireLens displays all tag combinations.
+
+Use case ends.
+
+**Extensions**
+
+1a. There are no tag combinations.<br>
+1a1. HireLens prompts the user no tag combinations are present and how to create one, no tag combinations are displayed.
+
+Use case ends.
+
+**Use case: UC11 - Add Remark**
+
+**MSS**
+
+1. User requests to add a remark to a specific candidate.
+2. HireLens overwrites the remark to the candidate.
+3. HireLens displays the current view of the candidate book, with the specific candidate updated.
+
+Use case ends.
+
+**Use case: UC12 - Add multiple candidates by csv**
+
+**MSS**
+
+1. User requests to add candidate using a csv file.
+2. HireLens adds all contacts specified by the csv file.
+3. HireLens displays the full candidate book.
+
+Use case ends.
+
+**Extensions**
+
+1a. The specified csv file does not exist.<br>
+1a1. HireLens informs the user the csv file does not exist.<br>
+1a2. HireLens displays the current view of the candidate book.
+
+Use case ends.
+
+1b. The specified csv file contains information in the wrong format.<br>
+1b1. HireLens informs the user the csv file contains information in the wrong format.<br>
+1b2. HireLens displays the current view of the candidate book.
+
+Use case ends.
+
+**Use case: UC13 - Add possible working address**
+
+**MSS**
+
+1. User requests to add a possible working address for future candidates.
+2. User enters address to add as new working location possible.
+3. System checks that the entered address follows the required address format.
+4. System adds the entered address to the list of possible working addresses.
+5. System displays confirmation that the possible working address has been successfully added.
+
+Use case ends.
+
+**Extensions**
+
+3a. User entered invalid address.<br>
+3a1. System informs the user that the entered addres does not follow the required address format.<br>
+3a2. System prompts the user to enter the address again.<br>
+3a3. User re-enters the address.
+
+Use case resumes at step 2.
+
+**Use case: UC14 - Remove possible working address**
+
+**MSS**
+
+1. User requests to delete possible working addresses.
+2. System displays the list of possible working addresses.
+3. User selects a possible working address to delete.
+4. System requests confirmation for deletion.
+5. User confirms the deletion.
+6. System deletes the selected address from the list of possible working addresses.
+7. System displays confirmation that the possible working address has been successfully deleted.
+
+Use case ends.
+
+**Extensions**
+
+1a. No office locations added yet.<br>
+1a1. System informs the user that there are no possible working addresses added to the system yet.
+
+Use case ends.
+
+4a. User cancels the deletion.<br>
+4a1. System cancels the deletion requests.
+
+Use case ends.
+
+**Use case: UC15 - Assign candidate to nearest working address possible**
+
+**MSS**
+
+1. User requests to compare a candidate’s residential address with available office locations.
+2. System retrieves the candidate’s stored residential address.
+3. System retrieves the list of available office locations.
+4. System calculates the distance between the candidate's residential address and each office location.
+5. System displays a comparison of office locations relative to candidate’s residential address sorted by nearest distance.
+6. User reviews the comparison result.
+7. User selects which office location is most suitable for candidate.
+
+Use case ends.
+
+**Extensions**
+
+3a. No office locations added yet.<br>
+3a1. System informs the user that there are no possible working addresses added to the system yet.
+
+Use case ends.
 
 ### Non-Functional Requirements
 
 1. Efficiency
-   * System should be able to process commands such as add, edit, delete, and list within 1 second.
-   * System should be able to handle at least 1000 contacts without significant performance loss
+   * System should be able to process commands such as add, edit, delete, and list within 0.2 second.
+   * System should be able to handle at least 1000 contacts without a noticeable lag.
 2. Capacity
    * System should be able to store at least 1000 contacts.
    * System should be able to read and enter at least 100 contacts from a csv file at a time.
@@ -385,12 +580,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
    * Data should not be corruptible.
 5. Compatibility
    * System should run on Windows, macOS, and Linux with Java 17 and above installed.
+   * System should be able to export data, and read in data back from the same format to support transfer of data between devices.
 
 *{More to be added}*
 
 ### Glossary
-*{None as of yet}*
-
+1. Tag Combination: A set of tags defined by the user under a specific name (E.g The **MLE** tag combination could contain the tags **Python**, **SQL** and **Machine Learning**).
+2. View: A view refers to the graphical display of the candidate book. The current view refers to list of candidates that is currently visible in the graphical view. This distinction is important as some commands are performed on the current view of the address book, rather than the full candidate book.
 
 --------------------------------------------------------------------------------------------------------------------
 
