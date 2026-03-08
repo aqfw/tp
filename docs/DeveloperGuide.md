@@ -284,7 +284,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 | Priority | As a …​                                                                | I want to …​                                                                         | So that I can…​                                                     |
 |----------|------------------------------------------------------------------------|--------------------------------------------------------------------------------------|---------------------------------------------------------------------|
-| `* * *`  | new recruiter                                                          | auto fill-in suggestions with tooltips explaining what each field means              | correctly enter candidate information without making mistakes       |
+| `* * *`  | new recruiter                                                          | be able to request a help menu pop-up                                                | know which commands to use when unfamiliar with the app             |
 | `* * *`  | recruiter                                                              | add candidates with their names, phone numbers, email addresses                      | easily contact them for future job openings                         |
 | `* * *`  | recruiter                                                              | be able to edit contacts                                                             | fix any minor mistakes I make                                       |
 | `* * *`  | recruiter                                                              | be able to delete contacts                                                           | un-track candidates I am no longer interested in                    |
@@ -307,6 +307,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`      | time-pressed recruiter                                                 | be able to edit multiple entries at once                                             | efficiently manage large batches of candidates                      |
 | `*`      | be able to see a quick summary of the most common tags in the database | understand the talent pool better                                                    |                                                                     |
 | `*`      | recruiter                                                              | be able to compare candidates’ living addresses with potential work addresses        | understand how best to hire and deploy them across our many offices |
+| `*`      | new recruiter                                                          | auto fill-in suggestions with tooltips explaining what each field means              | correctly enter candidate information without making mistakes       |
 
 *{More to be added}*
 
@@ -318,24 +319,21 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  User chooses to add a new candidate.
-2.  HireLens requests for details of the candidate.
-3.  User enters necessary information, such as name, phone number, address, email and any optional tags.
-4.  HireLens displays auto fill-in suggestions and formatting guidance.
-5. User confirms the information entered.
-6. HireLens adds the candidate to the list of saved candidates and displays the information of the new candidate added.
-7. HireLens shows the updated list of the full candidate list with the new candidate added
+1. User enters necessary information, such as name, phone number, address, email and any optional tags.
+2. HireLens displays a help menu for formatting guidance. 
+3. HireLens adds the candidate to the list of saved candidates and displays the information of the new candidate added.
+4. HireLens shows the updated list of the full candidate list with the new candidate added
 
     Use case ends.
 
 **Extensions**
 
-* 3a. HireLens detects missing or invalid data.
+* 1a. HireLens detects missing or invalid data.
 
-    * 3a1. HireLens informs the user of the error made and requests corrected information.
-    * 3a2. User enters corrected data.
+    * 1a1. HireLens informs the user of the error made and requests corrected information.
+    * 1a2. User enters corrected data.
     *
-      Steps 3a1-3a2 are repeated until the data entered are correct.
+      Steps 1a1-1a2 are repeated until the data entered are correct.
       Use case resumes at step 2.
 
     
@@ -343,11 +341,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  User chooses to edit the details of a candidate.
-2.  HireLens requests for a minimum one parameter to modify and the index of the candidate to be modified.
-3.  User provides the requested data above and the modified data.
-4.  HireLens edits the details of the candidate and displays the modified details of the candidate.
-5.  HireLens shows the updated list of the candidate list with all filters intact.
+1. User provides the requested data above and the modified data.
+2. HireLens edits the details of the candidate and displays the modified details of the candidate.
+3. HireLens shows the updated list of the candidate list with all filters intact.
 
     Use case ends.
 
@@ -356,21 +352,19 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1.  User chooses to filter the candidate list by tags.
-2.  HireLens requests for a minimum one tag to filter.
-3. User provides the tags to filter the candidates by.
-4. HireLens filters the candidate list and shows a message informing the user the list has been filtered successfully.
-5. HireLens shows the filtered candidate list.
+1. User provides the tags to filter the candidates by.
+2. HireLens filters the candidate list and shows a message informing the user the list has been filtered successfully.
+3. HireLens shows the filtered candidate list.
 
    Use case ends.
 
 **Extensions**
 
-* 4a. Filter returns empty list (no candidates match the tags given)
+* 2a. Filter returns empty list (no candidates match the tags given)
 
-    * 4a1. HireLens detects that no candidates match the tags provided.
-    * 4a2. HireLens informs the user that the filter resulted in an empty list.
-    * 4a3. HireLens shows the full candidate list without any filters.
+    * 2a1. HireLens detects that no candidates match the tags provided.
+    * 2a2. HireLens informs the user that the filter resulted in an empty list.
+    * 2a3. HireLens shows the full candidate list without any filters.
 
 
 *{More to be added}*
