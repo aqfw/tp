@@ -264,7 +264,7 @@ _{Explain here how the data archiving feature will be implemented}_
 
 * Prefer desktop apps over other types
 * Is reasonably comfortable using CLI apps
-* Wants to enter candidates’ credentials, which could be extremely large in number
+* Wants to enter candidates’ credentials, which could be extremely large
 * Wants to filter and compare candidates by qualifications, distances to workplaces etc
 * Wants to use the program to speed up their other workflows, e.g. writing emails
 * Strongly values punctuality and is strict about lateness, while still aiming to remain fair
@@ -327,9 +327,9 @@ Use case ends.
 
 **Extensions**
 
-1a. HireLens detects missing or invalid data.  
-1a1. HireLens informs the user of the error made and requests corrected information.  
-1a2. User enters corrected data.  
+1a. HireLens detects missing or invalid data.
+1a1. HireLens informs the user of the error made and requests corrected information.
+1a2. User enters corrected data.
 Steps 1a1-1a2 are repeated until the data entered are correct.
 
 Use case resumes from step 2.
