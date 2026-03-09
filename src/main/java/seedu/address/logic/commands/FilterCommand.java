@@ -18,7 +18,7 @@ public class FilterCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all candidates in the candidate book. "
             + "Parameters: [" + PREFIX_TAG + "TAG].../n"
             + "Example: " + COMMAND_WORD + " "
-            + PREFIX_TAG + "python"
+            + PREFIX_TAG + "python "
             + PREFIX_TAG + "java";
 
     private final PersonContainsTagsPredicate predicate;
