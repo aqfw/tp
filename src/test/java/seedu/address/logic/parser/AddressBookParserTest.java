@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.commands.AddByCsvCommand;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
@@ -38,6 +39,15 @@ public class AddressBookParserTest {
         Person person = new PersonBuilder().build();
         AddCommand command = (AddCommand) parser.parseCommand(PersonUtil.getAddCommand(person));
         assertEquals(new AddCommand(person), command);
+    }
+
+    @Test
+    public void parseCommand_addcsv() throws Exception {
+        // Use a valid CSV file path for the addcsv command
+        String csvPath = "src/test/data/AddByCsvParserTest/validCandidates.csv";
+        AddByCsvCommand command = (AddByCsvCommand) parser.parseCommand(
+                AddByCsvCommand.COMMAND_WORD + " " + csvPath);
+        assertTrue(command instanceof AddByCsvCommand);
     }
 
     @Test
