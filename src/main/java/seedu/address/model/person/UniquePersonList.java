@@ -3,6 +3,7 @@ package seedu.address.model.person;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,6 +29,12 @@ public class UniquePersonList implements Iterable<Person> {
     private final ObservableList<Person> internalUnmodifiableList =
             FXCollections.unmodifiableObservableList(internalList);
 
+    public static final String MESSAGE_DUPLICATE_PHONE =
+            "A person with this phone number already exists in the address book.";
+
+    public static final String MESSAGE_DUPLICATE_EMAIL =
+            "A person with this email address already exists in the address book.";
+
     /**
      * Returns true if the list contains an equivalent person as the given argument.
      */
@@ -37,14 +44,37 @@ public class UniquePersonList implements Iterable<Person> {
     }
 
     /**
+     * Checks if the given {@code personToCheck} has a phone number or email address that already exists
+     * in the list, excluding the specified {@code personToIgnore}.
+     */
+    private void checkDuplicateFields(Person personToCheck, Person personToIgnore) {
+        List<String> conflicts = new ArrayList<>();
+
+        for (Person person : internalList) {
+            if (person.equals(personToIgnore)) continue;
+
+            if (person.getPhone().equals(personToCheck.getPhone())) {
+                conflicts.add("phone number");
+            }
+            if (person.getEmail().equals(personToCheck.getEmail())) {
+                conflicts.add("email address");
+            }
+        }
+
+        if (!conflicts.isEmpty()) {
+            throw new DuplicatePersonException(
+                    "A person with this " + String.join(" and ", conflicts) + " is already in the address book."
+            );
+        }
+    }
+
+    /**
      * Adds a person to the list.
      * The person must not already exist in the list.
      */
     public void add(Person toAdd) {
         requireNonNull(toAdd);
-        if (contains(toAdd)) {
-            throw new DuplicatePersonException();
-        }
+        checkDuplicateFields(toAdd, null);
         internalList.add(toAdd);
     }
 

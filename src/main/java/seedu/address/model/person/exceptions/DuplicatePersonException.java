@@ -8,4 +8,6 @@ public class DuplicatePersonException extends RuntimeException {
     public DuplicatePersonException() {
         super("Operation would result in duplicate persons");
     }
+
+    public DuplicatePersonException(String message) { super(message); }
 }
