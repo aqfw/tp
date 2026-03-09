@@ -45,8 +45,9 @@ public class UniquePersonList implements Iterable<Person> {
         List<String> conflicts = new ArrayList<>();
 
         for (Person person : internalList) {
-            if (person.equals(personToIgnore)) continue;
-
+            if (person.equals(personToIgnore)) {
+                continue;
+            }
             if (person.getPhone().equals(personToCheck.getPhone())) {
                 conflicts.add("phone number");
             }
