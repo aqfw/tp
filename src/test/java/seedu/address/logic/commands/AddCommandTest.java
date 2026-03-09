@@ -23,6 +23,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.testutil.PersonBuilder;
 
 public class AddCommandTest {
@@ -50,7 +51,7 @@ public class AddCommandTest {
         AddCommand addCommand = new AddCommand(validPerson);
         ModelStub modelStub = new ModelStubWithPerson(validPerson);
 
-        assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+        assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_EMAIL_AND_PHONE, () -> addCommand.execute(modelStub));
     }
 
     @Test
@@ -174,6 +175,16 @@ public class AddCommandTest {
         public boolean hasPerson(Person person) {
             requireNonNull(person);
             return this.person.isSamePerson(person);
+        }
+
+        @Override
+        public void addPerson(Person person) {
+            requireNonNull(person);
+            if (this.person.isSamePerson(person)) {
+                throw new DuplicatePersonException(
+                        "A person with this phone number and email address is already in the address book."
+                );
+            }
         }
     }
 

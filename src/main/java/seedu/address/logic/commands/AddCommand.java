@@ -38,7 +38,9 @@ public class AddCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
-
+    public static final String MESSAGE_DUPLICATE_EMAIL_AND_PHONE = "A person with this phone number and email address is already in the address book.";
+    public static final String MESSAGE_DUPLICATE_EMAIL = "A person with this email address is already in the address book.";
+    public static final String MESSAGE_DUPLICATE_PHONE = "A person with this phone number is already in the address book.";
     private final Person toAdd;
 
     /**
@@ -59,7 +61,6 @@ public class AddCommand extends Command {
             throw new CommandException(e.getMessage());
         }
 
-        model.addPerson(toAdd);
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
     }
 

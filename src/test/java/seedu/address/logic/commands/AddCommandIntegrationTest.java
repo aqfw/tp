@@ -42,7 +42,20 @@ public class AddCommandIntegrationTest {
     public void execute_duplicatePerson_throwsCommandException() {
         Person personInList = model.getAddressBook().getPersonList().get(0);
         assertCommandFailure(new AddCommand(personInList), model,
-                AddCommand.MESSAGE_DUPLICATE_PERSON);
-    }
+                AddCommand.MESSAGE_DUPLICATE_EMAIL_AND_PHONE);
 
+        Person duplicatePhoneNumber = new PersonBuilder().withName("Alice Pauline")
+                .withAddress("123, Jurong West Ave 6, #08-111").withEmail("alice@different.com")
+                .withPhone("94351253")
+                .withTags("friends").build();
+        assertCommandFailure(new AddCommand(duplicatePhoneNumber), model,
+                AddCommand.MESSAGE_DUPLICATE_PHONE);
+
+        Person duplicateEmailAddress = new PersonBuilder().withName("Alice Pauline")
+                .withAddress("123, Jurong West Ave 6, #08-111").withEmail("alice@example.com")
+                .withPhone("12345678")
+                .withTags("friends").build();
+        assertCommandFailure(new AddCommand(duplicateEmailAddress), model,
+                AddCommand.MESSAGE_DUPLICATE_EMAIL);
+    }
 }

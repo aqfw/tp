@@ -52,7 +52,9 @@ public class EditCommand extends Command {
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
-
+    public static final String MESSAGE_DUPLICATE_EMAIL_AND_PHONE = "A person with this phone number and email address is already in the address book.";
+    public static final String MESSAGE_DUPLICATE_EMAIL = "A person with this email address is already in the address book.";
+    public static final String MESSAGE_DUPLICATE_PHONE = "A person with this phone number is already in the address book.";
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
 
