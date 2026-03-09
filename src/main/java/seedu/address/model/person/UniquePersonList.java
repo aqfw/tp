@@ -29,12 +29,6 @@ public class UniquePersonList implements Iterable<Person> {
     private final ObservableList<Person> internalUnmodifiableList =
             FXCollections.unmodifiableObservableList(internalList);
 
-    public static final String MESSAGE_DUPLICATE_PHONE =
-            "A person with this phone number already exists in the address book.";
-
-    public static final String MESSAGE_DUPLICATE_EMAIL =
-            "A person with this email address already exists in the address book.";
-
     /**
      * Returns true if the list contains an equivalent person as the given argument.
      */
@@ -91,9 +85,7 @@ public class UniquePersonList implements Iterable<Person> {
             throw new PersonNotFoundException();
         }
 
-        if (!target.isSamePerson(editedPerson) && contains(editedPerson)) {
-            throw new DuplicatePersonException();
-        }
+        checkDuplicateFields(editedPerson, target);
 
         internalList.set(index, editedPerson);
     }
