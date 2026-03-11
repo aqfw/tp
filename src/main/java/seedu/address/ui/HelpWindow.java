@@ -34,16 +34,17 @@ public class HelpWindow extends UiPart<Stage> {
 
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
     private static final String FXML = "HelpWindow.fxml";
-    
+
     // Path to UserGuide.md relative to project root
     private static final String USERGUIDE_PATH = "docs/Userguide.md";
-    
+
     // Heading line from Userguide.md to start from
     private static final String START_HEADING = "## Features";
 
     // The heading line to stop reading at (exclusive), or null to read to end of file
     private static final String END_HEADING = null;
-    
+
+
     @FXML
     private Button copyButton;
 
@@ -52,7 +53,7 @@ public class HelpWindow extends UiPart<Stage> {
     @FXML
     private Label helpMessage;
     */
-    
+
     @FXML
     private TextArea helpMessage;
 

@@ -39,12 +39,12 @@
           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
         </padding>
 
-        <!-- Scrollable text area that fills both available vertical and horizontal space, 10000 as max -->
+        <!-- Scrollable text area that fills both available vertical and horizontal space, 10000 as maximum -->
         <ScrollPane fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS" prefHeight="10000">
           <TextArea fx:id="helpMessage"
                     editable="false"
                     wrapText="true"
-                    VBox.vgrow="ALWAYS" 
+                    VBox.vgrow="ALWAYS"
                     prefHeight="10000"/>
         </ScrollPane>
 
@@ -54,7 +54,7 @@
         </HBox>
 
       </VBox>
-      
+
     </Scene>
   </scene>
 </fx:root>
