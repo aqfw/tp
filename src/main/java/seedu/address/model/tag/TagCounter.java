@@ -6,10 +6,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javafx.collections.ObservableList;
-import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.person.Person;
-import seedu.address.model.person.UniquePersonList;
 
 /**
  * A wrapper to count the frequency of occurence of {@code Tag}s in the current candidate book.
@@ -119,10 +117,9 @@ public class TagCounter {
                 .sorted(Map.Entry.<Tag, Integer>comparingByValue().reversed())
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (a, b) -> a,
-                        LinkedHashMap::new
-                ))
+                        Map.Entry::getValue, (
+                                a, b) -> a,
+                        LinkedHashMap::new))
                 .toString();
     }
 
