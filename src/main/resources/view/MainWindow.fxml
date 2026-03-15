@@ -59,7 +59,7 @@
           <HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
             <GridPane HBox.hgrow="ALWAYS" vgap="5" hgap="10" minHeight="18" prefHeight="18" maxHeight="18">
               <columnConstraints>
-                <ColumnConstraints minWidth="40" prefWidth="40" maxWidth="40" hgrow="NEVER" />
+                <ColumnConstraints minWidth="50" prefWidth="50" maxWidth="50" hgrow="NEVER" />
                 <ColumnConstraints minWidth="100" prefWidth="150" hgrow="ALWAYS" />
                 <ColumnConstraints minWidth="100" prefWidth="150" hgrow="ALWAYS" />
                 <ColumnConstraints minWidth="100" prefWidth="150" hgrow="ALWAYS" />
