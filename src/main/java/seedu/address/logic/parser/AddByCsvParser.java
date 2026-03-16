@@ -1,5 +1,7 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,7 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import seedu.address.logic.commands.AddByCsvCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
@@ -40,7 +41,8 @@ public class AddByCsvParser implements Parser<AddByCsvCommand> {
     public static final String MESSAGE_INVALID_ROW =
             "Invalid data at row %1$d: %2$s";
 
-    private static final int EXPECTED_MIN_COLUMNS = 5; // name, phone, email, address, postalCode are required; tags are optional
+    // name, phone, email, address, postalCode are required; tags are optional
+    private static final int EXPECTED_MIN_COLUMNS = 5;
     private static final int NAME_INDEX = 0;
     private static final int PHONE_INDEX = 1;
     private static final int EMAIL_INDEX = 2;
