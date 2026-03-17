@@ -1,0 +1,10 @@
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.control.Label?>
+
+<HBox style="-fx-padding: 5 16 0 16;" alignment="CENTER_LEFT"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <Label fx:id="tagName" styleClass="tag-label" />
+    <Region HBox.hgrow="ALWAYS"/>
+    <Label fx:id="tagCount"/>
+</HBox>

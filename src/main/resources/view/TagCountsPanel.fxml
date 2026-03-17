@@ -1,6 +1,7 @@
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.control.Label?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<ListView fx:id="tagCounts" VBox.vgrow="ALWAYS"
-          xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"/>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="tagCountsPanel" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+</VBox>

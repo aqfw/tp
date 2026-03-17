@@ -2,13 +2,14 @@ package seedu.address.model.tag;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalPersons.CARL;
 import static seedu.address.testutil.TypicalPersons.getTypicalPersons;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +29,7 @@ public class TagCounterTest {
 
     @Test
     public void incrementTags_success() {
-        HashMap<Tag, Integer> tagMap = new HashMap<Tag, Integer>();
+        LinkedHashMap<Tag, Integer> tagMap = new LinkedHashMap<Tag, Integer>();
         TagCounter tagCounter = new TagCounter();
         UniquePersonList uniquePersonList = new UniquePersonList();
 
@@ -53,7 +54,7 @@ public class TagCounterTest {
 
     @Test
     public void decrementTags_success() {
-        HashMap<Tag, Integer> tagMap = new HashMap<Tag, Integer>();
+        LinkedHashMap<Tag, Integer> tagMap = new LinkedHashMap<Tag, Integer>();
         tagMap.put(new Tag("friends"), 2);
         tagMap.put(new Tag("owesMoney"), 1);
         TagCounter tagCounter = new TagCounter();
@@ -88,7 +89,7 @@ public class TagCounterTest {
             uniquePersonList.add(person);
         }
 
-        HashMap<Tag, Integer> tagMap = new HashMap<Tag, Integer>();
+        LinkedHashMap<Tag, Integer> tagMap = new LinkedHashMap<Tag, Integer>();
         tagMap.put(new Tag("friends"), 3);
         tagMap.put(new Tag("owesMoney"), 1);
 
@@ -105,7 +106,7 @@ public class TagCounterTest {
             uniquePersonList.add(person);
         }
 
-        HashMap<Tag, Integer> tagMap = new HashMap<Tag, Integer>();
+        LinkedHashMap<Tag, Integer> tagMap = new LinkedHashMap<Tag, Integer>();
         tagMap.put(new Tag("friends"), 3);
         tagMap.put(new Tag("owesMoney"), 1);
 
@@ -122,11 +123,11 @@ public class TagCounterTest {
             uniquePersonList.add(person);
         }
 
-        HashMap<Tag, Integer> tagMap = new HashMap<Tag, Integer>();
+        LinkedHashMap<Tag, Integer> tagMap = new LinkedHashMap<Tag, Integer>();
         tagMap.put(new Tag("friends"), 3);
         tagMap.put(new Tag("owesMoney"), 1);
 
-        HashMap<Tag, Integer> secondTagMap = new HashMap<Tag, Integer>();
+        LinkedHashMap<Tag, Integer> secondTagMap = new LinkedHashMap<Tag, Integer>();
         secondTagMap.put(new Tag("friends"), -1);
 
         TagCounter tagCounter = new TagCounter(secondTagMap);
@@ -147,12 +148,25 @@ public class TagCounterTest {
 
     @Test
     public void displayDescendingOrder() {
-        HashMap<Tag, Integer> tagMap = new HashMap<Tag, Integer>();
+        LinkedHashMap<Tag, Integer> tagMap = new LinkedHashMap<Tag, Integer>();
         tagMap.put(new Tag("python"), 1);
         tagMap.put(new Tag("java"), 3);
         tagMap.put(new Tag("C"), 2);
 
         TagCounter tagCounter = new TagCounter(tagMap);
-        assertEquals("{[java]=3, [C]=2, [python]=1}", tagCounter.displayDescendingOrder());
+        assertEquals("{[java]=3, [C]=2, [python]=1}", tagCounter.displayDescendingOrder().toString());
+    }
+
+    @Test
+    public void equals() {
+        LinkedHashMap<Tag, Integer> firstTagMap = new LinkedHashMap<Tag, Integer>();
+        firstTagMap.put(new Tag("python"), 1);
+        LinkedHashMap<Tag, Integer> secondTagMap = new LinkedHashMap<Tag, Integer>();
+        secondTagMap.put(new Tag("python"), 1);
+        LinkedHashMap<Tag, Integer> thirdTagMap = new LinkedHashMap<Tag, Integer>();
+        thirdTagMap.put(new Tag("python"), 2);
+
+        assertEquals(new TagCounter(firstTagMap), new TagCounter(secondTagMap));
+        assertNotEquals(new TagCounter(firstTagMap), new TagCounter(thirdTagMap));
     }
 }

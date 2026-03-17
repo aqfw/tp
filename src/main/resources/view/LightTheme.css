@@ -92,7 +92,15 @@
 .list-view {
     -fx-background-insets: 0;
     -fx-padding: 0;
-    -fx-background-color: #f9f9f9;
+    -fx-background-color: white;
+}
+
+.list-view .virtual-flow {
+    -fx-background-color: white;
+}
+
+.list-cell {
+    -fx-background-color: white;
 }
 
 .list-cell {
@@ -122,35 +130,35 @@
     -fx-text-fill: black;
 }
 
-.cell_big_label {
+.cell-big-label {
     -fx-font-family: "Consolas";
     -fx-font-size: 16px;
     -fx-text-fill: #010504;
     -fx-padding: 0 0 0 5px;
 }
 
-.cell_small_label {
+.cell-small-label {
     -fx-font-family: "Consolas";
     -fx-font-size: 14px;
     -fx-text-fill: #010504;
     -fx-padding: 0 0 0 5px;
 }
 
-.small_index_label {
+.small-index-label {
     -fx-font-family: "Consolas";
     -fx-font-size: 14px;
     -fx-text-fill: #808080;
     -fx-padding: 5 0 0 0px;
 }
 
-.detailed_person_small_label {
+.detailed-person-small-label {
     -fx-font-family: "Consolas";
     -fx-font-size: 14px;
     -fx-text-fill: #010504;
     -fx-padding: 0 0 0 5px;
 }
 
-.extra_big_label {
+.extra-big-label {
     -fx-font-family: "Consolas";
     -fx-font-size: 24px;
     -fx-text-fill: #010504;
@@ -356,17 +364,17 @@
     -fx-background-radius: 0;
 }
 
-#tags_card {
+#tagsCard {
     -fx-hgap: 7;
     -fx-vgap: 15;
 }
 
-#tags_detailed_card {
+#tagsDetailedCard {
     -fx-hgap: 7;
     -fx-vgap: 3;
 }
 
-#tags_card .label {
+#tagsCard .label {
     -fx-text-fill: white;
     -fx-background-color: #3e7b91;
     -fx-padding: 1 3 1 3;
@@ -376,16 +384,30 @@
     -fx-font-family: "Consolas";
 }
 
-#tags_detailed_card .label {
+#tagsDetailedCard .label {
     -fx-text-fill: white;
     -fx-background-color: #3e7b91;
     -fx-padding: 1 3 1 3;
     -fx-border-radius: 2;
     -fx-background-radius: 2;
     -fx-font-size: 12;
+    -fx-font-family: "Consolas";
+}
+
+.tag-label {
+    -fx-text-fill: white;
+    -fx-background-color: #3e7b91;
+    -fx-padding: 1 3 1 3;
+    -fx-border-radius: 2;
+    -fx-background-radius: 2;
+    -fx-font-size: 14;
     -fx-font-family: "Consolas";
 }
 
 #personList {
+    -fx-background-color: white;
+}
+
+.tag-scroll-pane > .viewport {
     -fx-background-color: white;
 }

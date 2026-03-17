@@ -26,6 +26,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.person.Person;
+import seedu.address.model.tag.TagCounter;
 
 /**
  * Tests for {@code AddByCsvCommand}.
@@ -183,7 +184,7 @@ public class AddByCsvCommandTest {
         }
 
         @Override
-        public String getTagCounterDescription() {
+        public TagCounter getTagCounter() {
             throw new AssertionError("This method should not be called.");
         }
     }

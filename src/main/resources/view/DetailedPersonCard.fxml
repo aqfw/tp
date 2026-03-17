@@ -15,24 +15,24 @@
     <content>
         <VBox spacing="5" style="-fx-padding: 10;" VBox.vgrow="ALWAYS" >
             <VBox spacing="5" alignment="CENTER_LEFT">
-                <Label fx:id="id" styleClass="small_index_label" wrapText="true"/>
-                <Label fx:id="name" styleClass="extra_big_label" wrapText="true"/>
+                <Label fx:id="id" styleClass="small-index-label" wrapText="true"/>
+                <Label fx:id="name" styleClass="extra-big-label" wrapText="true"/>
             </VBox>
 
             <Region prefHeight="1" style="-fx-background-color: lightgrey;" />
 
             <VBox spacing="3">
-                <Label text="EMAIL" styleClass="small_index_label" wrapText="true"/>
-                <Label fx:id="email" styleClass="detailed_person_small_label" wrapText="true"/>
-                <Label text="PHONE NUMBER" styleClass="small_index_label" wrapText="true"/>
-                <Label fx:id="phone" styleClass="detailed_person_small_label" wrapText="true"/>
-                <Label text="POSTAL CODE" styleClass="small_index_label" wrapText="true"/>
-                <Label fx:id="postalCode" styleClass="detailed_person_small_label" wrapText="true"/>
-                <Label text="ADDRESS" styleClass="small_index_label" wrapText="true"/>
-                <Label fx:id="address" styleClass="detailed_person_small_label" wrapText="true"/>
+                <Label text="EMAIL" styleClass="small-index-label" wrapText="true"/>
+                <Label fx:id="email" styleClass="detailed-person-small-label" wrapText="true"/>
+                <Label text="PHONE NUMBER" styleClass="small-index-label" wrapText="true"/>
+                <Label fx:id="phone" styleClass="detailed-person-small-label" wrapText="true"/>
+                <Label text="POSTAL CODE" styleClass="small-index-label" wrapText="true"/>
+                <Label fx:id="postalCode" styleClass="detailed-person-small-label" wrapText="true"/>
+                <Label text="ADDRESS" styleClass="small-index-label" wrapText="true"/>
+                <Label fx:id="address" styleClass="detailed-person-small-label" wrapText="true"/>
 
-                <Label text="TAGS" styleClass="small_index_label" wrapText="true"/>
-                <FlowPane fx:id="tags_detailed_card"
+                <Label text="TAGS" styleClass="small-index-label" wrapText="true"/>
+                <FlowPane fx:id="tagsDetailedCard"
                           orientation="HORIZONTAL"
                           GridPane.rowIndex="0"
                           GridPane.columnIndex="2"

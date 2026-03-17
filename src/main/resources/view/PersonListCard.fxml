@@ -20,13 +20,13 @@
       <ColumnConstraints minWidth="100" prefWidth="150" hgrow="ALWAYS" />
     </columnConstraints>
 
-    <Label fx:id="id" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="cell_small_label" />
+    <Label fx:id="id" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="cell-small-label" />
 
-    <Label fx:id="name" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="cell_small_label" />
+    <Label fx:id="name" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="cell-small-label" />
 
     <StackPane GridPane.rowIndex="0" GridPane.columnIndex="2"
                prefWidth="300" maxWidth="300" prefHeight="30">
-      <FlowPane fx:id="tags_card"
+      <FlowPane fx:id="tagsCard"
                 hgap="5"
                 orientation="HORIZONTAL"
                 prefHeight="30"
@@ -34,6 +34,6 @@
                 style="-fx-padding: 4 0 0 5;" />
     </StackPane>
 
-    <Label fx:id="address" GridPane.rowIndex="0" GridPane.columnIndex="3" styleClass="cell_small_label" />
+    <Label fx:id="address" GridPane.rowIndex="0" GridPane.columnIndex="3" styleClass="cell-small-label" />
   </GridPane>
 </HBox>

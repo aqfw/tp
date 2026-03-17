@@ -1,22 +1,59 @@
 package seedu.address.ui;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.TagCounter;
 
 /**
- * A UI component that displays a {@Code Tag} alongside its corresponding frequency in the address book.
+ * A UI component that displays all {@Code Tag} alongside its corresponding frequency in the address book.
  */
-public class TagCounts {
-    private static final String FXML = "TagCounts.fxml";
+public class TagCountsPanel extends UiPart<Region> {
+    private static final String FXML = "TagCountsPanel.fxml";
 
     @FXML
-    private ListView tagCounts;
+    private VBox tagCountsPanel;
+
+    private final TagCounter tagCounter;
 
     /**
-     * Creates a {@code TagCounts} with the given {@code Person} and index to display.
+     * Constructs a Tag Counts Panel, then fills it.
      */
-    public TagCounts() {
+    public TagCountsPanel(TagCounter tagCounter) {
+        super(FXML);
+        this.tagCounter = tagCounter;
+        fillScrollPane();
+    }
 
+    /**
+     * Fills the ScrollPane with rows for each tag + count.
+     */
+    private void fillScrollPane() {
+        Label header = new Label("Tag Counts");
+        header.getStyleClass().add("extra-big-label");
+
+        Region firstSpacer = new Region();
+        firstSpacer.setPrefHeight(8);
+
+        HBox headerBox = new HBox(header);
+        headerBox.setAlignment(Pos.CENTER);
+
+        Region secondSpacer = new Region();
+        secondSpacer.setPrefHeight(20);
+
+        tagCountsPanel.getChildren().addAll(firstSpacer, headerBox, secondSpacer);
+
+        LinkedHashMap<Tag, Integer> tagMap = tagCounter.getTagCounter();
+        for (Map.Entry<Tag, Integer> entry : tagMap.entrySet()) {
+            TagCountRow row = new TagCountRow(entry.getKey().getTagName(), entry.getValue());
+            tagCountsPanel.getChildren().add(row.getRoot());
+        }
     }
 }

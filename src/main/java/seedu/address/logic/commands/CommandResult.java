@@ -36,6 +36,9 @@ public class CommandResult {
         this(feedbackToUser, UiAction.NONE, Optional.empty());
     }
 
+    /**
+     * Overloaded constructor for commands that do not update the right pane.
+     */
     public CommandResult(String feedbackToUser, UiAction uiAction) throws CommandException {
         this(feedbackToUser, uiAction, Optional.empty());
         if (uiAction == UiAction.UPDATE_RIGHT_PANE) {

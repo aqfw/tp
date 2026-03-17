@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.Person;
+import seedu.address.model.tag.TagCounter;
 
 /**
  * The API of the Model component.
@@ -93,5 +94,5 @@ public interface Model {
     /**
      * Returns a list of the tags in the model, along with their frequencies in descending order.
      */
-    String getTagCounterDescription();
+    TagCounter getTagCounter();
 }

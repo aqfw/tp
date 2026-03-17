@@ -2,9 +2,11 @@ package seedu.address.ui.content;
 
 import javafx.scene.layout.VBox;
 import seedu.address.model.person.Person;
-import seedu.address.model.tag.Tag;
 import seedu.address.ui.DetailedPersonCard;
 
+/**
+ * A class that renders the details of a person to the right panel.
+ */
 public class PersonContent implements RightPaneContent {
     private final Person person;
 

@@ -32,7 +32,6 @@ import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.ui.UiAction;
 import seedu.address.ui.content.PersonContent;
-import seedu.address.ui.content.PersonContentTest;
 
 /**
  * Contains integration tests (interaction with the Model) and unit tests for EditCommand.

@@ -147,8 +147,8 @@ public class ModelManager implements Model {
 
     //=========== TagCounter Accessors =============================================================
     @Override
-    public String getTagCounterDescription() {
-        return tagCounter.displayDescendingOrder();
+    public TagCounter getTagCounter() {
+        return tagCounter;
     }
 
     @Override
