@@ -28,6 +28,8 @@ public class DeleteCommand extends Command {
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
 
+    public static final String RIGHT_PANE_HEADER = "CANDIDATE DELETED";
+
     private final Index targetIndex;
 
     public DeleteCommand(Index targetIndex) {
@@ -46,7 +48,7 @@ public class DeleteCommand extends Command {
         Person personToDelete = lastShownList.get(targetIndex.getZeroBased());
         model.deletePerson(personToDelete);
         return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personToDelete)),
-                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(personToDelete)));
+                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(personToDelete, RIGHT_PANE_HEADER)));
     }
 
     @Override

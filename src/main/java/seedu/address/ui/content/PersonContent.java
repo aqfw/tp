@@ -1,5 +1,7 @@
 package seedu.address.ui.content;
 
+import java.util.Objects;
+
 import javafx.scene.layout.VBox;
 import seedu.address.model.person.Person;
 import seedu.address.ui.DetailedPersonCard;
@@ -8,21 +10,26 @@ import seedu.address.ui.DetailedPersonCard;
  * A class that renders the details of a person to the right panel.
  */
 public class PersonContent implements RightPaneContent {
+    private final String header;
     private final Person person;
 
-    public PersonContent(Person person) {
+    /**
+     * Constructs a {@Code PersonContent} with a {@Code Person} and {@Code header}.
+     */
+    public PersonContent(Person person, String header) {
         this.person = person;
+        this.header = header;
     }
 
     @Override
     public void render(VBox contentPlaceholder) {
-        DetailedPersonCard detailedCard = new DetailedPersonCard(person, 1);
+        DetailedPersonCard detailedCard = new DetailedPersonCard(person, header);
         contentPlaceholder.getChildren().setAll(detailedCard.getRoot());
     }
 
     @Override
     public int hashCode() {
-        return person.hashCode();
+        return Objects.hash(header, person);
     }
 
     @Override
@@ -36,6 +43,7 @@ public class PersonContent implements RightPaneContent {
         }
 
         PersonContent otherPersonContent = (PersonContent) other;
-        return person.equals(otherPersonContent.person);
+        return person.equals(otherPersonContent.person)
+                && header.equals(otherPersonContent.header);
     }
 }

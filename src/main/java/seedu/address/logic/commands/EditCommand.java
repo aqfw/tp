@@ -63,6 +63,7 @@ public class EditCommand extends Command {
                                                             + "address book.";
     public static final String MESSAGE_DUPLICATE_PHONE = "A person with this phone number is already in the "
                                                             + "address book.";
+    public static final String RIGHT_PANE_HEADER = "CANDIDATE EDITED";
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
 
@@ -98,7 +99,7 @@ public class EditCommand extends Command {
 
         model.resetFilteredPersonList();
         return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)),
-                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(editedPerson)));
+                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(editedPerson, RIGHT_PANE_HEADER)));
     }
 
     /**

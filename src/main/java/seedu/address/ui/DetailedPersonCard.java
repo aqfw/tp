@@ -37,10 +37,10 @@ public class DetailedPersonCard extends UiPart<Region> {
     /**
      * Creates a {@code DetailedPersonCode} with the given {@code Person} and index to display.
      */
-    public DetailedPersonCard(Person person, int displayedIndex) {
+    public DetailedPersonCard(Person person, String header) {
         super(FXML);
         this.person = person;
-        id.setText("Candidate #" + displayedIndex);
+        id.setText(header);
         name.setText(person.getName().fullName);
         phone.setText(person.getPhone().value);
         address.setText(person.getAddress().value);

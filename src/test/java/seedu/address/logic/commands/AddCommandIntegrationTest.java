@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import static seedu.address.logic.commands.AddCommand.RIGHT_PANE_HEADER;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
@@ -39,7 +40,7 @@ public class AddCommandIntegrationTest {
 
         assertCommandSuccess(new AddCommand(validPerson), model,
                 String.format(AddCommand.MESSAGE_SUCCESS, Messages.format(validPerson)), expectedModel,
-                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(validPerson)));
+                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(validPerson, RIGHT_PANE_HEADER)));
     }
 
     @Test

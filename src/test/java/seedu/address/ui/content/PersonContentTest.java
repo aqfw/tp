@@ -13,21 +13,25 @@ public class PersonContentTest {
 
     @Test
     public void equals() {
-        PersonContent firstPersonContent = new PersonContent(ALICE);
-        PersonContent secondPersonContent = new PersonContent(BENSON);
+        PersonContent firstPersonContent = new PersonContent(ALICE, "added");
+        PersonContent secondPersonContent = new PersonContent(BENSON, "added");
+        PersonContent thirdPersonContent = new PersonContent(ALICE, "deleted");
 
-        assertTrue(firstPersonContent.equals(new PersonContent(ALICE)));
+        assertTrue(firstPersonContent.equals(new PersonContent(ALICE, "added")));
         assertFalse(firstPersonContent.equals(secondPersonContent));
         assertTrue(firstPersonContent.equals(firstPersonContent));
+        assertFalse(firstPersonContent.equals(thirdPersonContent));
     }
 
     @Test
     public void hashcode() {
-        PersonContent firstPersonContent = new PersonContent(ALICE);
-        PersonContent secondPersonContent = new PersonContent(BENSON);
+        PersonContent firstPersonContent = new PersonContent(ALICE, "added");
+        PersonContent secondPersonContent = new PersonContent(BENSON, "added");
+        PersonContent thirdPersonContent = new PersonContent(ALICE, "deleted");
 
-        assertEquals(firstPersonContent.hashCode(), new PersonContent(ALICE).hashCode());
+        assertEquals(firstPersonContent.hashCode(), new PersonContent(ALICE, "added").hashCode());
         assertEquals(firstPersonContent.hashCode(), firstPersonContent.hashCode());
         assertNotEquals(firstPersonContent.hashCode(), secondPersonContent.hashCode());
+        assertNotEquals(firstPersonContent.hashCode(), thirdPersonContent.hashCode());
     }
 }

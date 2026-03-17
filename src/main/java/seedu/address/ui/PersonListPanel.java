@@ -21,7 +21,7 @@ public class PersonListPanel extends UiPart<Region> {
     @FXML
     private ListView<Person> personListView;
 
-    private BiConsumer<Person, Integer> onPersonSelected;
+    private BiConsumer<Person, String> onPersonSelected;
 
     /**
      * Creates a {@code PersonListPanel} with the given {@code ObservableList}.
@@ -35,7 +35,7 @@ public class PersonListPanel extends UiPart<Region> {
     /**
      * Set event to fire on person selected.
      */
-    public void setOnPersonSelected(BiConsumer<Person, Integer> listener) {
+    public void setOnPersonSelected(BiConsumer<Person, String> listener) {
         this.onPersonSelected = listener;
     }
 
@@ -56,7 +56,7 @@ public class PersonListPanel extends UiPart<Region> {
 
                 setOnMouseClicked(event -> {
                     if (onPersonSelected != null) {
-                        onPersonSelected.accept(person, getIndex() + 1);
+                        onPersonSelected.accept(person, "Candidate Profile");
                     }
                 });
             }

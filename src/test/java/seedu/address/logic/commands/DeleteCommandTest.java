@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
+import static seedu.address.logic.commands.DeleteCommand.RIGHT_PANE_HEADER;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
@@ -43,7 +44,7 @@ public class DeleteCommandTest {
         expectedModel.deletePerson(personToDelete);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel,
-                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(personToDelete)));
+                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(personToDelete, RIGHT_PANE_HEADER)));
     }
 
     @Test
@@ -69,7 +70,7 @@ public class DeleteCommandTest {
         showNoPerson(expectedModel);
 
         assertCommandSuccess(deleteCommand, model, expectedMessage, expectedModel,
-                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(personToDelete)));
+                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(personToDelete, RIGHT_PANE_HEADER)));
     }
 
     @Test

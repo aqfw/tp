@@ -51,7 +51,11 @@ public class AddCommand extends Command {
                                                             + "address book.";
     public static final String MESSAGE_DUPLICATE_PHONE = "A person with this phone number is already in the "
                                                             + "address book.";
+    public static final String RIGHT_PANE_HEADER = "NEW CANDIDATE ADDED";
+
     private final Person toAdd;
+
+
 
     /**
      * Creates an AddCommand to add the specified {@code Person}
@@ -72,7 +76,7 @@ public class AddCommand extends Command {
         }
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)),
-                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(toAdd)));
+                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(toAdd, RIGHT_PANE_HEADER)));
     }
 
     @Override
