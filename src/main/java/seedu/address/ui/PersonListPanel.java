@@ -1,5 +1,6 @@
 package seedu.address.ui;
 
+import java.util.function.BiConsumer;
 import java.util.logging.Logger;
 
 import javafx.collections.ObservableList;
@@ -20,6 +21,8 @@ public class PersonListPanel extends UiPart<Region> {
     @FXML
     private ListView<Person> personListView;
 
+    private BiConsumer<Person, Integer> onPersonSelected;
+
     /**
      * Creates a {@code PersonListPanel} with the given {@code ObservableList}.
      */
@@ -27,6 +30,13 @@ public class PersonListPanel extends UiPart<Region> {
         super(FXML);
         personListView.setItems(personList);
         personListView.setCellFactory(listView -> new PersonListViewCell());
+    }
+
+    /**
+     * Set event to fire on person selected.
+     */
+    public void setOnPersonSelected(BiConsumer<Person, Integer> listener) {
+        this.onPersonSelected = listener;
     }
 
     /**
@@ -41,7 +51,14 @@ public class PersonListPanel extends UiPart<Region> {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(new PersonCard(person, getIndex() + 1).getRoot());
+                PersonCard card = new PersonCard(person, getIndex() + 1);
+                setGraphic(card.getRoot());
+
+                setOnMouseClicked(event -> {
+                    if (onPersonSelected != null) {
+                        onPersonSelected.accept(person, getIndex() + 1);
+                    }
+                });
             }
         }
     }

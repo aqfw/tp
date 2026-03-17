@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ScrollPane?>
+
+<ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" style="-fx-background-color: white;"
+            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" VBox.vgrow="ALWAYS">
+    <content>
+        <VBox spacing="5" style="-fx-padding: 10;" VBox.vgrow="ALWAYS" >
+            <VBox spacing="5" alignment="CENTER_LEFT">
+                <Label fx:id="id" styleClass="small_index_label" wrapText="true"/>
+                <Label fx:id="name" styleClass="extra_big_label" wrapText="true"/>
+            </VBox>
+
+            <Region prefHeight="1" style="-fx-background-color: lightgrey;" />
+
+            <VBox spacing="3">
+                <Label text="EMAIL" styleClass="small_index_label" wrapText="true"/>
+                <Label fx:id="email" styleClass="detailed_person_small_label" wrapText="true"/>
+                <Label text="PHONE NUMBER" styleClass="small_index_label" wrapText="true"/>
+                <Label fx:id="phone" styleClass="detailed_person_small_label" wrapText="true"/>
+                <Label text="ADDRESS" styleClass="small_index_label" wrapText="true"/>
+                <Label fx:id="address" styleClass="detailed_person_small_label" wrapText="true"/>
+
+                <Label text="TAGS" styleClass="small_index_label" wrapText="true"/>
+                <FlowPane fx:id="tags_detailed_card"
+                          orientation="HORIZONTAL"
+                          GridPane.rowIndex="0"
+                          GridPane.columnIndex="2"
+                          hgap="5" vgap="2"
+                          style="-fx-padding: 4 0 0 5;" />
+            </VBox>
+        </VBox>
+    </content>
+</ScrollPane>
