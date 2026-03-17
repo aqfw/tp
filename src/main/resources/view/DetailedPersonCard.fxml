@@ -26,6 +26,8 @@
                 <Label fx:id="email" styleClass="detailed_person_small_label" wrapText="true"/>
                 <Label text="PHONE NUMBER" styleClass="small_index_label" wrapText="true"/>
                 <Label fx:id="phone" styleClass="detailed_person_small_label" wrapText="true"/>
+                <Label text="POSTAL CODE" styleClass="small_index_label" wrapText="true"/>
+                <Label fx:id="postalCode" styleClass="detailed_person_small_label" wrapText="true"/>
                 <Label text="ADDRESS" styleClass="small_index_label" wrapText="true"/>
                 <Label fx:id="address" styleClass="detailed_person_small_label" wrapText="true"/>
 
