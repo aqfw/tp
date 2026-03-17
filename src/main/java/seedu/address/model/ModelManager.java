@@ -23,7 +23,6 @@ public class ModelManager implements Model {
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
-    private final TagCounter tagCounter;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -36,7 +35,6 @@ public class ModelManager implements Model {
         this.addressBook = new AddressBook(addressBook);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
-        tagCounter = new TagCounter(this.addressBook);
     }
 
     public ModelManager() {
@@ -99,13 +97,11 @@ public class ModelManager implements Model {
     @Override
     public void deletePerson(Person target) {
         addressBook.removePerson(target);
-        tagCounter.decrementTags(target, addressBook.getPersonList());
     }
 
     @Override
     public void addPerson(Person person) {
         addressBook.addPerson(person);
-        tagCounter.incrementTags(person, addressBook.getPersonList());
         resetFilteredPersonList();
     }
 
@@ -148,7 +144,7 @@ public class ModelManager implements Model {
     //=========== TagCounter Accessors =============================================================
     @Override
     public TagCounter getTagCounter() {
-        return tagCounter;
+        return new TagCounter(filteredPersons);
     }
 
     @Override

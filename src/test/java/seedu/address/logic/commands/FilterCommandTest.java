@@ -12,6 +12,7 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Optional;
 import java.util.Set;
 
@@ -22,7 +23,9 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.PersonContainsTagsPredicate;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.TagCounter;
 import seedu.address.ui.UiAction;
+import seedu.address.ui.content.TagCountsContent;
 
 public class FilterCommandTest {
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
@@ -67,7 +70,9 @@ public class FilterCommandTest {
         PersonContainsTagsPredicate predicate = new PersonContainsTagsPredicate(Set.of(new Tag("enemies")));
         FilterCommand command = new FilterCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.NONE, Optional.empty());
+        LinkedHashMap<Tag, Integer> tagMap = new LinkedHashMap<Tag, Integer>();
+        assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new TagCountsContent(new TagCounter(tagMap))));
         assertEquals(Collections.emptyList(), model.getFilteredPersonList());
     }
 
@@ -77,7 +82,11 @@ public class FilterCommandTest {
         PersonContainsTagsPredicate predicate = new PersonContainsTagsPredicate(Set.of(new Tag("friends")));
         FilterCommand command = new FilterCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.NONE, Optional.empty());
+        LinkedHashMap<Tag, Integer> tagMap = new LinkedHashMap<Tag, Integer>();
+        tagMap.put(new Tag("friends"), 3);
+        tagMap.put(new Tag("owesMoney"), 1);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new TagCountsContent(new TagCounter(tagMap))));
         assertEquals(Arrays.asList(ALICE, BENSON, DANIEL), model.getFilteredPersonList());
     }
 
@@ -88,7 +97,11 @@ public class FilterCommandTest {
                 new Tag("owesMoney")));
         FilterCommand command = new FilterCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.NONE, Optional.empty());
+        LinkedHashMap<Tag, Integer> tagMap = new LinkedHashMap<Tag, Integer>();
+        tagMap.put(new Tag("friends"), 1);
+        tagMap.put(new Tag("owesMoney"), 1);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new TagCountsContent(new TagCounter(tagMap))));
         assertEquals(Arrays.asList(BENSON), model.getFilteredPersonList());
     }
 
@@ -101,14 +114,20 @@ public class FilterCommandTest {
                                                         Set.of(new Tag("friends")));
         FilterCommand command = new FilterCommand(firstPredicate);
         expectedModel.updateFilteredPersonList(firstPredicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.NONE, Optional.empty());
+        LinkedHashMap<Tag, Integer> tagMap = new LinkedHashMap<Tag, Integer>();
+        tagMap.put(new Tag("friends"), 3);
+        tagMap.put(new Tag("owesMoney"), 1);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new TagCountsContent(new TagCounter(tagMap))));
 
         expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
         PersonContainsTagsPredicate secondPredicate = new PersonContainsTagsPredicate(
                                                         Set.of(new Tag("owesMoney")));
         FilterCommand command2 = new FilterCommand(secondPredicate);
         expectedModel.updateFilteredPersonList(secondPredicate);
-        assertCommandSuccess(command2, model, expectedMessage, expectedModel, UiAction.NONE, Optional.empty());
+        tagMap.put(new Tag("friends"), 1);
+        assertCommandSuccess(command2, model, expectedMessage, expectedModel, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new TagCountsContent(new TagCounter(tagMap))));
     }
 
     @Test
@@ -127,7 +146,11 @@ public class FilterCommandTest {
                 new Tag("OWESmoNEy")));
         FilterCommand command = new FilterCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.NONE, Optional.empty());
+        LinkedHashMap<Tag, Integer> tagMap = new LinkedHashMap<Tag, Integer>();
+        tagMap.put(new Tag("friends"), 1);
+        tagMap.put(new Tag("owesMoney"), 1);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new TagCountsContent(new TagCounter(tagMap))));
         assertEquals(Arrays.asList(BENSON), model.getFilteredPersonList());
     }
 }

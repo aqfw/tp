@@ -12,6 +12,7 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Optional;
 import java.util.Set;
 
@@ -23,7 +24,9 @@ import seedu.address.model.UserPrefs;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.PersonContainsTagsPredicate;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.TagCounter;
 import seedu.address.ui.UiAction;
+import seedu.address.ui.content.TagCountsContent;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code FindCommand}.
@@ -65,7 +68,9 @@ public class FindCommandTest {
         NameContainsKeywordsPredicate predicate = preparePredicate(" ");
         FindCommand command = new FindCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.NONE, Optional.empty());
+        LinkedHashMap<Tag, Integer> tagMap = new LinkedHashMap<Tag, Integer>();
+        assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new TagCountsContent(new TagCounter(tagMap))));
         assertEquals(Collections.emptyList(), model.getFilteredPersonList());
     }
 
@@ -75,7 +80,9 @@ public class FindCommandTest {
         NameContainsKeywordsPredicate predicate = preparePredicate("Kurz Elle Kunz");
         FindCommand command = new FindCommand(predicate);
         expectedModel.updateFilteredPersonList(predicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.NONE, Optional.empty());
+        LinkedHashMap<Tag, Integer> tagMap = new LinkedHashMap<Tag, Integer>();
+        assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new TagCountsContent(new TagCounter(tagMap))));
         assertEquals(Arrays.asList(CARL, ELLE, FIONA), model.getFilteredPersonList());
     }
 
@@ -87,13 +94,17 @@ public class FindCommandTest {
         NameContainsKeywordsPredicate firstPredicate = preparePredicate("Kurz Elle Alice");
         FindCommand command = new FindCommand(firstPredicate);
         expectedModel.updateFilteredPersonList(firstPredicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.NONE, Optional.empty());
+        LinkedHashMap<Tag, Integer> tagMap = new LinkedHashMap<Tag, Integer>();
+        tagMap.put(new Tag("friends"), 1);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new TagCountsContent(new TagCounter(tagMap))));
 
         expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
         NameContainsKeywordsPredicate secondPredicate = preparePredicate("Alice");
         FindCommand command2 = new FindCommand(secondPredicate);
         expectedModel.updateFilteredPersonList(secondPredicate);
-        assertCommandSuccess(command2, model, expectedMessage, expectedModel, UiAction.NONE, Optional.empty());
+        assertCommandSuccess(command2, model, expectedMessage, expectedModel, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new TagCountsContent(new TagCounter(tagMap))));
     }
 
     @Test
@@ -104,14 +115,18 @@ public class FindCommandTest {
         NameContainsKeywordsPredicate firstPredicate = preparePredicate("Kurz Elle Alice");
         FindCommand command = new FindCommand(firstPredicate);
         expectedModel.updateFilteredPersonList(firstPredicate);
-        assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.NONE, Optional.empty());
+        LinkedHashMap<Tag, Integer> tagMap = new LinkedHashMap<Tag, Integer>();
+        tagMap.put(new Tag("friends"), 1);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new TagCountsContent(new TagCounter(tagMap))));
 
         expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
         PersonContainsTagsPredicate secondPredicate = new PersonContainsTagsPredicate(
                 Set.of(new Tag("friends")));
         FilterCommand command2 = new FilterCommand(secondPredicate);
         expectedModel.updateFilteredPersonList(secondPredicate);
-        assertCommandSuccess(command2, model, expectedMessage, expectedModel, UiAction.NONE, Optional.empty());
+        assertCommandSuccess(command2, model, expectedMessage, expectedModel, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new TagCountsContent(new TagCounter(tagMap))));
     }
 
     @Test

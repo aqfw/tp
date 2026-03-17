@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.person.Person;
 
@@ -20,6 +21,10 @@ public class TagCounter {
 
     public TagCounter(ReadOnlyAddressBook addressBook) {
         this.resetTagCounter(addressBook.getPersonList());
+    }
+
+    public TagCounter(FilteredList<Person> filteredPersons) {
+        this.resetTagCounter(filteredPersons);
     }
 
     /**
