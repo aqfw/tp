@@ -4,7 +4,6 @@ import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
@@ -45,7 +44,10 @@ public class MainWindow extends UiPart<Stage> {
     private StackPane statusbarPlaceholder;
 
     @FXML
-    private VBox rightDisplayPlaceHolder;
+    private StackPane detailedPersonPlaceholder;
+
+    @FXML
+    private StackPane outletListPanelPlaceholder;
 
     /**
      * Creates a {@code MainWindow} with the given {@code Stage} and {@code Logic}.
@@ -73,9 +75,11 @@ public class MainWindow extends UiPart<Stage> {
     void fillInnerParts() {
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
+        OutletListPanel outletListPanel = new OutletListPanel(logic.getFilteredOutletList());
+        outletListPanelPlaceholder.getChildren().add(outletListPanel.getRoot());
         personListPanel.setOnPersonSelected((person, index) -> {
             DetailedPersonCard card = new DetailedPersonCard(person, index);
-            rightDisplayPlaceHolder.getChildren().setAll(card.getRoot());
+            detailedPersonPlaceholder.getChildren().setAll(card.getRoot());
         });
 
         resultDisplay = new ResultDisplay();
@@ -117,7 +121,7 @@ public class MainWindow extends UiPart<Stage> {
      */
     public void showPersonDetails(Person person, int displayedIndex) {
         DetailedPersonCard detailedCard = new DetailedPersonCard(person, displayedIndex);
-        rightDisplayPlaceHolder.getChildren().setAll(detailedCard.getRoot());
+        detailedPersonPlaceholder.getChildren().setAll(detailedCard.getRoot());
     }
 
     void show() {

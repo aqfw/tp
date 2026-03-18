@@ -86,7 +86,19 @@
         </VBox>
         <VBox fx:id="rightDisplayPlaceHolder" HBox.hgrow="ALWAYS" minWidth="350" prefWidth="350" maxWidth="350"
               styleClass="pane-with-border">
+          <StackPane fx:id="detailedPersonPlaceholder" VBox.vgrow="ALWAYS" styleClass="pane-with-border">
+            <Label text="Select a candidate to view details" styleClass="small_index_label" />
+          </StackPane>
 
+          <VBox VBox.vgrow="NEVER" minHeight="150" prefHeight="150" maxHeight="150"
+                styleClass="pane-with-border">
+            <Label text="OUTLETS" styleClass="small_index_label" style="-fx-padding: 8 10 4 10;" />
+            <StackPane fx:id="outletListPanelPlaceholder" VBox.vgrow="ALWAYS">
+              <padding>
+                <Insets top="0" right="8" bottom="8" left="8" />
+              </padding>
+            </StackPane>
+          </VBox>
         </VBox>
       </HBox>
     </Scene>
