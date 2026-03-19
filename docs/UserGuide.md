@@ -123,7 +123,7 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
 
 Examples:
 * `find John` returns `john` and `John Doe`
-* `find alex david` returns `Carl Kurz`, `Ethan Lim` <br>
+* `find carl ethan` returns `Carl Kurz`, `Ethan Lim` <br>
 ![result for 'find carl ethan'](images/findCarlEthanResult.png)
 
 ### Locating persons by tag: `filter`
