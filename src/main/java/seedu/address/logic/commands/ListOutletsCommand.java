@@ -18,4 +18,9 @@ public class ListOutletsCommand extends Command {
         model.resetFilteredOutletList();
         return new CommandResult(MESSAGE_SUCCESS);
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this || other instanceof ListOutletsCommand;
+    }
 }

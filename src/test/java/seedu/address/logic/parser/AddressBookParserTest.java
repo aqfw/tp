@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.AddByCsvCommand;
 import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.AddOutletCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.EditCommand;
@@ -23,11 +24,13 @@ import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.ListOutletsCommand;
 import seedu.address.logic.commands.ListTagsCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
+import seedu.address.testutil.OutletBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
 
@@ -103,6 +106,18 @@ public class AddressBookParserTest {
     public void parseCommand_listTags() throws Exception {
         assertTrue(parser.parseCommand(ListTagsCommand.COMMAND_WORD) instanceof ListTagsCommand);
         assertTrue(parser.parseCommand(ListTagsCommand.COMMAND_WORD + " 3") instanceof ListTagsCommand);
+    }
+
+    @Test
+    public void parseCommand_outletList() throws Exception {
+        assertTrue(parser.parseCommand("outlet list") instanceof ListOutletsCommand);
+    }
+
+    @Test
+    public void parseCommand_outletAdd() throws Exception {
+        AddOutletCommand command =
+                (AddOutletCommand) parser.parseCommand("outlet add n/TechCo a/Raffles Place pc/048623");
+        assertEquals(new AddOutletCommand(new OutletBuilder().build()), command);
     }
 
     @Test

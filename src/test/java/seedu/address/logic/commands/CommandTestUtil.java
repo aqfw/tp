@@ -18,6 +18,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
+import seedu.address.model.outlet.Outlet;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
@@ -39,6 +40,12 @@ public class CommandTestUtil {
     public static final String VALID_POSTAL_CODE_BOB = "470123";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friend";
+    public static final String VALID_OUTLET_NAME_ALPHA = "TechCo";
+    public static final String VALID_OUTLET_NAME_BETA = "FinServ";
+    public static final String VALID_OUTLET_ADDRESS_ALPHA = "Raffles Place";
+    public static final String VALID_OUTLET_ADDRESS_BETA = "Marina Bay";
+    public static final String VALID_OUTLET_POSTAL_CODE_ALPHA = "048623";
+    public static final String VALID_OUTLET_POSTAL_CODE_BETA = "018956";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -52,6 +59,14 @@ public class CommandTestUtil {
     public static final String POSTAL_CODE_DESC_BOB = " " + PREFIX_POSTAL_CODE + VALID_POSTAL_CODE_BOB;
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
+    public static final String OUTLET_NAME_DESC_ALPHA = " " + PREFIX_NAME + VALID_OUTLET_NAME_ALPHA;
+    public static final String OUTLET_NAME_DESC_BETA = " " + PREFIX_NAME + VALID_OUTLET_NAME_BETA;
+    public static final String OUTLET_ADDRESS_DESC_ALPHA = " " + PREFIX_ADDRESS + VALID_OUTLET_ADDRESS_ALPHA;
+    public static final String OUTLET_ADDRESS_DESC_BETA = " " + PREFIX_ADDRESS + VALID_OUTLET_ADDRESS_BETA;
+    public static final String OUTLET_POSTAL_CODE_DESC_ALPHA =
+            " " + PREFIX_POSTAL_CODE + VALID_OUTLET_POSTAL_CODE_ALPHA;
+    public static final String OUTLET_POSTAL_CODE_DESC_BETA =
+            " " + PREFIX_POSTAL_CODE + VALID_OUTLET_POSTAL_CODE_BETA;
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones
@@ -59,6 +74,7 @@ public class CommandTestUtil {
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS; // empty string not allowed for addresses
     public static final String INVALID_POSTAL_CODE_DESC = " " + PREFIX_POSTAL_CODE + "123A";
     public static final String INVALID_TAG_DESC = " " + PREFIX_TAG + "hubby*"; // '*' not allowed in tags
+    public static final String INVALID_OUTLET_POSTAL_CODE_DESC = " " + PREFIX_POSTAL_CODE + "12A456";
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";
     public static final String PREAMBLE_NON_EMPTY = "NonEmptyPreamble";
@@ -114,10 +130,12 @@ public class CommandTestUtil {
         // only do so by copying its components.
         AddressBook expectedAddressBook = new AddressBook(actualModel.getAddressBook());
         List<Person> expectedFilteredList = new ArrayList<>(actualModel.getFilteredPersonList());
+        List<Outlet> expectedFilteredOutletList = new ArrayList<>(actualModel.getFilteredOutletList());
 
         assertThrows(CommandException.class, expectedMessage, () -> command.execute(actualModel));
         assertEquals(expectedAddressBook, actualModel.getAddressBook());
         assertEquals(expectedFilteredList, actualModel.getFilteredPersonList());
+        assertEquals(expectedFilteredOutletList, actualModel.getFilteredOutletList());
     }
     /**
      * Updates {@code model}'s filtered list to show only the person at the given {@code targetIndex} in the
@@ -131,6 +149,18 @@ public class CommandTestUtil {
         model.updateFilteredPersonList(new NameContainsKeywordsPredicate(Arrays.asList(splitName[0])));
 
         assertEquals(1, model.getFilteredPersonList().size());
+    }
+
+    /**
+     * Updates {@code model}'s filtered outlet list to show only the outlet at the given {@code targetIndex}.
+     */
+    public static void showOutletAtIndex(Model model, Index targetIndex) {
+        assertTrue(targetIndex.getZeroBased() < model.getFilteredOutletList().size());
+
+        Outlet outlet = model.getFilteredOutletList().get(targetIndex.getZeroBased());
+        model.updateFilteredOutletList(candidate -> candidate.equals(outlet));
+
+        assertEquals(1, model.getFilteredOutletList().size());
     }
 
 }
