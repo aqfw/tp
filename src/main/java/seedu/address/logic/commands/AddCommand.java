@@ -22,7 +22,7 @@ import seedu.address.ui.content.PersonContent;
 /**
  * Adds a person to the address book.
  */
-public class AddCommand extends Command {
+public class AddCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "add";
 
@@ -98,5 +98,10 @@ public class AddCommand extends Command {
         return new ToStringBuilder(this)
                 .add("toAdd", toAdd)
                 .toString();
+    }
+
+    @Override
+    public void undo(Model model) {
+        model.deletePerson(toAdd);
     }
 }

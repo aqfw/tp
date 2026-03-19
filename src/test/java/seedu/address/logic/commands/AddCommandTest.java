@@ -206,6 +206,26 @@ public class AddCommandTest {
         public TagCounter getTagCounter() {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public void recordCommand(UndoableCommand undoableCommand) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void undo() throws CommandException {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public Predicate<? super Person> getFilteredPersonPredicate() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setFilteredPersonPredicate(Predicate<? super Person> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     /**

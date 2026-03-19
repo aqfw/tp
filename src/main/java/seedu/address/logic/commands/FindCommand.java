@@ -2,6 +2,8 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.function.Predicate;
+
 import java.util.Optional;
 
 import seedu.address.commons.util.ToStringBuilder;
@@ -10,12 +12,13 @@ import seedu.address.model.Model;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.ui.UiAction;
 import seedu.address.ui.content.TagCountsContent;
+import seedu.address.model.person.Person;
 
 /**
  * Finds and lists all persons in address book whose name contains any of the argument keywords.
  * Keyword matching is case insensitive.
  */
-public class FindCommand extends Command {
+public class FindCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "find";
 
@@ -25,6 +28,7 @@ public class FindCommand extends Command {
             + "Example: " + COMMAND_WORD + " alice bob charlie";
 
     private final NameContainsKeywordsPredicate predicate;
+    private Predicate<? super Person> previousPredicate;
 
     public FindCommand(NameContainsKeywordsPredicate predicate) {
         this.predicate = predicate;
@@ -33,10 +37,16 @@ public class FindCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
+        previousPredicate = model.getFilteredPersonPredicate();
         model.updateFilteredPersonList(predicate);
         return new CommandResult(
                 String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()),
                 UiAction.UPDATE_RIGHT_PANE, Optional.of(new TagCountsContent(model.getTagCounter())));
+    }
+
+    @Override
+    public void undo(Model model) {
+        model.setFilteredPersonPredicate(previousPredicate);
     }
 
     @Override

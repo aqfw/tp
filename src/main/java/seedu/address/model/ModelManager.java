@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.Stack;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -11,6 +12,9 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.logic.commands.Command;
+import seedu.address.logic.commands.UndoableCommand;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.outlet.Outlet;
 import seedu.address.model.person.Person;
 import seedu.address.model.tag.TagCounter;
@@ -24,6 +28,7 @@ public class ModelManager implements Model {
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
+    private final Stack<Command> undoStack = new Stack<>();
     private final FilteredList<Outlet> filteredOutlets;
     private final TagCounter tagCounter;
 
@@ -171,6 +176,14 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public Predicate<? super Person> getFilteredPersonPredicate() { return filteredPersons.getPredicate(); }
+
+    @Override
+    public void setFilteredPersonPredicate(Predicate<? super Person> predicate) {
+        filteredPersons.setPredicate(predicate);
+    }
+
+    @Override
     public ObservableList<Outlet> getFilteredOutletList() {
         return filteredOutlets;
     }
@@ -217,4 +230,31 @@ public class ModelManager implements Model {
                 && filteredOutlets.equals(otherModelManager.filteredOutlets);
     }
 
+    //=========== Undo/Redo Command History =============================================================
+
+    /**
+     * Records an undoable command in the undo stack.
+     */
+    public void recordCommand(UndoableCommand undoableCommand) {
+        requireNonNull(undoableCommand);
+        undoStack.push(undoableCommand);
+    }
+
+    /**
+     * Returns true if there is at least one command to undo.
+     */
+    public boolean canUndo() {
+        return !undoStack.isEmpty();
+    }
+
+    /** Undoes the last executed command. */
+    @Override
+    public void undo() throws CommandException {
+        if (!canUndo()) {
+            throw new CommandException("Nothing to undo.");
+        }
+
+        UndoableCommand lastCommand = (UndoableCommand) undoStack.pop();
+        lastCommand.undo(this);
+    }
 }

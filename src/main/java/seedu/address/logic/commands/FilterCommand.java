@@ -5,9 +5,12 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Optional;
 
+import java.util.function.Predicate;
+
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.model.Model;
+import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonContainsTagsPredicate;
 import seedu.address.ui.UiAction;
 import seedu.address.ui.content.TagCountsContent;
@@ -15,7 +18,7 @@ import seedu.address.ui.content.TagCountsContent;
 /**
  * Finds all candidates in the candidate book containing the tags specified
  */
-public class FilterCommand extends Command {
+public class FilterCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "filter";
 
@@ -26,6 +29,7 @@ public class FilterCommand extends Command {
             + PREFIX_TAG + "java";
 
     private final PersonContainsTagsPredicate predicate;
+    private Predicate<? super Person> previousPredicate;      // for undo
 
     public FilterCommand(PersonContainsTagsPredicate predicate) {
         this.predicate = predicate;
@@ -35,10 +39,16 @@ public class FilterCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
 
+        previousPredicate = model.getFilteredPersonPredicate();
         model.updateFilteredPersonList(predicate);
         return new CommandResult(
                 String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()),
                 UiAction.UPDATE_RIGHT_PANE, Optional.of(new TagCountsContent(model.getTagCounter())));
+    }
+
+    @Override
+    public void undo(Model model) {
+        model.setFilteredPersonPredicate(previousPredicate);
     }
 
     @Override

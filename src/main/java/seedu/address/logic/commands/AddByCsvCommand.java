@@ -13,7 +13,7 @@ import seedu.address.model.person.Person;
 /**
  * Adds multiple people to the address book from a parsed CSV file.
  */
-public class AddByCsvCommand extends Command {
+public class AddByCsvCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "addcsv";
 
@@ -53,6 +53,13 @@ public class AddByCsvCommand extends Command {
         }
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, personsToAdd.size()));
+    }
+
+    @Override
+    public void undo(Model model) {
+        for (Person p: personsToAdd) {
+            model.deletePerson(p);
+        }
     }
 
     @Override
