@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
@@ -49,6 +50,9 @@ public class MainWindow extends UiPart<Stage> {
     @FXML
     private StackPane outletListPanelPlaceholder;
 
+    @FXML
+    private VBox rightDisplayPlaceHolder;
+
     /**
      * Creates a {@code MainWindow} with the given {@code Stage} and {@code Logic}.
      */
@@ -77,8 +81,8 @@ public class MainWindow extends UiPart<Stage> {
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
         OutletListPanel outletListPanel = new OutletListPanel(logic.getFilteredOutletList());
         outletListPanelPlaceholder.getChildren().add(outletListPanel.getRoot());
-        personListPanel.setOnPersonSelected((person, index) -> {
-            DetailedPersonCard card = new DetailedPersonCard(person, index);
+        personListPanel.setOnPersonSelected((person, header) -> {
+            DetailedPersonCard card = new DetailedPersonCard(person, header);
             detailedPersonPlaceholder.getChildren().setAll(card.getRoot());
         });
 
@@ -120,8 +124,10 @@ public class MainWindow extends UiPart<Stage> {
      * Displays the selected person on the right as a {@Code DetailedPersonCard}.
      */
     public void showPersonDetails(Person person, int displayedIndex) {
-        DetailedPersonCard detailedCard = new DetailedPersonCard(person, displayedIndex);
+        DetailedPersonCard detailedCard = new DetailedPersonCard(person, "Candidate #" + displayedIndex);
         detailedPersonPlaceholder.getChildren().setAll(detailedCard.getRoot());
+    }
+
     public void showPersonDetails(Person person, String header) {
         DetailedPersonCard detailedCard = new DetailedPersonCard(person, header);
         rightDisplayPlaceHolder.getChildren().setAll(detailedCard.getRoot());

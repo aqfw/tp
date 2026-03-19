@@ -56,7 +56,7 @@ public class PersonListPanel extends UiPart<Region> {
 
                 setOnMouseClicked(event -> {
                     if (onPersonSelected != null) {
-                        onPersonSelected.accept(person, "Candidate Profile");
+                        onPersonSelected.accept(person, "Candidate #" + (getIndex() + 1));
                     }
                 });
             }
