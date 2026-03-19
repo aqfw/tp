@@ -81,8 +81,8 @@ A person can have any number of tags (including 0)
 </div>
 
 Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 pc/123456`
+* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 pc/654321 t/criminal`
 
 ### Listing all persons : `list`
 
@@ -167,6 +167,19 @@ Examples:
 Clears all entries from the address book.
 
 Format: `clear`
+
+### Undoing previous action : `undo`
+
+Reverts the previous action performed. 
+
+Format: `undo`
+
+* `add` Deletes the `Person` added.
+* `addcsv` Deletes all `Person`s added.
+* `delete` Adds the `Person` deleted.
+* `edit` Returns the edited `Person` to original state.
+* `list`, `filter`, `find` Returns to the previous view of the Address Book.
+* `clear` Adds all `Person`s deleted.
 
 ### Exiting the program : `exit`
 
