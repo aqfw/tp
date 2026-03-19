@@ -90,7 +90,7 @@
             <Label text="Select a candidate to view details" styleClass="small_index_label" />
           </StackPane>
 
-          <VBox VBox.vgrow="NEVER" minHeight="150" prefHeight="150" maxHeight="150"
+          <VBox VBox.vgrow="NEVER" minHeight="235" prefHeight="235" maxHeight="235"
                 styleClass="pane-with-border">
             <Label text="OUTLETS" styleClass="small_index_label" style="-fx-padding: 8 10 4 10;" />
             <StackPane fx:id="outletListPanelPlaceholder" VBox.vgrow="ALWAYS">
