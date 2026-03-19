@@ -137,7 +137,8 @@ public class HelpWindow extends UiPart<Stage> {
         getRoot().requestFocus();
     }
 
-    /** Reads UserGuide.md from the relative path USERGUIDE_PATH,
+    /**
+     * Reads UserGuide.md from the relative path USERGUIDE_PATH,
      * runs extractUserGuide to extract UserGuide from START_HEADING to END_HEADING
      * @return
      */
