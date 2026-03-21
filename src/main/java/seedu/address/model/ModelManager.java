@@ -176,7 +176,9 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public Predicate<? super Person> getFilteredPersonPredicate() { return filteredPersons.getPredicate(); }
+    public Predicate<? super Person> getFilteredPersonPredicate() {
+        return filteredPersons.getPredicate();
+    }
 
     @Override
     public void setFilteredPersonPredicate(Predicate<? super Person> predicate) {

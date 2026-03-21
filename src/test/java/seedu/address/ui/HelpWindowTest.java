@@ -1,13 +1,13 @@
 package seedu.address.ui;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
 
 public class HelpWindowTest {
 
@@ -76,7 +76,7 @@ public class HelpWindowTest {
     // FAILURE CASES
 
     @Test
-    public void extractUserGuide_startNotFound_throwsIOException() {
+    public void extractUserGuide_startNotFound_throwsIoException() {
         String input = "## Intro\nhello\n## Other\ncontent";
         UserGuideParser parser = new UserGuideParser();
         try {
@@ -88,7 +88,7 @@ public class HelpWindowTest {
     }
 
     @Test
-    public void extractUserGuide_emptyFile_throwsIOException() {
+    public void extractUserGuide_emptyFile_throwsIoException() {
         UserGuideParser parser = new UserGuideParser();
         try {
             parser.extractUserGuide(readerOf(""), "## Features", null);
