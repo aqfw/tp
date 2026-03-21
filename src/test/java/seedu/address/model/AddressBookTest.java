@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +26,8 @@ import seedu.address.model.outlet.OutletPostalCode;
 import seedu.address.model.outlet.exceptions.DuplicateOutletException;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
+import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.TagCombo;
 import seedu.address.testutil.PersonBuilder;
 
 public class AddressBookTest {
@@ -37,6 +40,9 @@ public class AddressBookTest {
             new OutletName("TechCo Branch"),
             new OutletAddress("Raffles Place"),
             new OutletPostalCode("048623"));
+    private static final TagCombo TAG_COMBO_ONE = new TagCombo("developer", Set.of(
+            new Tag("python"), new Tag("java")
+    ));
 
     private final AddressBook addressBook = new AddressBook();
 
@@ -72,7 +78,7 @@ public class AddressBookTest {
     @Test
     public void resetData_withDuplicateOutlets_throwsDuplicateOutletException() {
         List<Outlet> newOutlets = Arrays.asList(OUTLET_ALPHA, OUTLET_ALPHA_EDITED);
-        AddressBookStub newData = new AddressBookStub(Collections.emptyList(), newOutlets);
+        AddressBookStub newData = new AddressBookStub(Collections.emptyList(), newOutlets, Collections.emptySet());
 
         assertThrows(DuplicateOutletException.class, () -> addressBook.resetData(newData));
     }
@@ -136,7 +142,7 @@ public class AddressBookTest {
     @Test
     public void toStringMethod() {
         String expected = AddressBook.class.getCanonicalName() + "{persons=" + addressBook.getPersonList()
-                + ", outlets=" + addressBook.getOutletList() + "}";
+                + ", outlets=" + addressBook.getOutletList() + ", tagCombos=" + addressBook.getTagComboList() + "}";
         assertEquals(expected, addressBook.toString());
     }
 
@@ -146,14 +152,16 @@ public class AddressBookTest {
     private static class AddressBookStub implements ReadOnlyAddressBook {
         private final ObservableList<Person> persons = FXCollections.observableArrayList();
         private final ObservableList<Outlet> outlets = FXCollections.observableArrayList();
+        private final ObservableList<TagCombo> tagCombos = FXCollections.observableArrayList();
 
         AddressBookStub(Collection<Person> persons) {
-            this(persons, Collections.emptyList());
+            this(persons, Collections.emptyList(), Collections.emptySet());
         }
 
-        AddressBookStub(Collection<Person> persons, Collection<Outlet> outlets) {
+        AddressBookStub(Collection<Person> persons, Collection<Outlet> outlets, Collection<TagCombo> tagCombos) {
             this.persons.setAll(persons);
             this.outlets.setAll(outlets);
+            this.tagCombos.addAll(tagCombos);
         }
 
         @Override
@@ -164,6 +172,11 @@ public class AddressBookTest {
         @Override
         public ObservableList<Outlet> getOutletList() {
             return outlets;
+        }
+
+        @Override
+        public ObservableList<TagCombo> getTagComboList() {
+            return tagCombos;
         }
     }
 

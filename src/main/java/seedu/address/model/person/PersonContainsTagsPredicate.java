@@ -14,7 +14,7 @@ public class PersonContainsTagsPredicate implements Predicate<Person> {
     private final Set<Tag> tags;
 
     /**
-     * Constructs a {@Code PersonContainsTagsPredicate}. Converts the given {@Code Tag}s in the {@Code Set<Tag>} to
+     * Constructs a {@code PersonContainsTagsPredicate}. Converts the given {@code Tag}s in the {@code Set<Tag>} to
      * lowercase.
      */
     public PersonContainsTagsPredicate(Set<Tag> tags) {

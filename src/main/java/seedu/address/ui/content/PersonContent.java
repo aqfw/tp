@@ -14,7 +14,7 @@ public class PersonContent implements RightPaneContent {
     private final Person person;
 
     /**
-     * Constructs a {@Code PersonContent} with a {@Code Person} and {@Code header}.
+     * Constructs a {@code PersonContent} with a {@code Person} and {@code header}.
      */
     public PersonContent(Person person, String header) {
         this.person = person;

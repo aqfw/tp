@@ -121,7 +121,7 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
-     * Displays the selected person on the right as a {@Code DetailedPersonCard}.
+     * Displays the selected person on the right as a {@code DetailedPersonCard}.
      */
     public void showPersonDetails(Person person, int displayedIndex) {
         DetailedPersonCard detailedCard = new DetailedPersonCard(person, "Candidate #" + displayedIndex);
@@ -129,7 +129,7 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
-     * Displays the selected person on the right as a {@Code DetailedPersonCard}.
+     * Displays the selected person on the right as a {@code DetailedPersonCard}.
      */
     public void showPersonDetails(Person person, String header) {
         DetailedPersonCard detailedCard = new DetailedPersonCard(person, header);

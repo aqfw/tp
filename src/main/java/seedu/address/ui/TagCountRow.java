@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 
 /**
- * A UI component that displays a {@Code Tag} alongside its corresponding frequency in the address book.
+ * A UI component that displays a {@code Tag} alongside its corresponding frequency in the address book.
  */
 public class TagCountRow extends UiPart<Region> {
     private static final String FXML = "TagCountRow.fxml";
@@ -16,7 +16,7 @@ public class TagCountRow extends UiPart<Region> {
     private Label tagCount;
 
     /**
-     * Constructs a row with a {@Code Tag} and its corresponding frequency in the addressbook.
+     * Constructs a row with a {@code Tag} and its corresponding frequency in the addressbook.
      */
     public TagCountRow(String tagName, int tagCount) {
         super(FXML);

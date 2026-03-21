@@ -13,7 +13,7 @@ import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.TagCounter;
 
 /**
- * A UI component that displays all {@Code Tag} alongside its corresponding frequency in the address book.
+ * A UI component that displays all {@code Tag} alongside its corresponding frequency in the address book.
  */
 public class TagCountsPanel extends UiPart<Region> {
     private static final String FXML = "TagCountsPanel.fxml";

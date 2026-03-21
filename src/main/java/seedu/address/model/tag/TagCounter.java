@@ -99,7 +99,7 @@ public class TagCounter {
     }
 
     /**
-     * Checks if the given {@Code TagCounter} is valid (contains any values less than or equal to 0).
+     * Checks if the given {@code TagCounter} is valid (contains any values less than or equal to 0).
      */
     private boolean isValid() {
         for (Integer value : tagCounter.values()) {
@@ -111,7 +111,7 @@ public class TagCounter {
     }
 
     /**
-     * Checks if the {@Code TagCounter} is empty.
+     * Checks if the {@code TagCounter} is empty.
      */
     public boolean isEmpty() {
         return tagCounter.isEmpty();
