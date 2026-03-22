@@ -29,7 +29,7 @@ public class UniqueTagComboListTest {
             new Tag("python"), new Tag("ml")
     ));
     private static final TagCombo TAG_COMBO_FOUR = new TagCombo(new TagComboName("ml dev"), Set.of(
-            new Tag("python"), new Tag("ml"),  new Tag("java")
+            new Tag("python"), new Tag("ml"), new Tag("java")
     ));
     private final UniqueTagComboList uniqueTagComboList = new UniqueTagComboList();
 
