@@ -127,6 +127,7 @@ public class MainWindow extends UiPart<Stage> {
         } else {
             helpWindow.focus();
         }
+        logger.info("Opened help window.");
     }
 
     /**
@@ -169,6 +170,8 @@ public class MainWindow extends UiPart<Stage> {
         tagComboDisplayPlaceHolder.setManaged(true);
         rightDisplayPlaceHolder.setVisible(false);
         rightDisplayPlaceHolder.setManaged(false);
+
+        logger.info("Right pane placeholder hidden, right pane now showing TagCombos panel.");
     }
 
     /**
@@ -179,6 +182,8 @@ public class MainWindow extends UiPart<Stage> {
         tagComboDisplayPlaceHolder.setManaged(false);
         rightDisplayPlaceHolder.setVisible(true);
         rightDisplayPlaceHolder.setManaged(true);
+
+        logger.info("TagCombos Panel hidden, right pane now showing person/tagcount info.");
     }
 
     public PersonListPanel getPersonListPanel() {
