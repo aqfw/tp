@@ -36,19 +36,18 @@ public class TagCountsPanel extends UiPart<Region> {
      * Fills the ScrollPane with rows for each tag + count.
      */
     private void fillScrollPane() {
-        Label header = new Label("Tag Counts");
-        header.getStyleClass().add("small_index_label");
+        Label header = new Label("TAG COUNTS");
+        header.getStyleClass().add("small-index-label");
+        header.setAlignment(Pos.CENTER_LEFT);
+        header.setStyle("-fx-padding: 0 0 0 15; -fx-font-size: 18");
 
         Region firstSpacer = new Region();
         firstSpacer.setPrefHeight(8);
 
-        HBox headerBox = new HBox(header);
-        headerBox.setAlignment(Pos.CENTER);
-
         Region secondSpacer = new Region();
-        secondSpacer.setPrefHeight(20);
+        secondSpacer.setPrefHeight(10);
 
-        tagCountsPanel.getChildren().addAll(firstSpacer, headerBox, secondSpacer);
+        tagCountsPanel.getChildren().addAll(firstSpacer, header, secondSpacer);
 
         LinkedHashMap<Tag, Integer> tagMap = tagCounter.getTagCounter();
         for (Map.Entry<Tag, Integer> entry : tagMap.entrySet()) {

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.FlowPane?>
 
-<HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
     <padding>
         <Insets left="7" right="7"/>
     </padding>
@@ -24,19 +24,15 @@
         </columnConstraints>
 
         <Label fx:id="id" GridPane.rowIndex="0" GridPane.columnIndex="0"
-               GridPane.rowSpan="2" styleClass="cell_small_label" />
+               GridPane.rowSpan="2" styleClass="cell-small-label" />
         <Label fx:id="name"
                GridPane.rowIndex="0"
                GridPane.columnIndex="1"
                styleClass="tag-combo-label" />
         <StackPane GridPane.rowIndex="0" GridPane.columnIndex="3"
-                   prefWidth="150" maxWidth="150" prefHeight="30">
-            <FlowPane fx:id="tagsCard"
-                      hgap="5"
-                      vgap="5"
+                   prefWidth="150" maxWidth="150" >
+            <FlowPane fx:id="tagsCardTagCombo"
                       orientation="HORIZONTAL"
-                      prefHeight="30"
-                      minHeight="30"
                       alignment="CENTER_LEFT"/>
         </StackPane>
     </GridPane>

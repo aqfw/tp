@@ -21,7 +21,7 @@ public class TagComboCard extends UiPart<Region> {
     @FXML
     private Label name;
     @FXML
-    private FlowPane tagsCard;
+    private FlowPane tagsCardTagCombo;
 
     /**
      * Creates a {@code TagComboCard} with the given {@code TagCombo} and index to display.
@@ -33,6 +33,6 @@ public class TagComboCard extends UiPart<Region> {
         name.setText(tagCombo.getName().name);
         tagCombo.getTagSet().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tagsCard.getChildren().add(new Label(tag.tagName)));
+                .forEach(tag -> tagsCardTagCombo.getChildren().add(new Label(tag.tagName)));
     }
 }

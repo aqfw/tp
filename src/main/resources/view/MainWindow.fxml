@@ -86,17 +86,17 @@
         </VBox>
         <VBox fx:id="rightDisplayPlaceHolder" HBox.hgrow="ALWAYS" minWidth="350" prefWidth="350" maxWidth="350"
               styleClass="pane-with-border">
-          <VBox fx:id="tagComboDisplayPlaceHolder" VBox.vgrow="ALWAYS">
-            <Label text="Tag Combos" styleClass="small_index_label" style="-fx-padding: 8 10 4 10;"/>
+          <VBox fx:id="tagComboDisplayPlaceHolder" VBox.vgrow="ALWAYS" visible="false" managed="false">
+            <Label text="TAG COMBOS" styleClass="small-index-label" style="-fx-padding: 8 10 4 10; -fx-font-size: 18"/>
           </VBox>
-          <VBox fx:id="rightDisplayPlaceHolder" VBox.vgrow="ALWAYS" visible="false" managed="false">
+          <VBox fx:id="rightDisplayPlaceHolder" VBox.vgrow="ALWAYS">
             <StackPane fx:id="detailedPersonPlaceholder" VBox.vgrow="ALWAYS" styleClass="pane-with-border">
               <Label text="Select a candidate to view details" styleClass="small_index_label" />
             </StackPane>
           </VBox>
           <VBox VBox.vgrow="NEVER" minHeight="235" prefHeight="235" maxHeight="235"
                 styleClass="pane-with-border">
-            <Label text="OUTLETS" styleClass="small_index_label" style="-fx-padding: 8 10 4 10;" />
+            <Label text="OUTLETS" styleClass="small-index-label" style="-fx-padding: 8 10 4 10; -fx-font-size: 18" />
             <StackPane fx:id="outletListPanelPlaceholder" VBox.vgrow="ALWAYS">
               <padding>
                 <Insets top="0" right="8" bottom="8" left="8" />

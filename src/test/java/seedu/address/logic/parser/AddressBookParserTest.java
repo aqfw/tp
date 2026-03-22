@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import seedu.address.logic.commands.AddByCsvCommand;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.AddOutletCommand;
+import seedu.address.logic.commands.AddTagComboCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.EditCommand;
@@ -25,6 +26,7 @@ import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.ListOutletsCommand;
+import seedu.address.logic.commands.ListTagCombosCommand;
 import seedu.address.logic.commands.ListTagsCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
@@ -33,6 +35,7 @@ import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.OutletBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
+import seedu.address.testutil.TagComboBuilder;
 
 public class AddressBookParserTest {
 
@@ -129,5 +132,19 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_unknownCommand_throwsParseException() {
         assertThrows(ParseException.class, MESSAGE_UNKNOWN_COMMAND, () -> parser.parseCommand("unknownCommand"));
+    }
+
+    @Test
+    public void parseCommand_tagComboAdd() throws Exception {
+        AddTagComboCommand command =
+                (AddTagComboCommand) parser.parseCommand("addtagcombo ml dev t/python t/ml");
+        assertEquals(new AddTagComboCommand(new TagComboBuilder().withName("ml dev").withTags("ml", "python")
+                .build()), command);
+    }
+
+    @Test
+    public void parseCommand_listTagCombos() throws Exception {
+        assertTrue(parser.parseCommand(ListTagCombosCommand.COMMAND_WORD) instanceof ListTagCombosCommand);
+        assertTrue(parser.parseCommand(ListTagCombosCommand.COMMAND_WORD + " 3") instanceof ListTagCombosCommand);
     }
 }
