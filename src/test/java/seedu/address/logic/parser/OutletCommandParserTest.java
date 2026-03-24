@@ -7,10 +7,12 @@ import static seedu.address.logic.commands.CommandTestUtil.OUTLET_POSTAL_CODE_DE
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.AddOutletCommand;
+import seedu.address.logic.commands.AssignOutletCommand;
 import seedu.address.logic.commands.DeleteOutletCommand;
 import seedu.address.logic.commands.ListOutletsCommand;
 import seedu.address.testutil.OutletBuilder;
@@ -29,6 +31,11 @@ public class OutletCommandParserTest {
     @Test
     public void parse_deleteCommand_success() {
         assertParseSuccess(parser, "delete 1", new DeleteOutletCommand(INDEX_FIRST_PERSON));
+    }
+
+    @Test
+    public void parse_assignCommand_success() {
+        assertParseSuccess(parser, "assign 1 2", new AssignOutletCommand(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON));
     }
 
     @Test
