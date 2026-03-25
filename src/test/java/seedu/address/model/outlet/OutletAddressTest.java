@@ -1,6 +1,8 @@
 package seedu.address.model.outlet;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 
@@ -27,5 +29,26 @@ public class OutletAddressTest {
 
         assertTrue(OutletAddress.isValidOutletAddress("Raffles Place"));
         assertTrue(OutletAddress.isValidOutletAddress("18 Cross St, #08-01"));
+    }
+
+    @Test
+    public void equals() {
+        OutletAddress firstAddress = new OutletAddress("Raffles Place");
+        OutletAddress secondAddress = new OutletAddress("Marina Bay");
+
+        assertTrue(firstAddress.equals(firstAddress));
+        assertTrue(firstAddress.equals(new OutletAddress("Raffles Place")));
+        assertFalse(firstAddress.equals(null));
+        assertFalse(firstAddress.equals(1));
+        assertFalse(firstAddress.equals(secondAddress));
+    }
+
+    @Test
+    public void hashCodeMethod() {
+        OutletAddress firstAddress = new OutletAddress("Raffles Place");
+        OutletAddress secondAddress = new OutletAddress("Marina Bay");
+
+        assertEquals(firstAddress.hashCode(), new OutletAddress("Raffles Place").hashCode());
+        assertNotEquals(firstAddress.hashCode(), secondAddress.hashCode());
     }
 }

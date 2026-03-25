@@ -6,9 +6,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import seedu.address.logic.commands.AddOutletCommand;
+import seedu.address.logic.commands.AssignOutletCommand;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.DeleteOutletCommand;
 import seedu.address.logic.commands.ListOutletsCommand;
+import seedu.address.logic.commands.UnassignOutletCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
@@ -20,6 +22,8 @@ public class OutletCommandParser implements Parser<Command> {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Manages outlets.\n"
             + "Subcommands:\n"
             + "  " + AddOutletCommand.MESSAGE_USAGE + "\n"
+            + "  " + AssignOutletCommand.MESSAGE_USAGE + "\n"
+            + "  " + UnassignOutletCommand.MESSAGE_USAGE + "\n"
             + "  " + DeleteOutletCommand.MESSAGE_USAGE + "\n"
             + "  outlet " + ListOutletsCommand.COMMAND_WORD + ": Lists all outlets.";
 
@@ -38,6 +42,10 @@ public class OutletCommandParser implements Parser<Command> {
         switch (subcommand) {
         case AddOutletCommand.COMMAND_WORD:
             return new AddOutletCommandParser().parse(subcommandArguments);
+        case AssignOutletCommand.COMMAND_WORD:
+            return new AssignOutletCommandParser().parse(subcommandArguments);
+        case UnassignOutletCommand.COMMAND_WORD:
+            return new UnassignOutletCommandParser().parse(subcommandArguments);
         case DeleteOutletCommand.COMMAND_WORD:
             return new DeleteOutletCommandParser().parse(subcommandArguments);
         case ListOutletsCommand.COMMAND_WORD:

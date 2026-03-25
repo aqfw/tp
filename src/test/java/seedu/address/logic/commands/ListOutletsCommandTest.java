@@ -1,5 +1,7 @@
 package seedu.address.logic.commands;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showOutletAtIndex;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_ENTRY;
@@ -39,5 +41,15 @@ public class ListOutletsCommandTest {
     public void execute_listIsFiltered_showsEverything() {
         showOutletAtIndex(model, INDEX_FIRST_ENTRY);
         assertCommandSuccess(new ListOutletsCommand(), model, ListOutletsCommand.MESSAGE_SUCCESS, expectedModel);
+    }
+
+    @Test
+    public void equals() {
+        ListOutletsCommand listOutletsCommand = new ListOutletsCommand();
+
+        assertTrue(listOutletsCommand.equals(listOutletsCommand));
+        assertTrue(listOutletsCommand.equals(new ListOutletsCommand()));
+        assertFalse(listOutletsCommand.equals(null));
+        assertFalse(listOutletsCommand.equals(1));
     }
 }

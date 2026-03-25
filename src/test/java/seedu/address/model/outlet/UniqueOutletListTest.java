@@ -62,6 +62,11 @@ public class UniqueOutletListTest {
     }
 
     @Test
+    public void add_nullOutlet_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> uniqueOutletList.add(null));
+    }
+
+    @Test
     public void setOutlet_outletNotInList_throwsOutletNotFoundException() {
         assertThrows(OutletNotFoundException.class, () -> uniqueOutletList.setOutlet(OUTLET_ALPHA, OUTLET_ALPHA));
     }
@@ -73,6 +78,25 @@ public class UniqueOutletListTest {
         UniqueOutletList expectedUniqueOutletList = new UniqueOutletList();
         expectedUniqueOutletList.add(OUTLET_BETA);
         assertEquals(expectedUniqueOutletList, uniqueOutletList);
+    }
+
+    @Test
+    public void setOutlet_sameIdentity_success() {
+        uniqueOutletList.add(OUTLET_ALPHA);
+        uniqueOutletList.setOutlet(OUTLET_ALPHA, OUTLET_ALPHA_EDITED);
+
+        UniqueOutletList expectedUniqueOutletList = new UniqueOutletList();
+        expectedUniqueOutletList.add(OUTLET_ALPHA_EDITED);
+        assertEquals(expectedUniqueOutletList, uniqueOutletList);
+    }
+
+    @Test
+    public void setOutlet_duplicateOutlet_throwsDuplicateOutletException() {
+        uniqueOutletList.add(OUTLET_ALPHA);
+        uniqueOutletList.add(OUTLET_BETA);
+
+        assertThrows(DuplicateOutletException.class, () -> uniqueOutletList.setOutlet(
+                OUTLET_BETA, OUTLET_ALPHA_EDITED));
     }
 
     @Test
@@ -92,6 +116,24 @@ public class UniqueOutletListTest {
     }
 
     @Test
+    public void setOutlets_uniqueOutletList_replacesOwnListWithProvidedUniqueOutletList() {
+        uniqueOutletList.add(OUTLET_ALPHA);
+        UniqueOutletList replacement = new UniqueOutletList();
+        replacement.add(OUTLET_BETA);
+
+        uniqueOutletList.setOutlets(replacement);
+
+        UniqueOutletList expectedUniqueOutletList = new UniqueOutletList();
+        expectedUniqueOutletList.add(OUTLET_BETA);
+        assertEquals(expectedUniqueOutletList, uniqueOutletList);
+    }
+
+    @Test
+    public void setOutlets_nullUniqueOutletList_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> uniqueOutletList.setOutlets((UniqueOutletList) null));
+    }
+
+    @Test
     public void remove_outletDoesNotExist_throwsOutletNotFoundException() {
         assertThrows(OutletNotFoundException.class, () -> uniqueOutletList.remove(OUTLET_ALPHA));
     }
@@ -100,5 +142,34 @@ public class UniqueOutletListTest {
     public void asUnmodifiableObservableList_modifyList_throwsUnsupportedOperationException() {
         List<Outlet> outlets = uniqueOutletList.asUnmodifiableObservableList();
         assertThrows(UnsupportedOperationException.class, () -> outlets.remove(0));
+    }
+
+    @Test
+    public void iterator_hasNextAfterAdd_returnsTrue() {
+        uniqueOutletList.add(OUTLET_ALPHA);
+        assertTrue(uniqueOutletList.iterator().hasNext());
+    }
+
+    @Test
+    public void equals() {
+        uniqueOutletList.add(OUTLET_ALPHA);
+
+        UniqueOutletList sameList = new UniqueOutletList();
+        sameList.add(OUTLET_ALPHA);
+
+        assertTrue(uniqueOutletList.equals(uniqueOutletList));
+        assertTrue(uniqueOutletList.equals(sameList));
+        assertFalse(uniqueOutletList.equals(null));
+        assertFalse(uniqueOutletList.equals(1));
+    }
+
+    @Test
+    public void hashCodeMethod() {
+        uniqueOutletList.add(OUTLET_ALPHA);
+
+        UniqueOutletList sameList = new UniqueOutletList();
+        sameList.add(OUTLET_ALPHA);
+
+        assertEquals(uniqueOutletList.hashCode(), sameList.hashCode());
     }
 }
