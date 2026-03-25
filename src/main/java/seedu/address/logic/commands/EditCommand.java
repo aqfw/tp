@@ -136,7 +136,9 @@ public class EditCommand extends UndoableCommand {
 
     @Override
     public void redo(Model model) {
-        model.setPerson(originalPerson, editedPerson);
+        for (int idx = 0; idx < editedPersons.size(); idx++) {
+            model.setPerson(originalPersons.get(idx), editedPersons.get(idx));
+        }
     }
 
     /**
