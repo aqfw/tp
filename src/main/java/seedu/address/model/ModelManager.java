@@ -29,6 +29,7 @@ public class ModelManager implements Model {
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
     private final Stack<Command> undoStack = new Stack<>();
+    private final Stack<Command> redoStack = new Stack<>();
     private final FilteredList<Outlet> filteredOutlets;
     private final TagCounter tagCounter;
 
@@ -240,6 +241,7 @@ public class ModelManager implements Model {
     public void recordCommand(UndoableCommand undoableCommand) {
         requireNonNull(undoableCommand);
         undoStack.push(undoableCommand);
+        redoStack.clear();
     }
 
     /**
@@ -258,5 +260,21 @@ public class ModelManager implements Model {
 
         UndoableCommand lastCommand = (UndoableCommand) undoStack.pop();
         lastCommand.undo(this);
+
+        redoStack.push(lastCommand);
+    }
+
+    public boolean canRedo() { return !redoStack.isEmpty(); }
+
+    @Override
+    public void redo() throws CommandException {
+        if (!canRedo()) {
+            throw new CommandException("Nothing to redo.");
+        }
+
+        UndoableCommand lastCommand = (UndoableCommand) redoStack.pop();
+        lastCommand.redo(this);
+
+        undoStack.push(lastCommand);
     }
 }

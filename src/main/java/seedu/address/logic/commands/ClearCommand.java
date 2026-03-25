@@ -31,4 +31,9 @@ public class ClearCommand extends UndoableCommand {
             model.addPerson(person);
         }
     }
+
+    @Override
+    public void redo(Model model) {
+        model.setAddressBook(new AddressBook());
+    }
 }

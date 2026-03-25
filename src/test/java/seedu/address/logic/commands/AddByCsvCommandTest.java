@@ -243,6 +243,11 @@ public class AddByCsvCommandTest {
         public void undo() throws CommandException {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public void redo() throws CommandException {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     /**
