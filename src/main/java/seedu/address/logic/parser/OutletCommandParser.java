@@ -9,6 +9,7 @@ import seedu.address.logic.commands.AddOutletCommand;
 import seedu.address.logic.commands.AssignOutletCommand;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.DeleteOutletCommand;
+import seedu.address.logic.commands.EditOutletCommand;
 import seedu.address.logic.commands.ListOutletsCommand;
 import seedu.address.logic.commands.UnassignOutletCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -22,6 +23,7 @@ public class OutletCommandParser implements Parser<Command> {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Manages outlets.\n"
             + "Subcommands:\n"
             + "  " + AddOutletCommand.MESSAGE_USAGE + "\n"
+            + "  " + EditOutletCommand.MESSAGE_USAGE + "\n"
             + "  " + AssignOutletCommand.MESSAGE_USAGE + "\n"
             + "  " + UnassignOutletCommand.MESSAGE_USAGE + "\n"
             + "  " + DeleteOutletCommand.MESSAGE_USAGE + "\n"
@@ -53,6 +55,8 @@ public class OutletCommandParser implements Parser<Command> {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
             }
             return new ListOutletsCommand();
+        case EditOutletCommand.COMMAND_WORD:
+            return new EditOutletCommandParser().parse(subcommandArguments);
         default:
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, MESSAGE_USAGE));
         }

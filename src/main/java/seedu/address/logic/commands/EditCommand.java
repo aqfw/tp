@@ -56,9 +56,9 @@ public class EditCommand extends UndoableCommand {
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited %d person(s). First: %s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
     public static final String MESSAGE_DUPLICATE_EMAIL_AND_PHONE = "A person with this phone number and email address "
                                                                     + "is already in the address book.";
+    public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
     public static final String RIGHT_PANE_HEADER = "CANDIDATE EDITED";
     private final Set<Index> indexes;
     private final EditPersonDescriptor editPersonDescriptor;
