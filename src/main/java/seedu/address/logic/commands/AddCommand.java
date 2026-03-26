@@ -102,4 +102,7 @@ public class AddCommand extends UndoableCommand {
     public void undo(Model model) {
         model.deletePerson(toAdd);
     }
+
+    @Override
+    public void redo(Model model) { model.addPerson(toAdd); }
 }

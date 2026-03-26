@@ -62,6 +62,12 @@ public class AddByCsvCommand extends UndoableCommand {
         }
     }
 
+    public void redo(Model model) {
+        for (Person p: personsToAdd) {
+            model.addPerson(p);
+        }
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == this) {
