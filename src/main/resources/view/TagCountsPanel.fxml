@@ -3,6 +3,9 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.VBox?>
 
+<ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+            VBox.vgrow="ALWAYS">
 <VBox fx:id="tagCountsPanel" style="-fx-background-color: white;"
       xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
 </VBox>
+</ScrollPane>

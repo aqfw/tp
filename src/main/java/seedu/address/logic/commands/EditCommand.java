@@ -8,6 +8,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_POSTAL_CODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -27,7 +28,6 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.PostalCode;
-import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.tag.Tag;
 import seedu.address.ui.UiAction;
 import seedu.address.ui.content.PersonContent;
@@ -54,31 +54,27 @@ public class EditCommand extends UndoableCommand {
             + PREFIX_EMAIL + "johndoe@example.com "
             + PREFIX_POSTAL_CODE + "120311";
 
-    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
+    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited %d person(s). First: %s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
     public static final String MESSAGE_DUPLICATE_EMAIL_AND_PHONE = "A person with this phone number and email address "
                                                                     + "is already in the address book.";
-    public static final String MESSAGE_DUPLICATE_EMAIL = "A person with this email address is already in the "
-                                                            + "address book.";
-    public static final String MESSAGE_DUPLICATE_PHONE = "A person with this phone number is already in the "
-                                                            + "address book.";
     public static final String RIGHT_PANE_HEADER = "CANDIDATE EDITED";
-    private final Index index;
+    private final Set<Index> indexes;
     private final EditPersonDescriptor editPersonDescriptor;
 
-    private Person editedPerson;
-    private Person originalPerson;
+    private final List<Person> editedPersons = new ArrayList<>();
+    private final List<Person> originalPersons = new ArrayList<>();
 
     /**
-     * @param index of the person in the filtered person list to edit
-     * @param editPersonDescriptor details to edit the person with
+     * @param indexes of the person(s) in the filtered person list to edit
+     * @param editPersonDescriptor details to edit the person(s) with
      */
-    public EditCommand(Index index, EditPersonDescriptor editPersonDescriptor) {
-        requireNonNull(index);
+    public EditCommand(Set<Index> indexes, EditPersonDescriptor editPersonDescriptor) {
+        requireNonNull(indexes);
         requireNonNull(editPersonDescriptor);
 
-        this.index = index;
+        this.indexes = indexes;
         this.editPersonDescriptor = new EditPersonDescriptor(editPersonDescriptor);
     }
 
@@ -87,32 +83,62 @@ public class EditCommand extends UndoableCommand {
         requireNonNull(model);
         List<Person> lastShownList = model.getFilteredPersonList();
 
-        if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        originalPersons.clear();
+        editedPersons.clear();
+
+        for (Index index : indexes) {
+            if (index.getZeroBased() >= lastShownList.size()) {
+                throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            }
+
+            Person originalPerson = lastShownList.get(index.getZeroBased());
+            Person editedPerson = createEditedPerson(originalPerson, editPersonDescriptor);
+
+            originalPersons.add(originalPerson);
+            editedPersons.add(editedPerson);
         }
 
-        originalPerson = lastShownList.get(index.getZeroBased());
-        editedPerson = createEditedPerson(originalPerson, editPersonDescriptor);
+        for (int i = 0; i < editedPersons.size(); i++) {
+            Person edited = editedPersons.get(i);
+            Person original = originalPersons.get(i);
 
-        try {
-            model.setPerson(originalPerson, editedPerson);
-        } catch (DuplicatePersonException e) {
-            throw new CommandException(e.getMessage());
+            for (Person personInModel : model.getAddressBook().getPersonList()) {
+                if (!personInModel.equals(original) && personInModel.isSamePerson(edited)) {
+                    throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+                }
+            }
+        }
+
+        for (int i = 0; i < editedPersons.size(); i++) {
+            for (int j = i + 1; j < editedPersons.size(); j++) {
+                if (editedPersons.get(i).isSamePerson(editedPersons.get(j))) {
+                    throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+                }
+            }
+        }
+
+        for (int idx = 0; idx < originalPersons.size(); idx++) {
+            model.setPerson(originalPersons.get(idx), editedPersons.get(idx));
         }
 
         model.resetFilteredPersonList();
-        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson)),
-                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(editedPerson, RIGHT_PANE_HEADER)));
+        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS,
+                editedPersons.size(), Messages.format(editedPersons.get(0))),
+                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(editedPersons.get(0), RIGHT_PANE_HEADER)));
     }
 
     @Override
     public void undo(Model model) {
-        model.setPerson(editedPerson, originalPerson);
+        for (int idx = 0; idx < editedPersons.size(); idx++) {
+            model.setPerson(editedPersons.get(idx), originalPersons.get(idx));
+        }
     }
 
     @Override
     public void redo(Model model) {
-        model.setPerson(originalPerson, editedPerson);
+        for (int idx = 0; idx < editedPersons.size(); idx++) {
+            model.setPerson(originalPersons.get(idx), editedPersons.get(idx));
+        }
     }
 
     /**
@@ -145,14 +171,14 @@ public class EditCommand extends UndoableCommand {
         }
 
         EditCommand otherEditCommand = (EditCommand) other;
-        return index.equals(otherEditCommand.index)
+        return indexes.equals(otherEditCommand.indexes)
                 && editPersonDescriptor.equals(otherEditCommand.editPersonDescriptor);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("index", index)
+                .add("indexes", indexes)
                 .add("editPersonDescriptor", editPersonDescriptor)
                 .toString();
     }
