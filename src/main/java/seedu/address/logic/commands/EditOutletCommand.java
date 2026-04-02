@@ -2,16 +2,12 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_POSTAL_CODE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.CollectionUtil;
@@ -23,21 +19,15 @@ import seedu.address.model.outlet.Outlet;
 import seedu.address.model.outlet.OutletAddress;
 import seedu.address.model.outlet.OutletName;
 import seedu.address.model.outlet.OutletPostalCode;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.Phone;
-import seedu.address.model.person.PostalCode;
-import seedu.address.model.person.exceptions.DuplicatePersonException;
-import seedu.address.model.tag.Tag;
-import seedu.address.ui.UiAction;
-import seedu.address.ui.content.PersonContent;
 
+/**
+ * Contains integration tests (interaction with the Model) and unit tests for {@code DeleteOutletCommand}.
+ */
 public class EditOutletCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "edit";
 
-    public static final String MESSAGE_USAGE = "outlet " + COMMAND_WORD + ": Edits the details of the outlet identified "
+    public static final String MESSAGE_USAGE = "outlet " + COMMAND_WORD
+            + ": Edits the details of the outlet identified "
             + "by the index number used in the displayed outlet list. "
             + "Existing values will be overwritten by the input values.\n"
             + "Parameters: INDEX (must be a positive integer) "
@@ -105,7 +95,8 @@ public class EditOutletCommand extends UndoableCommand {
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editOutletDescriptor}.
      */
-    private static Outlet createEditedOutlet(Outlet outletToEdit, EditOutletCommand.EditOutletDescriptor editOutletDescriptor) {
+    private static Outlet createEditedOutlet(Outlet outletToEdit, EditOutletCommand.EditOutletDescriptor
+            editOutletDescriptor) {
         assert outletToEdit != null;
 
         OutletName updatedName = editOutletDescriptor.getName().orElse(outletToEdit.getOutletName());

@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
@@ -131,6 +132,11 @@ public class AddTagComboCommandTest {
         }
 
         @Override
+        public void addPersonAtIndex(Person person, Index index) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public void setAddressBook(ReadOnlyAddressBook newData) {
             throw new AssertionError("This method should not be called.");
         }
@@ -186,6 +192,11 @@ public class AddTagComboCommandTest {
         }
 
         @Override
+        public void addOutletAtIndex(Outlet outlet, Index index) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public void setOutlet(Outlet target, Outlet editedOutlet) {
             throw new AssertionError("This method should not be called.");
         }
@@ -217,6 +228,11 @@ public class AddTagComboCommandTest {
 
         @Override
         public void undo() throws CommandException {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void redo() throws CommandException {
             throw new AssertionError("This method should not be called.");
         }
 

@@ -18,6 +18,7 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -128,6 +129,15 @@ public class FilterCommandTest {
         tagMap.put(new Tag("friends"), 1);
         assertCommandSuccess(command2, model, expectedMessage, expectedModel, UiAction.UPDATE_RIGHT_PANE,
                 Optional.of(new TagCountsContent(new TagCounter(tagMap))));
+    }
+
+    @Test
+    public void undo_filterCommand_success() throws CommandException {
+
+    }
+
+    @Test
+    public void redo_filterCommand_success() throws CommandException {
     }
 
     @Test

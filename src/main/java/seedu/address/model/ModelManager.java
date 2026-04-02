@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.UndoableCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -116,6 +117,11 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public void addPersonAtIndex(Person person, Index index) {
+        addressBook.addPersonAtIndex(person, index);
+    }
+
+    @Override
     public void setPerson(Person target, Person editedPerson) {
         requireAllNonNull(target, editedPerson);
 
@@ -137,6 +143,11 @@ public class ModelManager implements Model {
     public void addOutlet(Outlet outlet) {
         addressBook.addOutlet(outlet);
         resetFilteredOutletList();
+    }
+
+    @Override
+    public void addOutletAtIndex(Outlet outlet, Index index) {
+        addressBook.addOutletAtIndex(outlet, index);
     }
 
     @Override
@@ -283,7 +294,9 @@ public class ModelManager implements Model {
         redoStack.push(lastCommand);
     }
 
-    public boolean canRedo() { return !redoStack.isEmpty(); }
+    public boolean canRedo() {
+        return !redoStack.isEmpty();
+    }
 
     @Override
     public void redo() throws CommandException {

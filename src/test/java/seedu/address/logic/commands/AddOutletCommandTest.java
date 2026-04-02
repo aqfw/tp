@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.Messages;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -50,6 +51,38 @@ public class AddOutletCommandTest {
     public void execute_duplicateOutlet_throwsCommandException() {
         Outlet outletInList = model.getAddressBook().getOutletList().get(0);
         assertCommandFailure(new AddOutletCommand(outletInList), model, AddOutletCommand.MESSAGE_DUPLICATE_OUTLET);
+    }
+
+
+    @Test
+    public void undo_addOutletCommand_success() throws CommandException {
+        Outlet validOutlet = new OutletBuilder().withName(VALID_OUTLET_NAME_BETA)
+                .withAddress(VALID_OUTLET_ADDRESS_BETA).withPostalCode(VALID_OUTLET_POSTAL_CODE_BETA).build();
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+
+        AddOutletCommand addOutletCommand = new AddOutletCommand(validOutlet);
+        addOutletCommand.execute(model);
+        model.recordCommand(addOutletCommand);
+
+        model.undo();
+        assertEquals(expectedModel, model);
+    }
+
+    @Test
+    public void redo_addOutletCommand_success() throws CommandException {
+        Outlet validOutlet = new OutletBuilder().withName(VALID_OUTLET_NAME_BETA)
+                .withAddress(VALID_OUTLET_ADDRESS_BETA).withPostalCode(VALID_OUTLET_POSTAL_CODE_BETA).build();
+
+        AddOutletCommand addOutletCommand = new AddOutletCommand(validOutlet);
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        addOutletCommand.execute(model);
+        expectedModel.addOutlet(validOutlet);
+        model.recordCommand(addOutletCommand);
+
+        model.undo();
+        model.redo();
+        assertTrue(model.hasOutlet(validOutlet));
+        assertEquals(expectedModel, model);
     }
 
     @Test

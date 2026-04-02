@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javafx.collections.ObservableList;
+import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.outlet.Outlet;
 import seedu.address.model.outlet.UniqueOutletList;
@@ -94,6 +95,10 @@ public class AddressBook implements ReadOnlyAddressBook {
         persons.add(p);
     }
 
+    public void addPersonAtIndex(Person p, Index index) {
+        persons.addAtIndex(p, index);
+    }
+
     /**
      * Replaces the given person {@code target} in the list with {@code editedPerson}.
      * {@code target} must exist in the address book.
@@ -129,6 +134,10 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     public void addOutlet(Outlet outlet) {
         outlets.add(outlet);
+    }
+
+    public void addOutletAtIndex(Outlet outlet, Index index) {
+        outlets.addAtIndex(outlet, index);
     }
 
     /**

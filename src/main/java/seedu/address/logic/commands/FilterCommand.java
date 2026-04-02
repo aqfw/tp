@@ -28,7 +28,7 @@ public class FilterCommand extends UndoableCommand {
             + PREFIX_TAG + "java";
 
     private final PersonContainsTagsPredicate predicate;
-    private Predicate<? super Person> previousPredicate;      // for undo
+    private Predicate<? super Person> previousPredicate;
     private Predicate<? super Person> currentPredicate;
 
     public FilterCommand(PersonContainsTagsPredicate predicate) {
