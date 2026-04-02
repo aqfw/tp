@@ -40,7 +40,7 @@ public class FindCommand extends UndoableCommand {
         requireNonNull(model);
         previousPredicate = model.getFilteredPersonPredicate();
         model.updateFilteredPersonList(predicate);
-        currentPredicate =  model.getFilteredPersonPredicate();
+        currentPredicate = model.getFilteredPersonPredicate();
         return new CommandResult(
                 String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()),
                 UiAction.UPDATE_RIGHT_PANE, Optional.of(new TagCountsContent(model.getTagCounter())));

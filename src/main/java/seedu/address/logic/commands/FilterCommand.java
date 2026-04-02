@@ -36,7 +36,7 @@ public class FilterCommand extends UndoableCommand {
     private final Set<Tag> tagList;
     private final Set<TagComboName> tagComboNameList;
 
-    private Predicate<? super Person> previousPredicate;      // for undo
+    private Predicate<? super Person> previousPredicate; // for undo
     private Predicate<? super Person> currentPredicate;
 
     /**

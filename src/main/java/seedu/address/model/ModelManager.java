@@ -289,7 +289,9 @@ public class ModelManager implements Model {
         redoStack.push(lastCommand);
     }
 
-    public boolean canRedo() { return !redoStack.isEmpty(); }
+    public boolean canRedo() {
+        return !redoStack.isEmpty();
+    }
 
     @Override
     public void redo() throws CommandException {

@@ -96,5 +96,7 @@ public class AddCommand extends UndoableCommand {
     }
 
     @Override
-    public void redo(Model model) { model.addPerson(toAdd); }
+    public void redo(Model model) {
+        model.addPerson(toAdd);
+    }
 }
