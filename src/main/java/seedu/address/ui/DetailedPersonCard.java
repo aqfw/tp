@@ -32,6 +32,8 @@ public class DetailedPersonCard extends UiPart<Region> {
     @FXML
     private Label email;
     @FXML
+    private Label workingOutlet;
+    @FXML
     private FlowPane tagsDetailedCard;
 
     /**
@@ -46,6 +48,11 @@ public class DetailedPersonCard extends UiPart<Region> {
         address.setText(person.getAddress().value);
         postalCode.setText(person.getPostalCode().value);
         email.setText(person.getEmail().value);
+        if (person.getWorkingAddress() == null) {
+            workingOutlet.setText("unassigned");
+        } else {
+            workingOutlet.setText(person.getWorkingAddress().getOutletName().value);
+        }
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tagsDetailedCard.getChildren().add(new Label(tag.tagName)));

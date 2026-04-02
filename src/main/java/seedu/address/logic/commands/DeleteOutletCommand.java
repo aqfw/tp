@@ -14,7 +14,7 @@ import seedu.address.model.outlet.Outlet;
 /**
  * Deletes an outlet identified using its displayed index from the address book.
  */
-public class DeleteOutletCommand extends Command {
+public class DeleteOutletCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "delete";
 
@@ -26,6 +26,7 @@ public class DeleteOutletCommand extends Command {
     public static final String MESSAGE_DELETE_OUTLET_SUCCESS = "Deleted outlet: %1$s";
 
     private final Index targetIndex;
+    private Outlet outletToDelete;
 
     public DeleteOutletCommand(Index targetIndex) {
         this.targetIndex = targetIndex;
@@ -40,9 +41,19 @@ public class DeleteOutletCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_OUTLET_DISPLAYED_INDEX);
         }
 
-        Outlet outletToDelete = lastShownList.get(targetIndex.getZeroBased());
+        outletToDelete = lastShownList.get(targetIndex.getZeroBased());
         model.deleteOutlet(outletToDelete);
         return new CommandResult(String.format(MESSAGE_DELETE_OUTLET_SUCCESS, Messages.format(outletToDelete)));
+    }
+
+    @Override
+    public void undo(Model model) {
+        model.addOutlet(outletToDelete);
+    }
+
+    @Override
+    public void redo(Model model) {
+        model.deleteOutlet(outletToDelete);
     }
 
     @Override

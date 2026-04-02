@@ -7,12 +7,15 @@ import static seedu.address.logic.commands.CommandTestUtil.OUTLET_POSTAL_CODE_DE
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_ENTRY;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_ENTRY;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.AddOutletCommand;
+import seedu.address.logic.commands.AssignOutletCommand;
 import seedu.address.logic.commands.DeleteOutletCommand;
 import seedu.address.logic.commands.ListOutletsCommand;
+import seedu.address.logic.commands.UnassignOutletCommand;
 import seedu.address.testutil.OutletBuilder;
 
 public class OutletCommandParserTest {
@@ -32,8 +35,30 @@ public class OutletCommandParserTest {
     }
 
     @Test
+    public void parse_assignCommand_success() {
+        assertParseSuccess(parser, "assign 1 2", new AssignOutletCommand(INDEX_FIRST_ENTRY, INDEX_SECOND_ENTRY));
+    }
+
+    @Test
+    public void parse_unassignCommand_success() {
+        assertParseSuccess(parser, "unassign 1", new UnassignOutletCommand(INDEX_FIRST_ENTRY));
+    }
+
+    @Test
     public void parse_listCommand_success() {
         assertParseSuccess(parser, "list", new ListOutletsCommand());
+    }
+
+    @Test
+    public void parse_listCommandWithArguments_failure() {
+        assertParseFailure(parser, "list extra",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, OutletCommandParser.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_emptyArgs_failure() {
+        assertParseFailure(parser, "",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, OutletCommandParser.MESSAGE_USAGE));
     }
 
     @Test

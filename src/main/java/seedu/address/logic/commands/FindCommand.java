@@ -29,6 +29,7 @@ public class FindCommand extends UndoableCommand {
 
     private final NameContainsKeywordsPredicate predicate;
     private Predicate<? super Person> previousPredicate;
+    private Predicate<? super Person> currentPredicate;
 
     public FindCommand(NameContainsKeywordsPredicate predicate) {
         this.predicate = predicate;
@@ -39,6 +40,7 @@ public class FindCommand extends UndoableCommand {
         requireNonNull(model);
         previousPredicate = model.getFilteredPersonPredicate();
         model.updateFilteredPersonList(predicate);
+        currentPredicate =  model.getFilteredPersonPredicate();
         return new CommandResult(
                 String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()),
                 UiAction.UPDATE_RIGHT_PANE, Optional.of(new TagCountsContent(model.getTagCounter())));
@@ -47,6 +49,11 @@ public class FindCommand extends UndoableCommand {
     @Override
     public void undo(Model model) {
         model.setFilteredPersonPredicate(previousPredicate);
+    }
+
+    @Override
+    public void redo(Model model) {
+        model.setFilteredPersonPredicate(currentPredicate);
     }
 
     @Override

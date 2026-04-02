@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.outlet.Outlet;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -24,18 +25,28 @@ public class Person {
     // Data fields
     private final Address address;
     private final PostalCode postalCode;
+    private final Outlet workingAddress;
     private final Set<Tag> tags = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, Address address, PostalCode postalCode, Set<Tag> tags) {
+        this(name, phone, email, address, postalCode, tags, null);
+    }
+
+    /**
+     * Every field must be present and not null.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, PostalCode postalCode, Set<Tag> tags,
+                  Outlet workingAddress) {
         requireAllNonNull(name, phone, email, address, postalCode, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.postalCode = postalCode;
+        this.workingAddress = workingAddress;
         this.tags.addAll(tags);
     }
 
@@ -57,6 +68,10 @@ public class Person {
 
     public PostalCode getPostalCode() {
         return postalCode;
+    }
+
+    public Outlet getWorkingAddress() {
+        return workingAddress;
     }
 
     /**
@@ -102,13 +117,14 @@ public class Person {
                 && email.equals(otherPerson.email)
                 && address.equals(otherPerson.address)
                 && postalCode.equals(otherPerson.postalCode)
+                && Objects.equals(workingAddress, otherPerson.workingAddress) //safely handles null
                 && tags.equals(otherPerson.tags);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, postalCode, tags);
+        return Objects.hash(name, phone, email, address, postalCode, workingAddress, tags);
     }
 
     @Override
@@ -119,6 +135,7 @@ public class Person {
                 .add("email", email)
                 .add("address", address)
                 .add("postalCode", postalCode)
+                .add("workingAddress", workingAddress)
                 .add("tags", tags)
                 .toString();
     }

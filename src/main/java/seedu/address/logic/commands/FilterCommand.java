@@ -36,7 +36,8 @@ public class FilterCommand extends UndoableCommand {
     private final Set<Tag> tagList;
     private final Set<TagComboName> tagComboNameList;
 
-    private Predicate<? super Person> previousPredicate; // for undo
+    private Predicate<? super Person> previousPredicate;      // for undo
+    private Predicate<? super Person> currentPredicate;
 
     /**
      * Constructs a FilterCommand with a tagList and tagComboNameList.
@@ -64,6 +65,7 @@ public class FilterCommand extends UndoableCommand {
         PersonContainsTagsPredicate predicate = new PersonContainsTagsPredicate(tagList);
         previousPredicate = model.getFilteredPersonPredicate();
         model.updateFilteredPersonList(predicate);
+        currentPredicate = model.getFilteredPersonPredicate();
         return new CommandResult(
                 String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, model.getFilteredPersonList().size()),
                 UiAction.UPDATE_RIGHT_PANE, Optional.of(new TagCountsContent(model.getTagCounter())));
@@ -72,6 +74,11 @@ public class FilterCommand extends UndoableCommand {
     @Override
     public void undo(Model model) {
         model.setFilteredPersonPredicate(previousPredicate);
+    }
+
+    @Override
+    public void redo(Model model) {
+        model.setFilteredPersonPredicate(currentPredicate);
     }
 
     @Override

@@ -15,7 +15,7 @@ import seedu.address.model.outlet.exceptions.DuplicateOutletException;
 /**
  * Adds an outlet to the address book.
  */
-public class AddOutletCommand extends Command {
+public class AddOutletCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "add";
 
@@ -53,6 +53,16 @@ public class AddOutletCommand extends Command {
         }
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)));
+    }
+
+    @Override
+    public void undo(Model model) {
+        model.deleteOutlet(toAdd);
+    }
+
+    @Override
+    public void redo(Model model) {
+        model.addOutlet(toAdd);
     }
 
     @Override

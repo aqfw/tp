@@ -30,6 +30,8 @@
                 <Label fx:id="postalCode" styleClass="detailed-person-small-label" wrapText="true"/>
                 <Label text="ADDRESS" styleClass="small-index-label" wrapText="true"/>
                 <Label fx:id="address" styleClass="detailed-person-small-label" wrapText="true"/>
+                <Label text="WORKING OUTLET" styleClass="small-index-label" wrapText="true"/>
+                <Label fx:id="workingOutlet" styleClass="detailed-person-small-label" wrapText="true"/>
 
                 <Label text="TAGS" styleClass="small-index-label" wrapText="true"/>
                 <FlowPane fx:id="tagsDetailedCard"

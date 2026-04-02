@@ -34,4 +34,9 @@ public class ListCommand extends UndoableCommand {
     public void undo(Model model) {
         model.setFilteredPersonPredicate(previousPredicate);
     }
+
+    @Override
+    public void redo(Model model) {
+        model.resetFilteredPersonList();
+    }
 }

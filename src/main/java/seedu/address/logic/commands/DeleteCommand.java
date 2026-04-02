@@ -46,7 +46,7 @@ public class DeleteCommand extends UndoableCommand {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        Person deletedPerson = lastShownList.get(targetIndex.getZeroBased());
+        deletedPerson = lastShownList.get(targetIndex.getZeroBased());
         model.deletePerson(deletedPerson);
         return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(deletedPerson)),
                 UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(deletedPerson, RIGHT_PANE_HEADER)));
@@ -77,5 +77,10 @@ public class DeleteCommand extends UndoableCommand {
     @Override
     public void undo(Model model) {
         model.addPerson(deletedPerson);
+    }
+
+    @Override
+    public void redo(Model model) {
+        model.deletePerson(deletedPerson);
     }
 }

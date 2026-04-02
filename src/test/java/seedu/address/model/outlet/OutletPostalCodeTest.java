@@ -1,6 +1,8 @@
 package seedu.address.model.outlet;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 
@@ -29,5 +31,26 @@ public class OutletPostalCodeTest {
 
         assertTrue(OutletPostalCode.isValidPostalCode("000000"));
         assertTrue(OutletPostalCode.isValidPostalCode("048623"));
+    }
+
+    @Test
+    public void equals() {
+        OutletPostalCode firstPostalCode = new OutletPostalCode("048623");
+        OutletPostalCode secondPostalCode = new OutletPostalCode("018956");
+
+        assertTrue(firstPostalCode.equals(firstPostalCode));
+        assertTrue(firstPostalCode.equals(new OutletPostalCode("048623")));
+        assertFalse(firstPostalCode.equals(null));
+        assertFalse(firstPostalCode.equals(1));
+        assertFalse(firstPostalCode.equals(secondPostalCode));
+    }
+
+    @Test
+    public void hashCodeMethod() {
+        OutletPostalCode firstPostalCode = new OutletPostalCode("048623");
+        OutletPostalCode secondPostalCode = new OutletPostalCode("018956");
+
+        assertEquals(firstPostalCode.hashCode(), new OutletPostalCode("048623").hashCode());
+        assertNotEquals(firstPostalCode.hashCode(), secondPostalCode.hashCode());
     }
 }
