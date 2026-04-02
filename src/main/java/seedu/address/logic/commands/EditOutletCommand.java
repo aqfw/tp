@@ -21,7 +21,7 @@ import seedu.address.model.outlet.OutletName;
 import seedu.address.model.outlet.OutletPostalCode;
 
 /**
- * Contains integration tests (interaction with the Model) and unit tests for {@code DeleteOutletCommand}.
+ * Command to edit an outlet
  */
 public class EditOutletCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "edit";
@@ -95,8 +95,7 @@ public class EditOutletCommand extends UndoableCommand {
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editOutletDescriptor}.
      */
-    private static Outlet createEditedOutlet(Outlet outletToEdit, EditOutletCommand.EditOutletDescriptor
-            editOutletDescriptor) {
+    private static Outlet createEditedOutlet(Outlet outletToEdit, EditOutletDescriptor editOutletDescriptor) {
         assert outletToEdit != null;
 
         OutletName updatedName = editOutletDescriptor.getName().orElse(outletToEdit.getOutletName());

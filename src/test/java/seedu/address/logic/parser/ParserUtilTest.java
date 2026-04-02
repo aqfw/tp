@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_ENTRY;
+import static seedu.address.testutil.TypicalTagCombos.ML_DEV;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,6 +21,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.PostalCode;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.TagComboName;
 
 public class ParserUtilTest {
     private static final String INVALID_NAME = "R@chel";
@@ -218,5 +220,36 @@ public class ParserUtilTest {
         Set<Tag> expectedTagSet = new HashSet<Tag>(Arrays.asList(new Tag(VALID_TAG_1), new Tag(VALID_TAG_2)));
 
         assertEquals(expectedTagSet, actualTagSet);
+    }
+
+    @Test
+    public void parseTagComboName_throwsParseException() throws Exception {
+        assertThrows(ParseException.class, () -> ParserUtil.parseTagComboName("tc/ml_dev"));
+        assertThrows(ParseException.class, () -> ParserUtil.parseTagComboName("tc/this a very long name for the test"));
+    }
+
+    @Test
+    public void parseTagComboName_success() throws Exception {
+        assertEquals(ML_DEV.getName(), ParserUtil.parseTagComboName("ml dev"));
+    }
+
+    @Test
+    public void parseTagComboNames_success() throws Exception {
+        Set<TagComboName> actualTagComboNameSet = ParserUtil
+                .parseTagComboNames(Arrays.asList(VALID_TAG_1, VALID_TAG_2));
+        Set<TagComboName> expectedTagComboNameSet =
+                new HashSet<TagComboName>(Arrays.asList(new TagComboName(VALID_TAG_1), new TagComboName(VALID_TAG_2)));
+        assertEquals(expectedTagComboNameSet, actualTagComboNameSet);
+    }
+
+    @Test
+    public void parseTagComboNames_emptyCollection_returnsEmptySet() throws Exception {
+        assertTrue(ParserUtil.parseTagComboNames(Collections.emptyList()).isEmpty());
+    }
+
+    @Test
+    public void parseTagComboNames_collectionWithInvalidTagComboNames_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil
+                .parseTagComboNames(Arrays.asList(VALID_TAG_1, INVALID_TAG)));
     }
 }

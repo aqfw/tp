@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import seedu.address.commons.util.ToStringBuilder;
@@ -11,6 +12,9 @@ import seedu.address.logic.Messages;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonContainsTagsPredicate;
+import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.TagComboName;
+import seedu.address.model.tag.exceptions.TagComboNotFoundException;
 import seedu.address.ui.UiAction;
 import seedu.address.ui.content.TagCountsContent;
 
@@ -27,18 +31,38 @@ public class FilterCommand extends UndoableCommand {
             + PREFIX_TAG + "python "
             + PREFIX_TAG + "java";
 
-    private final PersonContainsTagsPredicate predicate;
-    private Predicate<? super Person> previousPredicate;
+    public static final String MESSAGE_TAG_COMBO_NOT_FOUND = "The tag combo was not found in the system!";
+
+    private final Set<Tag> tagList;
+    private final Set<TagComboName> tagComboNameList;
+
+    private Predicate<? super Person> previousPredicate; // for undo
     private Predicate<? super Person> currentPredicate;
 
-    public FilterCommand(PersonContainsTagsPredicate predicate) {
-        this.predicate = predicate;
+    /**
+     * Constructs a FilterCommand with a tagList and tagComboNameList.
+     */
+    public FilterCommand(Set<Tag> tagList, Set<TagComboName> tagComboNameList) {
+        this.tagList = tagList;
+        this.tagComboNameList = tagComboNameList;
     }
 
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
+        assert !(tagList.isEmpty() && tagComboNameList.isEmpty());
 
+        try {
+            for (TagComboName tc : tagComboNameList) {
+                tagList.addAll(model.getTagCombo(tc).getTagSet());
+            }
+        } catch (TagComboNotFoundException e) {
+            return new CommandResult(MESSAGE_TAG_COMBO_NOT_FOUND);
+        }
+
+        assert !tagList.isEmpty();
+
+        PersonContainsTagsPredicate predicate = new PersonContainsTagsPredicate(tagList);
         previousPredicate = model.getFilteredPersonPredicate();
         model.updateFilteredPersonList(predicate);
         currentPredicate = model.getFilteredPersonPredicate();
@@ -68,13 +92,15 @@ public class FilterCommand extends UndoableCommand {
         }
 
         FilterCommand otherFilterCommand = (FilterCommand) other;
-        return predicate.equals(otherFilterCommand.predicate);
+        return tagList.equals(otherFilterCommand.tagList)
+                && tagComboNameList.equals(otherFilterCommand.tagComboNameList);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("predicate", predicate)
+                .add("tagList", tagList)
+                .add("tagComboNameList", tagComboNameList)
                 .toString();
     }
 }

@@ -29,6 +29,7 @@ import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.outlet.Outlet;
 import seedu.address.model.person.Person;
 import seedu.address.model.tag.TagCombo;
+import seedu.address.model.tag.TagComboName;
 import seedu.address.model.tag.TagCounter;
 
 /**
@@ -278,6 +279,11 @@ public class AddByCsvCommandTest {
 
         @Override
         public void addTagCombo(TagCombo tagCombo) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public TagCombo getTagCombo(TagComboName tagComboName) {
             throw new AssertionError("This method should not be called.");
         }
     }

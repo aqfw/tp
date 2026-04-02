@@ -33,6 +33,24 @@ public class UniqueTagComboList implements Iterable<TagCombo> {
     }
 
     /**
+     * Returns true if the list contains a {@code TagCombo} with the corresponding {@code TagComboName}.
+     */
+    private boolean contains(TagComboName toCheck) {
+        requireNonNull(toCheck);
+        return internalMap.containsKey(toCheck);
+    }
+
+    /**
+     * Returns the {@code TagCombo} associated with a {@code TagComboName}.
+     */
+    public TagCombo getTagCombo(TagComboName toCheck) {
+        if (!contains(toCheck)) {
+            throw new TagComboNotFoundException();
+        }
+        return internalMap.get(toCheck);
+    }
+
+    /**
      * Adds a TagCombo to the list if no duplicates exist.
      */
     public void add(TagCombo toAdd) {

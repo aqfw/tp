@@ -19,6 +19,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.outlet.Outlet;
 import seedu.address.model.person.Person;
 import seedu.address.model.tag.TagCombo;
+import seedu.address.model.tag.TagComboName;
 import seedu.address.model.tag.TagCounter;
 
 /**
@@ -170,6 +171,11 @@ public class ModelManager implements Model {
     @Override
     public void addTagCombo(TagCombo tagCombo) {
         addressBook.addTagCombo(tagCombo);
+    }
+
+    @Override
+    public TagCombo getTagCombo(TagComboName tagComboName) {
+        return addressBook.getTagCombo(tagComboName);
     }
 
     //=========== Filtered Person List Accessors =============================================================

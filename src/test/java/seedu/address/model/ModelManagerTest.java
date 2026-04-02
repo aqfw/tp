@@ -252,4 +252,10 @@ public class ModelManagerTest {
 
         assertFalse(modelManager.hasTagCombo(TAG_COMBO_ONE));
     }
+
+    @Test
+    public void getTagCombo_success() {
+        modelManager.addTagCombo(TAG_COMBO_ONE);
+        assertEquals(TAG_COMBO_ONE, modelManager.getTagCombo(TAG_COMBO_ONE.getName()));
+    }
 }

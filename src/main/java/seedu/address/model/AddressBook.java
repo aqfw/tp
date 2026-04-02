@@ -13,6 +13,7 @@ import seedu.address.model.outlet.UniqueOutletList;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.UniquePersonList;
 import seedu.address.model.tag.TagCombo;
+import seedu.address.model.tag.TagComboName;
 import seedu.address.model.tag.UniqueTagComboList;
 
 /**
@@ -174,6 +175,13 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     public void removeTagCombo(TagCombo tagCombo) {
         tagCombos.remove(tagCombo);
+    }
+
+    /**
+     * Gets the TagCombo associated with the tagComboName
+     */
+    public TagCombo getTagCombo(TagComboName tagComboName) {
+        return tagCombos.getTagCombo(tagComboName);
     }
 
     /**

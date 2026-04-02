@@ -18,6 +18,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.PostalCode;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.TagComboName;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
@@ -201,5 +202,32 @@ public class ParserUtil {
             tagSet.add(parseTag(tagName));
         }
         return tagSet;
+    }
+
+    /**
+     * Parses a {@code String tagComboName} into a {@code TagCombo}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code tagComboName} is invalid.
+     */
+    public static TagComboName parseTagComboName(String tagComboName) throws ParseException {
+        requireNonNull(tagComboName);
+        String trimmedTag = tagComboName.trim();
+        if (!TagComboName.isValidName(tagComboName)) {
+            throw new ParseException(TagComboName.MESSAGE_CONSTRAINTS);
+        }
+        return new TagComboName(trimmedTag);
+    }
+
+    /**
+     * Parses {@code Collection<String> tagCombos} into a {@code Set<TagCombo>}.
+     */
+    public static Set<TagComboName> parseTagComboNames(Collection<String> tagComboNames) throws ParseException {
+        requireNonNull(tagComboNames);
+        final Set<TagComboName> tagComboNameSet = new HashSet<>();
+        for (String tagComboName : tagComboNames) {
+            tagComboNameSet.add(parseTagComboName(tagComboName));
+        }
+        return tagComboNameSet;
     }
 }

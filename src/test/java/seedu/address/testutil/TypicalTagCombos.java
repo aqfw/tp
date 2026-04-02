@@ -26,6 +26,11 @@ public class TypicalTagCombos {
             .withTags("excel", "communication")
             .build();
 
+    public static final TagCombo FRIEND_OWES_MONEY = new TagComboBuilder()
+            .withName("friend owes money")
+            .withTags("owesmoney", "friends")
+            .build();
+
     /**
      * Returns an {@code AddressBook} with all the typical tagcombos.
      */

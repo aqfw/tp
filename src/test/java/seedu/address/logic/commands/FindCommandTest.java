@@ -121,9 +121,9 @@ public class FindCommandTest {
                 Optional.of(new TagCountsContent(new TagCounter(tagMap))));
 
         expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
-        PersonContainsTagsPredicate secondPredicate = new PersonContainsTagsPredicate(
-                Set.of(new Tag("friends")));
-        FilterCommand command2 = new FilterCommand(secondPredicate);
+        Set<Tag> tagSet = Set.of(new Tag("friends"));
+        PersonContainsTagsPredicate secondPredicate = new PersonContainsTagsPredicate(tagSet);
+        FilterCommand command2 = new FilterCommand(tagSet, Set.of());
         expectedModel.updateFilteredPersonList(secondPredicate);
         assertCommandSuccess(command2, model, expectedMessage, expectedModel, UiAction.UPDATE_RIGHT_PANE,
                 Optional.of(new TagCountsContent(new TagCounter(tagMap))));

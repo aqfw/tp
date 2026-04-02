@@ -133,6 +133,17 @@ public class UniqueTagComboListTest {
     }
 
     @Test
+    public void getTagCombo_success() {
+        uniqueTagComboList.add(TAG_COMBO_ONE);
+        assertEquals(TAG_COMBO_ONE, uniqueTagComboList.getTagCombo(TAG_COMBO_ONE.getName()));
+    }
+
+    @Test
+    public void getTagCombo_tagComboNotFound() {
+        assertThrows(TagComboNotFoundException.class, () -> uniqueTagComboList.getTagCombo(TAG_COMBO_ONE.getName()));
+    }
+
+    @Test
     public void equals() {
         uniqueTagComboList.add(TAG_COMBO_ONE);
 

@@ -1,23 +1,23 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG_COMBO;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import seedu.address.logic.commands.FilterCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.PersonContainsTagsPredicate;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.TagComboName;
 
 /**
  * Parses arguments and creates a new FilterCommand object
  */
 public class FilterCommandParser implements Parser<FilterCommand> {
+
+    private Set<Tag> tagList;
 
     /**
      * Parses the given {@code String} of arguments in the context of the FilterCommand
@@ -26,13 +26,21 @@ public class FilterCommandParser implements Parser<FilterCommand> {
      */
     public FilterCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG);
+                ArgumentTokenizer.tokenize(args, PREFIX_TAG, PREFIX_TAG_COMBO);
 
-        if (argMultimap.getAllValues(PREFIX_TAG).isEmpty() || !argMultimap.getPreamble().isEmpty()) {
+        if ((argMultimap.getAllValues(PREFIX_TAG).isEmpty() && argMultimap.getAllValues(PREFIX_TAG_COMBO).isEmpty())
+                || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
         }
 
-        Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-        return new FilterCommand(new PersonContainsTagsPredicate(tagList));
+        if (argMultimap.getAllValues(PREFIX_TAG).isEmpty()) {
+            tagList = new HashSet<Tag>();
+        } else {
+            tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+        }
+
+        Set<TagComboName> tagComboNames = ParserUtil.parseTagComboNames(argMultimap.getAllValues(PREFIX_TAG_COMBO));
+
+        return new FilterCommand(tagList, tagComboNames);
     }
 }

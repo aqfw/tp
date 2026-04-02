@@ -12,7 +12,7 @@ import seedu.address.logic.commands.EditOutletCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
- * Parses input arguments and creates a new EditOutletCommand object.
+ * Parses an Edit Outlet Command.
  */
 public class EditOutletCommandParser implements Parser<EditOutletCommand> {
     @Override
