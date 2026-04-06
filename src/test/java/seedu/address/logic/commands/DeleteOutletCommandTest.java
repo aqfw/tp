@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -85,6 +86,38 @@ public class DeleteOutletCommandTest {
         DeleteOutletCommand deleteOutletCommand = new DeleteOutletCommand(outOfBoundIndex);
 
         assertCommandFailure(deleteOutletCommand, model, Messages.MESSAGE_INVALID_OUTLET_DISPLAYED_INDEX);
+    }
+
+
+    @Test
+    public void undo_deleteOutletCommand_success() throws CommandException {
+        Outlet outletToDelete = model.getFilteredOutletList().get(INDEX_FIRST_ENTRY.getZeroBased());
+        DeleteOutletCommand deleteOutletCommand = new DeleteOutletCommand(INDEX_FIRST_ENTRY);
+
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        deleteOutletCommand.execute(model);
+        assertFalse(model.hasOutlet(outletToDelete));
+        assertTrue(expectedModel.hasOutlet(outletToDelete));
+        model.recordCommand(deleteOutletCommand);
+
+        model.undo();
+        assertTrue(model.hasOutlet(outletToDelete));
+        assertEquals(expectedModel, model);
+    }
+
+    @Test
+    public void redo_deleteOutletCommand_success() throws CommandException {
+        Outlet outletToDelete = model.getFilteredOutletList().get(INDEX_FIRST_ENTRY.getZeroBased());
+        DeleteOutletCommand deleteOutletCommand = new DeleteOutletCommand(INDEX_FIRST_ENTRY);
+
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        deleteOutletCommand.execute(model);
+        expectedModel.deleteOutlet(outletToDelete);
+        model.recordCommand(deleteOutletCommand);
+
+        model.undo();
+        model.redo();
+        assertEquals(expectedModel, model);
     }
 
     @Test

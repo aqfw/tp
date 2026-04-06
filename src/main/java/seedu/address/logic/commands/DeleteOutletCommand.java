@@ -48,7 +48,7 @@ public class DeleteOutletCommand extends UndoableCommand {
 
     @Override
     public void undo(Model model) {
-        model.addOutlet(outletToDelete);
+        model.addOutletAtIndex(outletToDelete, targetIndex);
     }
 
     @Override

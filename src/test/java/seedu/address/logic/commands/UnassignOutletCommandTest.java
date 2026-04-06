@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
@@ -67,6 +68,35 @@ public class UnassignOutletCommandTest {
         UnassignOutletCommand unassignOutletCommand = new UnassignOutletCommand(outOfBoundPersonIndex);
 
         assertCommandFailure(unassignOutletCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+
+    @Test
+    public void undo_unassignOutletCommand_success() throws CommandException {
+        Person personToUnassign = model.getFilteredPersonList().get(INDEX_FIRST_ENTRY.getZeroBased());
+
+        UnassignOutletCommand unassignOutletCommand = new UnassignOutletCommand(INDEX_FIRST_ENTRY);
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        unassignOutletCommand.execute(model);
+        model.recordCommand(unassignOutletCommand);
+
+        model.undo();
+        assertEquals(expectedModel, model);
+    }
+
+    @Test
+    public void redo_unassignOutletCommand_success() throws CommandException {
+        Person personToUnassign = model.getFilteredPersonList().get(INDEX_FIRST_ENTRY.getZeroBased());
+        Person unassignedPerson = new PersonBuilder(personToUnassign).withWorkingAddress(null).build();
+
+        UnassignOutletCommand unassignOutletCommand = new UnassignOutletCommand(INDEX_FIRST_ENTRY);
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        unassignOutletCommand.execute(model);
+        expectedModel.setPerson(personToUnassign, unassignedPerson);
+        model.recordCommand(unassignOutletCommand);
+
+        model.undo();
+        model.redo();
+        assertEquals(expectedModel, model);
     }
 
     @Test

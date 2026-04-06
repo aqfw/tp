@@ -76,7 +76,7 @@ public class DeleteCommand extends UndoableCommand {
 
     @Override
     public void undo(Model model) {
-        model.addPerson(deletedPerson);
+        model.addPersonAtIndex(deletedPerson, targetIndex);
     }
 
     @Override

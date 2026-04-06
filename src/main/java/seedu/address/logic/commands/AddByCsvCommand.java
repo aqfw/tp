@@ -55,6 +55,9 @@ public class AddByCsvCommand extends UndoableCommand {
         return new CommandResult(String.format(MESSAGE_SUCCESS, personsToAdd.size()));
     }
 
+    /**
+     * Removes all previously added persons from the model.
+     */
     @Override
     public void undo(Model model) {
         for (Person p: personsToAdd) {
@@ -62,6 +65,9 @@ public class AddByCsvCommand extends UndoableCommand {
         }
     }
 
+    /**
+     * Adds all previously removed persons back into the model.
+     */
     @Override
     public void redo(Model model) {
         for (Person p: personsToAdd) {

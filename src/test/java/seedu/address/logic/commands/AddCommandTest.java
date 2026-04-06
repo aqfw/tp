@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
@@ -56,7 +57,7 @@ public class AddCommandTest {
         ModelStub modelStub = new ModelStubWithPerson(validPerson);
 
         assertThrows(CommandException.class,
-                AddCommand.MESSAGE_DUPLICATE_EMAIL_AND_PHONE, () -> addCommand.execute(modelStub));
+                AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
     }
 
     @Test
@@ -130,6 +131,10 @@ public class AddCommandTest {
         }
 
         @Override
+        public void addPersonAtIndex(Person person, Index index) {
+            throw new AssertionError("This method should not be called.");
+        }
+        @Override
         public void setAddressBook(ReadOnlyAddressBook newData) {
             throw new AssertionError("This method should not be called.");
         }
@@ -181,6 +186,11 @@ public class AddCommandTest {
 
         @Override
         public void addOutlet(Outlet outlet) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addOutletAtIndex(Outlet outlet, Index index) {
             throw new AssertionError("This method should not be called.");
         }
 

@@ -141,11 +141,6 @@ public class EditCommand extends UndoableCommand {
         }
     }
 
-    //    @Override
-    //    public void redo(Model model) {
-    //        model.setPerson(originalPerson, editedPerson);
-    //    }
-
     /**
      * Creates and returns a {@code Person} with the details of {@code personToEdit}
      * edited with {@code editPersonDescriptor}.

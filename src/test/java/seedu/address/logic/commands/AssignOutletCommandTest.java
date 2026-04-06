@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
@@ -179,6 +180,44 @@ public class AssignOutletCommandTest {
         assertCommandSuccess(assignOutletCommand, localModel, expectedMessage, expectedModel,
                 UiAction.UPDATE_RIGHT_PANE,
                 Optional.of(new PersonContent(assignedPerson, "Candidate #" + INDEX_FIRST_ENTRY.getOneBased())));
+    }
+
+
+    @Test
+    public void undo_assignOutletCommand_success() throws CommandException {
+        Person personToAssign = model.getFilteredPersonList().get(INDEX_FIRST_ENTRY.getZeroBased());
+        Outlet outletToAssign = model.getFilteredOutletList().get(INDEX_SECOND_ENTRY.getZeroBased());
+        Person assignedPerson = new PersonBuilder(personToAssign).withWorkingAddress(outletToAssign).build();
+
+        AssignOutletCommand assignOutletCommand = new AssignOutletCommand(INDEX_FIRST_ENTRY, INDEX_SECOND_ENTRY);
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+
+        assignOutletCommand.execute(model);
+        assertTrue(model.hasPerson(assignedPerson));
+        model.recordCommand(assignOutletCommand);
+        model.undo();
+
+        assertEquals(expectedModel, model);
+    }
+
+    @Test
+    public void redo_assignOutletCommand_success() throws CommandException {
+        Person personToAssign = model.getFilteredPersonList().get(INDEX_FIRST_ENTRY.getZeroBased());
+        Outlet outletToAssign = model.getFilteredOutletList().get(INDEX_SECOND_ENTRY.getZeroBased());
+        Person assignedPerson = new PersonBuilder(personToAssign).withWorkingAddress(outletToAssign).build();
+
+        AssignOutletCommand assignOutletCommand = new AssignOutletCommand(INDEX_FIRST_ENTRY, INDEX_SECOND_ENTRY);
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+
+        assignOutletCommand.execute(model);
+        assertTrue(model.hasPerson(assignedPerson));
+        expectedModel.setPerson(personToAssign, assignedPerson);
+        model.recordCommand(assignOutletCommand);
+
+        model.undo();
+        model.redo();
+        assertTrue(model.hasPerson(assignedPerson));
+        assertEquals(expectedModel, model);
     }
 
     @Test

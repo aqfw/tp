@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -84,6 +85,40 @@ public class DeleteCommandTest {
         DeleteCommand deleteCommand = new DeleteCommand(outOfBoundIndex);
 
         assertCommandFailure(deleteCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+
+
+    @Test
+    public void undo_deleteCommand_success() throws CommandException {
+        Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_ENTRY.getZeroBased());
+        DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_ENTRY);
+
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        deleteCommand.execute(model);
+        assertFalse(model.hasPerson(personToDelete));
+        assertTrue(expectedModel.hasPerson(personToDelete));
+        model.recordCommand(deleteCommand);
+
+        model.undo();
+        assertTrue(model.hasPerson(personToDelete));
+        assertEquals(expectedModel, model);
+    }
+
+    @Test
+    public void redo_deleteCommand_success() throws CommandException {
+        Person personToDelete = model.getFilteredPersonList().get(INDEX_FIRST_ENTRY.getZeroBased());
+        DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_ENTRY);
+
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        deleteCommand.execute(model);
+        assertFalse(model.hasPerson(personToDelete));
+        assertTrue(expectedModel.hasPerson(personToDelete));
+        expectedModel.deletePerson(personToDelete);
+        model.recordCommand(deleteCommand);
+
+        model.undo();
+        model.redo();
+        assertEquals(expectedModel, model);
     }
 
     @Test

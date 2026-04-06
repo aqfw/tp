@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.UndoableCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.outlet.Outlet;
@@ -77,6 +78,8 @@ public interface Model {
      */
     void addPerson(Person person);
 
+    void addPersonAtIndex(Person person, Index index);
+
     /**
      * Replaces the given person {@code target} with {@code editedPerson}.
      * {@code target} must exist in the address book.
@@ -122,6 +125,8 @@ public interface Model {
      * {@code outlet} must not already exist in the address book.
      */
     void addOutlet(Outlet outlet);
+
+    void addOutletAtIndex(Outlet outlet, Index index);
 
     /**
      * Replaces the given outlet {@code target} with {@code editedOutlet}.

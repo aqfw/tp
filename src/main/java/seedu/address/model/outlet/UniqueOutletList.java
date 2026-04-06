@@ -8,6 +8,7 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.address.commons.core.index.Index;
 import seedu.address.model.outlet.exceptions.DuplicateOutletException;
 import seedu.address.model.outlet.exceptions.OutletNotFoundException;
 
@@ -39,6 +40,18 @@ public class UniqueOutletList implements Iterable<Outlet> {
             throw new DuplicateOutletException();
         }
         internalList.add(toAdd);
+    }
+
+    /**
+     * Adds an outlet to the list at the specified index.
+     * The outlet must not already exist in the list.
+     */
+    public void addAtIndex(Outlet toAdd, Index index) {
+        requireAllNonNull(toAdd);
+        if (contains(toAdd)) {
+            throw new DuplicateOutletException();
+        }
+        internalList.add(index.getZeroBased(), toAdd);
     }
 
     /**
