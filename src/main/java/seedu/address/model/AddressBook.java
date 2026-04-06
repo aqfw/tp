@@ -169,6 +169,10 @@ public class AddressBook implements ReadOnlyAddressBook {
         tagCombos.add(tagCombo);
     }
 
+    public void addTagComboAtIndex(TagCombo tagCombo, Index index) {
+        tagCombos.addAtIndex(tagCombo, index);
+    }
+
     /**
      * Removes a {@code tagCombo} from the {@code AddressBook}.
      * The {@code tagCombo} must already exist in the {@code AddressBook}.

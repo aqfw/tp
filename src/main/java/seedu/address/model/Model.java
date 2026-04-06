@@ -154,6 +154,8 @@ public interface Model {
      */
     void addTagCombo(TagCombo tagCombo);
 
+    void addTagComboAtIndex(TagCombo tagCombo, Index index);
+
     /**
      * Gets the TagCombo associated with the tagComboName.
      */
