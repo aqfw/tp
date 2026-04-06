@@ -283,6 +283,11 @@ public class AddByCsvCommandTest {
         }
 
         @Override
+        public void addTagComboAtIndex(TagCombo tagCombo, Index index) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public TagCombo getTagCombo(TagComboName tagComboName) {
             throw new AssertionError("This method should not be called.");
         }
