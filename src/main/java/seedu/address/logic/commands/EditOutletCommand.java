@@ -42,6 +42,9 @@ public class EditOutletCommand extends UndoableCommand {
     public static final String MESSAGE_EDIT_OUTLET_SUCCESS = "Edited Outlet: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_OUTLET = "This outlet already exists in the address book";
+    public static final String UNDO_SUCCESS = "Undo successful: Reverted edit to outlet %1$s";
+    public static final String REDO_SUCCESS = "Redo successful: Re-edited outlet to %1$s";
+
     private final Index index;
     private final EditOutletCommand.EditOutletDescriptor editOutletDescriptor;
 
@@ -49,8 +52,8 @@ public class EditOutletCommand extends UndoableCommand {
     private Outlet originalOutlet;
 
     /**
-     * @param index of the person in the outlet list to edit
-     * @param editOutletDescriptor details to edit the person with
+     * @param index of the outlet in the outlet list to edit
+     * @param editOutletDescriptor details to edit the outlet with
      */
     public EditOutletCommand(Index index, EditOutletCommand.EditOutletDescriptor editOutletDescriptor) {
         requireNonNull(index);
@@ -66,7 +69,7 @@ public class EditOutletCommand extends UndoableCommand {
         List<Outlet> lastShownList = model.getFilteredOutletList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            throw new CommandException(Messages.MESSAGE_INVALID_OUTLET_DISPLAYED_INDEX);
         }
 
         originalOutlet = lastShownList.get(index.getZeroBased());
@@ -82,13 +85,15 @@ public class EditOutletCommand extends UndoableCommand {
     }
 
     @Override
-    public void undo(Model model) {
+    public CommandResult undo(Model model) {
         model.setOutlet(editedOutlet, originalOutlet);
+        return new CommandResult(String.format(UNDO_SUCCESS, Messages.format(originalOutlet)));
     }
 
     @Override
-    public void redo(Model model) {
+    public CommandResult redo(Model model) {
         model.setOutlet(originalOutlet, editedOutlet);
+        return new CommandResult(String.format(REDO_SUCCESS, Messages.format(editedOutlet)));
     }
 
     /**

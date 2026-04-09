@@ -32,6 +32,8 @@ public class AddOutletCommand extends UndoableCommand {
 
     public static final String MESSAGE_SUCCESS = "New outlet added: %1$s";
     public static final String MESSAGE_DUPLICATE_OUTLET = "This outlet already exists in the address book";
+    public static final String UNDO_SUCCESS = "Undo successful: Removed outlet %1$s";
+    public static final String REDO_SUCCESS = "Redo successful: Added outlet %1$s";
 
     private final Outlet toAdd;
 
@@ -57,13 +59,15 @@ public class AddOutletCommand extends UndoableCommand {
     }
 
     @Override
-    public void undo(Model model) {
+    public CommandResult undo(Model model) {
         model.deleteOutlet(toAdd);
+        return new CommandResult(String.format(UNDO_SUCCESS, Messages.format(toAdd)));
     }
 
     @Override
-    public void redo(Model model) {
+    public CommandResult redo(Model model) {
         model.addOutlet(toAdd);
+        return new CommandResult(String.format(REDO_SUCCESS, Messages.format(toAdd)));
     }
 
     @Override

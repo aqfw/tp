@@ -56,10 +56,11 @@ public class EditCommand extends UndoableCommand {
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited %d person(s). First: %s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_EMAIL_AND_PHONE = "A person with this phone number and email address "
-                                                                    + "is already in the address book.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
     public static final String RIGHT_PANE_HEADER = "CANDIDATE EDITED";
+    public static final String UNDO_SUCCESS = "Undo successful: Reverted edits on %d person(s). First: %s";
+    public static final String REDO_SUCCESS = "Redo successful: Re-edited %d person(s). First: %s";
+
     private final Set<Index> indexes;
     private final EditPersonDescriptor editPersonDescriptor;
 
@@ -128,17 +129,23 @@ public class EditCommand extends UndoableCommand {
     }
 
     @Override
-    public void undo(Model model) {
+    public CommandResult undo(Model model) {
         for (int idx = 0; idx < editedPersons.size(); idx++) {
             model.setPerson(editedPersons.get(idx), originalPersons.get(idx));
         }
+        return new CommandResult(String.format(UNDO_SUCCESS,
+                editedPersons.size(), Messages.format(originalPersons.get(0))),
+                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(originalPersons.get(0), RIGHT_PANE_HEADER)));
     }
 
     @Override
-    public void redo(Model model) {
+    public CommandResult redo(Model model) {
         for (int idx = 0; idx < editedPersons.size(); idx++) {
             model.setPerson(originalPersons.get(idx), editedPersons.get(idx));
         }
+        return new CommandResult(String.format(REDO_SUCCESS,
+                editedPersons.size(), Messages.format(editedPersons.get(0))),
+                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(editedPersons.get(0), RIGHT_PANE_HEADER)));
     }
 
     /**

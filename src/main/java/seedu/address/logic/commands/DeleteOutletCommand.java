@@ -30,6 +30,8 @@ public class DeleteOutletCommand extends UndoableCommand {
             + "Example: outlet " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_DELETE_OUTLET_SUCCESS = "Deleted outlet: %1$s";
+    public static final String UNDO_SUCCESS = "Undo successful: Added outlet %1$s";
+    public static final String REDO_SUCCESS = "Redo successful: Deleted outlet %1$s";
     public static final String RIGHT_PANE_HEADER = "CANDIDATE UPDATED";
 
     private final Index targetIndex;
@@ -67,19 +69,21 @@ public class DeleteOutletCommand extends UndoableCommand {
     }
 
     @Override
-    public void undo(Model model) {
+    public CommandResult undo(Model model) {
         model.addOutletAtIndex(outletToDelete, targetIndex);
         for (int idx = 0; idx < assignedPersonsBeforeDelete.size(); idx++) {
             model.setPerson(unassignedPersonsAfterDelete.get(idx), assignedPersonsBeforeDelete.get(idx));
         }
+        return new CommandResult(String.format(UNDO_SUCCESS, Messages.format(outletToDelete)));
     }
 
     @Override
-    public void redo(Model model) {
+    public CommandResult redo(Model model) {
         for (int idx = 0; idx < assignedPersonsBeforeDelete.size(); idx++) {
             model.setPerson(assignedPersonsBeforeDelete.get(idx), unassignedPersonsAfterDelete.get(idx));
         }
         model.deleteOutlet(outletToDelete);
+        return new CommandResult(String.format(REDO_SUCCESS, Messages.format(outletToDelete)));
     }
 
     private void unassignPersonsFromDeletedOutlet(Model model, Outlet outlet) throws CommandException {

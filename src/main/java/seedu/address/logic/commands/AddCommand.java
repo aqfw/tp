@@ -9,6 +9,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_POSTAL_CODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
@@ -45,8 +46,12 @@ public class AddCommand extends UndoableCommand {
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book";
     public static final String RIGHT_PANE_HEADER = "NEW CANDIDATE ADDED";
+    public static final String RIGHT_PANE_HEADER_UNDO = "CANDIDATE DELETED";
+    public static final String UNDO_SUCCESS = "Undo successful: Deleted person %1$s";
+    public static final String REDO_SUCCESS = "Redo successful: Added person %1$s";
 
     private final Person toAdd;
+    private Predicate<? super Person> previousPredicate;
 
     /**
      * Creates an AddCommand to add the specified {@code Person}
@@ -63,6 +68,7 @@ public class AddCommand extends UndoableCommand {
         if (model.hasPerson(toAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
+        previousPredicate = model.getFilteredPersonPredicate();
         model.addPerson(toAdd);
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)),
@@ -91,12 +97,17 @@ public class AddCommand extends UndoableCommand {
     }
 
     @Override
-    public void undo(Model model) {
+    public CommandResult undo(Model model) {
         model.deletePerson(toAdd);
+        model.setFilteredPersonPredicate(previousPredicate);
+        return new CommandResult(String.format(UNDO_SUCCESS, Messages.format(toAdd)),
+                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(toAdd, RIGHT_PANE_HEADER_UNDO)));
     }
 
     @Override
-    public void redo(Model model) {
+    public CommandResult redo(Model model) {
         model.addPerson(toAdd);
+        return new CommandResult(String.format(REDO_SUCCESS, Messages.format(toAdd)),
+                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(toAdd, RIGHT_PANE_HEADER)));
     }
 }

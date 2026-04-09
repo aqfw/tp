@@ -12,7 +12,6 @@ public class RedoCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        model.redo();
-        return new CommandResult("Redo successful!");
+        return model.redo();
     }
 }
