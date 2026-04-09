@@ -66,8 +66,7 @@ HireLens is a **desktop app for managing candidates, optimized for use via a Com
 
 ### Viewing help : `help`
 
-Displays the user guide. For future bug-fixing: to align the colour with the current LightTheme and fully render the
-markdown text.
+Displays the user guide markdown file as raw, but readable markdown text.
 
 Format: `help`
 

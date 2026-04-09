@@ -4,20 +4,11 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Scene?>
 <?import javafx.scene.control.Button?>
-
-<!--- Import new scrolling function -->
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
-
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.HBox?>
-
-<!-- Import new variable scrolling box -->
 <?import javafx.scene.layout.VBox?>
-
-<!--- Import WebView HTML module -->
-<?import javafx.scene.web.WebView?>
-
 <?import javafx.stage.Stage?>
 
 <!-- Changed the window root be resizeable with default sizes -->
@@ -26,29 +17,25 @@
     <Image url="@/images/help_icon.png" />
   </icons>
   <scene>
-    <!--- Default scene width -->
-    <Scene width="900" height="700" >
+    <Scene width="900" height="700">
       <stylesheets>
+        <URL value="@LightTheme.css" />
         <URL value="@HelpWindow.css" />
       </stylesheets>
 
-      <!--- Reference VBox spacing to scene size -->
       <VBox spacing="5.0" prefWidth="${scene.width}" prefHeight="${scene.height}">
         <padding>
           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
         </padding>
 
-        <!-- Scrollable text area that fills both available vertical and horizontal space, 10000 as maximum
+        <!-- Scrollable text area tt fills available vertical and horizontal space -->
         <ScrollPane fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS" prefHeight="10000">
           <TextArea fx:id="helpMessage"
                     editable="false"
                     wrapText="true"
                     VBox.vgrow="ALWAYS"
                     prefHeight="10000"/>
-        </ScrollPane> -->
-
-        <!-- WebView HTML viewing Area -->
-        <WebView fx:id="helpMessage" VBox.vgrow="ALWAYS" />
+        </ScrollPane>
 
         <!-- Button row at the bottom -->
         <HBox alignment="CENTER_RIGHT">

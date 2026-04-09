@@ -1,48 +1,39 @@
-/* Split copyButton and HelpMessage to allow HelpMessage to take different colour */
+/* TextArea styling to match LightTheme */
 #helpMessage {
-    -fx-text-fill: white;
-    -fx-text-font-family: "monospace";
+    -fx-font-family: "monospace";
     -fx-font-size: 12pt;
+    -fx-text-fill: #222222;
 }
 
-/* Force white background behind help text*/
 #helpMessage .content {
-    -fx-background-color: #454545;
+    -fx-background-color: #ffffff;
 }
 
-#copyButton  {
-    -fx-text-fill: white;
-    -fx-background-color: dimgray;
+/* Fixed ScrollPane style to match LightTheme of MainWindow */
+.scroll-pane {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: #ffffff;
+}
+
+/* Fix Root background to match LightTheme */
+.root {
+    -fx-background-color: #f0f0f0;
+}
+
+/* Fix copy button styling to match LightTheme */
+#copyButton {
+    -fx-text-fill: #333333;
+    -fx-background-color: #e0e0e0;
 }
 
 #copyButton:hover {
-    -fx-background-color: gray;
+    -fx-background-color: #cccccc;
 }
 
 #copyButton:armed {
-    -fx-background-color: darkgray;
-}
-
-/*
-No more HBox, to be removed
-#helpMessageContainer {
-    -fx-background-color: derive(#1d1d1d, 20%);
-}
-*/
-
-/* Set Scroll Pane colour, using pref height to limit size of colouration */
-
-.scroll-pane          {
-    -fx-background-color: derive(#1d1d1d, 20%);
-    -fx-border-color: transparent;
-    -fx-pref-height: 100%;
-}
-.scroll-pane .viewport{
-    -fx-background-color: derive(#1d1d1d, 20%);
-    -fx-pref-height: 100%;
-}
-
-/* Additional colour */
-.root {
-    -fx-background-color: derive(#1d1d1d, 20%);
+    -fx-background-color: #b0b0b0;
 }
