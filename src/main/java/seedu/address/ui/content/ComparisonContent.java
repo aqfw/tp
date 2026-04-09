@@ -8,6 +8,8 @@ import javafx.scene.layout.VBox;
 import seedu.address.model.person.Person;
 import seedu.address.ui.DetailedPersonCard;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  *  Renders two {@code DetailedPersonCard} instances side-by-side in the right pane,
  *  which implements the need to compare two candidates visually
@@ -30,6 +32,10 @@ public class ComparisonContent implements RightPaneContent {
      */
     public ComparisonContent(Person firstPerson, String firstHeader, Person secondPerson,
                              String secondHeader) {
+        requireNonNull(firstPerson);
+        requireNonNull(firstHeader);
+        requireNonNull(secondPerson);
+        requireNonNull(secondHeader);
         this.firstPerson = firstPerson;
         this.firstHeader = firstHeader;
         this.secondPerson = secondPerson;
