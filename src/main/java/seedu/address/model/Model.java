@@ -142,7 +142,6 @@ public interface Model {
      * The outlet identity of {@code editedOutlet} must not be the same as another existing outlet in the address
      * book.
      */
-
     void setOutlet(Outlet target, Outlet editedOutlet);
 
     /**
