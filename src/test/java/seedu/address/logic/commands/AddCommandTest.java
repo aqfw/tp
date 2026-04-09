@@ -225,22 +225,22 @@ public class AddCommandTest {
         }
 
         @Override
-        public void undo() throws CommandException {
+        public CommandResult undo() throws CommandException {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public void redo() throws CommandException {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public Predicate<? super Person> getFilteredPersonPredicate() {
+        public CommandResult redo() throws CommandException {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
         public void setFilteredPersonPredicate(Predicate<? super Person> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public Predicate<? super Person> getFilteredPersonPredicate() {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -319,6 +319,11 @@ public class AddCommandTest {
         public void addPerson(Person person) {
             requireNonNull(person);
             personsAdded.add(person);
+        }
+
+        @Override
+        public Predicate<? super Person> getFilteredPersonPredicate() {
+            return null;
         }
 
         @Override

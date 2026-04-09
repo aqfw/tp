@@ -26,6 +26,8 @@ public class AddByCsvCommand extends UndoableCommand {
     public static final String MESSAGE_SUCCESS = "%1$d person(s) added from CSV file.";
     public static final String MESSAGE_DUPLICATE_PERSON =
             "%1$s already exists in the address book.";
+    public static final String UNDO_SUCCESS = "Undo successful: Removed %1$d people.";
+    public static final String REDO_SUCCESS = "Redo successful: Added %1$d people.";
 
     private final List<Person> personsToAdd;
 
@@ -59,20 +61,22 @@ public class AddByCsvCommand extends UndoableCommand {
      * Removes all previously added persons from the model.
      */
     @Override
-    public void undo(Model model) {
+    public CommandResult undo(Model model) {
         for (Person p: personsToAdd) {
             model.deletePerson(p);
         }
+        return new CommandResult(String.format(UNDO_SUCCESS, personsToAdd.size()));
     }
 
     /**
      * Adds all previously removed persons back into the model.
      */
     @Override
-    public void redo(Model model) {
+    public CommandResult redo(Model model) {
         for (Person p: personsToAdd) {
             model.addPerson(p);
         }
+        return new CommandResult(String.format(REDO_SUCCESS, personsToAdd.size()));
     }
 
     @Override

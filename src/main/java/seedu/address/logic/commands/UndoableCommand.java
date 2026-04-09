@@ -11,7 +11,7 @@ public abstract class UndoableCommand extends Command {
     /**
      * Reverts the effects of this command on the given {@code Model}.
      */
-    public abstract void undo(Model model) throws CommandException;
+    public abstract CommandResult undo(Model model) throws CommandException;
 
-    public abstract void redo(Model model) throws CommandException;
+    public abstract CommandResult redo(Model model) throws CommandException;
 }

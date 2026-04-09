@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.UndoableCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.outlet.Outlet;
@@ -142,7 +143,6 @@ public interface Model {
      * The outlet identity of {@code editedOutlet} must not be the same as another existing outlet in the address
      * book.
      */
-
     void setOutlet(Outlet target, Outlet editedOutlet);
 
     /**
@@ -199,7 +199,7 @@ public interface Model {
 
     void recordCommand(UndoableCommand undoableCommand);
 
-    void undo() throws CommandException;
+    CommandResult undo() throws CommandException;
 
-    void redo() throws CommandException;
+    CommandResult redo() throws CommandException;
 }

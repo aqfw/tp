@@ -26,6 +26,8 @@ public class FindCommand extends UndoableCommand {
             + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: " + COMMAND_WORD + " alice bob charlie";
+    public static final String UNDO_SUCCESS = "Undo successful: Returned to previous view.";
+    public static final String REDO_SUCCESS = "Redo successful: Reapplied filter.";
 
     private final NameContainsKeywordsPredicate predicate;
     private Predicate<? super Person> previousPredicate;
@@ -47,13 +49,17 @@ public class FindCommand extends UndoableCommand {
     }
 
     @Override
-    public void undo(Model model) {
+    public CommandResult undo(Model model) {
         model.setFilteredPersonPredicate(previousPredicate);
+        return new CommandResult(UNDO_SUCCESS, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new TagCountsContent(model.getTagCounter())));
     }
 
     @Override
-    public void redo(Model model) {
+    public CommandResult redo(Model model) {
         model.setFilteredPersonPredicate(currentPredicate);
+        return new CommandResult(REDO_SUCCESS, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new TagCountsContent(model.getTagCounter())));
     }
 
     @Override

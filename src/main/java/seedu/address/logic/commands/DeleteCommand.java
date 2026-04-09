@@ -27,8 +27,10 @@ public class DeleteCommand extends UndoableCommand {
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted Person: %1$s";
-
+    public static final String UNDO_SUCCESS = "Undo successful: Added person %1$s";
+    public static final String REDO_SUCCESS = "Redo successful: Deleted person %1$s";
     public static final String RIGHT_PANE_HEADER = "CANDIDATE DELETED";
+    public static final String RIGHT_PANE_HEADER_UNDO = "NEW CANDIDATE ADDED";
 
     private final Index targetIndex;
     private Person deletedPerson;
@@ -75,12 +77,16 @@ public class DeleteCommand extends UndoableCommand {
     }
 
     @Override
-    public void undo(Model model) {
+    public CommandResult undo(Model model) {
         model.addPersonAtIndex(deletedPerson, targetIndex);
+        return new CommandResult(String.format(UNDO_SUCCESS, Messages.format(deletedPerson)),
+                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(deletedPerson, RIGHT_PANE_HEADER_UNDO)));
     }
 
     @Override
-    public void redo(Model model) {
+    public CommandResult redo(Model model) {
         model.deletePerson(deletedPerson);
+        return new CommandResult(String.format(REDO_SUCCESS, Messages.format(deletedPerson)),
+                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(deletedPerson, RIGHT_PANE_HEADER)));
     }
 }

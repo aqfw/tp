@@ -28,7 +28,7 @@ public abstract class Command {
      * @throws CommandException If the undo operation fails.
      * @throws UnsupportedOperationException If the command does not support undo.
      */
-    public void undo(Model model) throws CommandException {
+    public CommandResult undo(Model model) throws CommandException {
         throw new UnsupportedOperationException("Undo not supported.");
     }
 }
