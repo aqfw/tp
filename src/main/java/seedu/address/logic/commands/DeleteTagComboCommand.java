@@ -24,6 +24,8 @@ public class DeleteTagComboCommand extends UndoableCommand {
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_DELETE_TAG_COMBO_SUCCESS = "Deleted Tag Combo: %1$s";
+    public static final String UNDO_SUCCESS = "Undo successful: Added Tag Combo %1$s";
+    public static final String REDO_SUCCESS = "Redo successful: Removed Tag Combo %1$s";
 
     private final Index targetIndex;
     private TagCombo deletedTagCombo;
@@ -48,13 +50,17 @@ public class DeleteTagComboCommand extends UndoableCommand {
     }
 
     @Override
-    public void undo(Model model) {
+    public CommandResult undo(Model model) throws CommandException {
         model.addTagComboAtIndex(deletedTagCombo, targetIndex);
+        return new CommandResult(String.format(UNDO_SUCCESS, Messages.format(deletedTagCombo)),
+                UiAction.SHOW_TAG_COMBO);
     }
 
     @Override
-    public void redo(Model model) {
+    public CommandResult redo(Model model) throws CommandException {
         model.deleteTagCombo(deletedTagCombo);
+        return new CommandResult(String.format(REDO_SUCCESS, Messages.format(deletedTagCombo)),
+                UiAction.SHOW_TAG_COMBO);
     }
 
     @Override

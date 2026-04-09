@@ -78,11 +78,10 @@ public class DeleteOutletCommand extends UndoableCommand {
     }
 
     @Override
-    public void redo(Model model) {
+    public CommandResult redo(Model model) {
         for (int idx = 0; idx < assignedPersonsBeforeDelete.size(); idx++) {
             model.setPerson(assignedPersonsBeforeDelete.get(idx), unassignedPersonsAfterDelete.get(idx));
         }
-    public CommandResult redo(Model model) {
         model.deleteOutlet(outletToDelete);
         return new CommandResult(String.format(REDO_SUCCESS, Messages.format(outletToDelete)));
     }

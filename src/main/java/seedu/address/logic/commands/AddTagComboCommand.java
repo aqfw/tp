@@ -28,6 +28,8 @@ public class AddTagComboCommand extends UndoableCommand {
     public static final String MESSAGE_SUCCESS = "New Tag Combo added: %1$s";
     public static final String MESSAGE_DUPLICATE_TAG_COMBO = "A Tag Combo with this name or tag set is "
             + "already in the address book.";
+    public static final String UNDO_SUCCESS = "Undo successful: Removed Tag Combo %1$s";
+    public static final String REDO_SUCCESS = "Redo successful: Added Tag Combo %1$s";
 
     private final TagCombo toAdd;
 
@@ -53,13 +55,15 @@ public class AddTagComboCommand extends UndoableCommand {
     }
 
     @Override
-    public void undo(Model model) {
+    public CommandResult undo(Model model) throws CommandException {
         model.deleteTagCombo(toAdd);
+        return new CommandResult(String.format(UNDO_SUCCESS, Messages.format(toAdd)), UiAction.SHOW_TAG_COMBO);
     }
 
     @Override
-    public void redo(Model model) {
+    public CommandResult redo(Model model) throws CommandException {
         model.addTagCombo(toAdd);
+        return new CommandResult(String.format(REDO_SUCCESS, Messages.format(toAdd)), UiAction.SHOW_TAG_COMBO);
     }
 
     @Override
