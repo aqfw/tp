@@ -21,6 +21,7 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -178,6 +179,31 @@ public class FilterCommandTest {
         assertCommandSuccess(command, model, expectedMessage, expectedModel, UiAction.UPDATE_RIGHT_PANE,
                 Optional.of(new TagCountsContent(new TagCounter(new LinkedHashMap<>()))));
         assertEquals(Arrays.asList(), model.getFilteredPersonList());
+    }
+
+    @Test
+    public void undo_filterCommand_success() throws CommandException {
+        Set<Tag> tagSet = Set.of(new Tag("friends"));
+        FilterCommand command = new FilterCommand(tagSet, Set.of());
+
+        command.execute(model);
+        model.recordCommand(command);
+        model.undo();
+
+        assertEquals(expectedModel.getFilteredPersonList(), model.getFilteredPersonList());
+    }
+
+    @Test
+    public void redo_filterCommand_success() throws CommandException {
+        Set<Tag> tagSet = Set.of(new Tag("friends"));
+        FilterCommand command = new FilterCommand(tagSet, Set.of());
+
+        command.execute(model);
+        model.recordCommand(command);
+        model.undo();
+        model.redo();
+
+        assertEquals(Arrays.asList(ALICE, BENSON, DANIEL), model.getFilteredPersonList());
     }
 
     @Test
