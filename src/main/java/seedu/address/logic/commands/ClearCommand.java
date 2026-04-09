@@ -7,7 +7,9 @@ import java.util.function.Predicate;
 
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
+import seedu.address.model.outlet.Outlet;
 import seedu.address.model.person.Person;
+import seedu.address.model.tag.TagCombo;
 
 /**
  * Clears the address book.
@@ -20,12 +22,16 @@ public class ClearCommand extends UndoableCommand {
     public static final String REDO_SUCCESS = "Redo successful: Address book has been cleared.";
 
     private ArrayList<Person> previousPersonList;
+    private ArrayList<Outlet> previousOutletList;
+    private ArrayList<TagCombo> previousTagComboList;
     private Predicate<? super Person> previousPredicate;
 
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
         previousPersonList = new ArrayList<>(model.getAddressBook().getPersonList());
+        previousOutletList = new ArrayList<>(model.getAddressBook().getOutletList());
+        previousTagComboList = new ArrayList<>(model.getAddressBook().getTagComboList());
         previousPredicate = model.getFilteredPersonPredicate();
         model.setAddressBook(new AddressBook());
         return new CommandResult(MESSAGE_SUCCESS);
@@ -35,6 +41,12 @@ public class ClearCommand extends UndoableCommand {
     public CommandResult undo(Model model) {
         for (Person person : previousPersonList) {
             model.addPerson(person);
+        }
+        for (Outlet outlet : previousOutletList) {
+            model.addOutlet(outlet);
+        }
+        for (TagCombo tagCombo : previousTagComboList) {
+            model.addTagCombo(tagCombo);
         }
         model.setFilteredPersonPredicate(previousPredicate);
         return new CommandResult(UNDO_SUCCESS);

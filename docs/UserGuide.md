@@ -245,7 +245,7 @@ To demonstrate:
 - `edit 1 n/John Doe`
 - `redo` -> "Nothing to redo!"
 
-Format: `undo`
+Format: `redo`
 
 * `add` Adds the `Person` deleted.
 * `addcsv` Adds all `Person`s deleted.
@@ -329,18 +329,6 @@ Format: `outlet delete <index>`
 Examples:
 
 - `outlet delete 1`
-
-### Editing Outlets : `outlet edit`
-
-Edits an `Outlet`.
-
-Format: `outlet edit <index> [n/NAME] [a/ADDRESS] [pc/POSTAL_CODE] ​`
-
-Examples:
-
-- `outlet edit 1 n/Techco` Edits the name of the first outlet to be `Techco`
-- `outlet edit 2 a/Marina Bay Sands pc/298429` Edits the address and postal code of the second outlet to be `Marina Bay Sands` and `298429` respectively.
-
 
 ### Listing Outlets : `outlet list`
 
