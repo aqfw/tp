@@ -17,7 +17,9 @@ public class ListCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "list";
 
-    public static final String MESSAGE_SUCCESS = "Listed all persons";
+    public static final String MESSAGE_SUCCESS = "Listed all persons.";
+    public static final String UNDO_SUCCESS = "Undo successful: Returned to previous view.";
+    public static final String REDO_SUCCESS = "Redo successful: Now viewing all candidates.";
 
     private Predicate<? super Person> previousPredicate;
 
@@ -31,12 +33,16 @@ public class ListCommand extends UndoableCommand {
     }
 
     @Override
-    public void undo(Model model) {
+    public CommandResult undo(Model model) {
         model.setFilteredPersonPredicate(previousPredicate);
+        return new CommandResult(UNDO_SUCCESS, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new TagCountsContent(model.getTagCounter())));
     }
 
     @Override
-    public void redo(Model model) {
+    public CommandResult redo(Model model) {
         model.resetFilteredPersonList();
+        return new CommandResult(REDO_SUCCESS, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new TagCountsContent(model.getTagCounter())));
     }
 }

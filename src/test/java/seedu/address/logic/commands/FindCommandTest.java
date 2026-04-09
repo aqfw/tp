@@ -18,6 +18,7 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -127,6 +128,32 @@ public class FindCommandTest {
         expectedModel.updateFilteredPersonList(secondPredicate);
         assertCommandSuccess(command2, model, expectedMessage, expectedModel, UiAction.UPDATE_RIGHT_PANE,
                 Optional.of(new TagCountsContent(new TagCounter(tagMap))));
+    }
+
+
+    @Test
+    public void undo_findCommand_success() throws CommandException {
+        NameContainsKeywordsPredicate predicate = preparePredicate("Kurz Elle Kunz");
+        FindCommand command = new FindCommand(predicate);
+
+        command.execute(model);
+        model.recordCommand(command);
+        model.undo();
+
+        assertEquals(expectedModel.getFilteredPersonList(), model.getFilteredPersonList());
+    }
+
+    @Test
+    public void redo_findCommand_success() throws CommandException {
+        NameContainsKeywordsPredicate predicate = preparePredicate("Kurz Elle Kunz");
+        FindCommand command = new FindCommand(predicate);
+
+        command.execute(model);
+        model.recordCommand(command);
+        model.undo();
+        model.redo();
+
+        assertEquals(Arrays.asList(CARL, ELLE, FIONA), model.getFilteredPersonList());
     }
 
     @Test

@@ -7,7 +7,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_POSTAL_CODE;
 
 import seedu.address.commons.core.index.Index;
-import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditOutletCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -26,7 +25,8 @@ public class EditOutletCommandParser implements Parser<EditOutletCommand> {
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
         } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE), pe);
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditOutletCommand.MESSAGE_USAGE),
+                                                    pe);
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_ADDRESS, PREFIX_POSTAL_CODE);
@@ -45,7 +45,7 @@ public class EditOutletCommandParser implements Parser<EditOutletCommand> {
         }
 
         if (!editOutletDescriptor.isAnyFieldEdited()) {
-            throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
+            throw new ParseException(EditOutletCommand.MESSAGE_NOT_EDITED);
         }
 
         return new EditOutletCommand(index, editOutletDescriptor);

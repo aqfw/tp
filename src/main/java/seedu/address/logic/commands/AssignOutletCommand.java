@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
@@ -38,18 +39,28 @@ public class AssignOutletCommand extends UndoableCommand {
             + "Examples: outlet " + COMMAND_WORD + " 1 2, outlet " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_SUCCESS = "Assigned %1$s to outlet %2$s";
+    public static final String MESSAGE_NON_SINGAPORE_ADDRESS_WARNING =
+            "Warning: Candidate address appears to be outside Singapore.";
     public static final String MESSAGE_NO_OUTLETS_AVAILABLE = "No outlets available to assign.";
     public static final String MESSAGE_MISSING_POSTAL_DATA =
             "Unable to load SG postal dataset from resources: /data/SG_postal.csv";
+    public static final String UNDO_SUCCESS = "Undo successful: Unassigned %1$s from outlet %2$s.";
+    public static final String REDO_SUCCESS = "Redo successful: Reassigned %1$s to outlet %2$s.";
 
     private static final String SG_POSTAL_DATA_PATH = "/data/SG_postal.csv";
     private static final Map<String, Coordinate> SG_POSTAL_COORDINATES = new HashMap<>();
+    private static final String[] NON_SINGAPORE_ADDRESS_KEYWORDS = {
+        "malaysia", "indonesia", "thailand", "vietnam", "philippines", "china", "india", "japan", "korea",
+        "australia", "new zealand", "usa", "united states", "canada", "uk", "united kingdom", "england",
+        "germany", "france", "tokyo", "osaka", "seoul", "new york", "london", "paris", "berlin", "chicago"
+    };
 
     private final Index candidateIndex;
     private final Index outletIndex;
 
     private Person personToAssign;
     private Person assignedPerson;
+    private Outlet outletToAssign;
 
     /**
      * Creates an AssignOutletCommand to assign the nearest outlet to the specified candidate.
@@ -85,7 +96,7 @@ public class AssignOutletCommand extends UndoableCommand {
         }
 
         personToAssign = lastShownPersons.get(candidateIndex.getZeroBased());
-        Outlet outletToAssign = outletIndex == null
+        outletToAssign = outletIndex == null
                 ? resolveNearestOutlet(personToAssign, lastShownOutlets)
                 : resolveSpecifiedOutlet(lastShownOutlets);
         assignedPerson = new Person(personToAssign.getName(), personToAssign.getPhone(),
@@ -99,8 +110,14 @@ public class AssignOutletCommand extends UndoableCommand {
         }
 
         model.resetFilteredPersonList();
+        String feedbackToUser = String.format(MESSAGE_SUCCESS,
+                personToAssign.getName(), outletToAssign.getOutletName());
+        if (isAddressLikelyOutsideSingapore(personToAssign.getAddress().value)) {
+            feedbackToUser = feedbackToUser + "\n" + MESSAGE_NON_SINGAPORE_ADDRESS_WARNING;
+        }
+
         return new CommandResult(
-                String.format(MESSAGE_SUCCESS, personToAssign.getName(), outletToAssign.getOutletName()),
+                feedbackToUser,
                 UiAction.UPDATE_RIGHT_PANE,
                 Optional.of(new PersonContent(assignedPerson, "Candidate #" + candidateIndex.getOneBased())));
     }
@@ -215,6 +232,22 @@ public class AssignOutletCommand extends UndoableCommand {
         return postal.replaceFirst("^0+(?!$)", "");
     }
 
+    private static boolean isAddressLikelyOutsideSingapore(String address) {
+        String normalizedAddress = address.toLowerCase(Locale.ROOT);
+
+        if (normalizedAddress.contains("singapore")) {
+            return false;
+        }
+
+        for (String keyword : NON_SINGAPORE_ADDRESS_KEYWORDS) {
+            if (normalizedAddress.contains(keyword)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private static class Coordinate {
         private final double latitude;
         private final double longitude;
@@ -232,13 +265,21 @@ public class AssignOutletCommand extends UndoableCommand {
     }
 
     @Override
-    public void undo(Model model) {
+    public CommandResult undo(Model model) {
         model.setPerson(assignedPerson, personToAssign);
+        return new CommandResult(
+                String.format(UNDO_SUCCESS, personToAssign.getName(), outletToAssign.getOutletName()),
+                UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new PersonContent(personToAssign, "Candidate #" + candidateIndex.getOneBased())));
     }
 
     @Override
-    public void redo(Model model) {
+    public CommandResult redo(Model model) {
         model.setPerson(personToAssign, assignedPerson);
+        return new CommandResult(
+                String.format(REDO_SUCCESS, personToAssign.getName(), outletToAssign.getOutletName()),
+                UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new PersonContent(assignedPerson, "Candidate #" + candidateIndex.getOneBased())));
     }
 
     @Override

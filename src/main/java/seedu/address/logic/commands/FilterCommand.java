@@ -32,6 +32,8 @@ public class FilterCommand extends UndoableCommand {
             + PREFIX_TAG + "java";
 
     public static final String MESSAGE_TAG_COMBO_NOT_FOUND = "The tag combo was not found in the system!";
+    public static final String UNDO_SUCCESS = "Undo successful: Returned to previous view.";
+    public static final String REDO_SUCCESS = "Redo successful: Reapplied filter.";
 
     private final Set<Tag> tagList;
     private final Set<TagComboName> tagComboNameList;
@@ -72,13 +74,17 @@ public class FilterCommand extends UndoableCommand {
     }
 
     @Override
-    public void undo(Model model) {
+    public CommandResult undo(Model model) {
         model.setFilteredPersonPredicate(previousPredicate);
+        return new CommandResult(UNDO_SUCCESS, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new TagCountsContent(model.getTagCounter())));
     }
 
     @Override
-    public void redo(Model model) {
+    public CommandResult redo(Model model) {
         model.setFilteredPersonPredicate(currentPredicate);
+        return new CommandResult(REDO_SUCCESS, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new TagCountsContent(model.getTagCounter())));
     }
 
     @Override

@@ -10,6 +10,7 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.outlet.Outlet;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.ui.UiAction;
@@ -28,10 +29,14 @@ public class UnassignOutletCommand extends UndoableCommand {
             + "Example: outlet " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_SUCCESS = "Unassigned %1$s from working outlet";
+    public static final String UNDO_SUCCESS = "Undo successful: Reassigned %1$s to outlet %2$s.";
+    public static final String REDO_SUCCESS = "Redo successful: Unassigned %1$s from outlet %2$s.";
+
     private final Index candidateIndex;
 
     private Person personToUnassign;
     private Person unassignedPerson;
+    private Outlet outletAssigned;
 
     /**
      * Creates an UnassignOutletCommand to unassign the specified candidate.
@@ -51,6 +56,7 @@ public class UnassignOutletCommand extends UndoableCommand {
         }
 
         personToUnassign = lastShownPersons.get(candidateIndex.getZeroBased());
+        outletAssigned = personToUnassign.getWorkingAddress();
         unassignedPerson = new Person(personToUnassign.getName(), personToUnassign.getPhone(),
                 personToUnassign.getEmail(), personToUnassign.getAddress(), personToUnassign.getPostalCode(),
                 personToUnassign.getTags(), null);
@@ -68,13 +74,21 @@ public class UnassignOutletCommand extends UndoableCommand {
     }
 
     @Override
-    public void undo(Model model) {
+    public CommandResult undo(Model model) {
         model.setPerson(unassignedPerson, personToUnassign);
+        return new CommandResult(
+                String.format(UNDO_SUCCESS, personToUnassign.getName(), outletAssigned.getOutletName()),
+                UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new PersonContent(personToUnassign, "Candidate #" + candidateIndex.getOneBased())));
     }
 
     @Override
-    public void redo(Model model) {
+    public CommandResult redo(Model model) {
         model.setPerson(personToUnassign, unassignedPerson);
+        return new CommandResult(
+                String.format(REDO_SUCCESS, unassignedPerson.getName(), outletAssigned.getOutletName()),
+                UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new PersonContent(unassignedPerson, "Candidate #" + candidateIndex.getOneBased())));
     }
 
     @Override

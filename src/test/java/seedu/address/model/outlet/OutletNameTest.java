@@ -26,9 +26,12 @@ public class OutletNameTest {
 
         assertFalse(OutletName.isValidOutletName(""));
         assertFalse(OutletName.isValidOutletName("   "));
+        assertFalse(OutletName.isValidOutletName("ABCDEFGHIJKLMNOPQRSTUVWXYZ1"));
+        assertFalse(OutletName.isValidOutletName("Something n/Something"));
 
         assertTrue(OutletName.isValidOutletName("TechCo"));
         assertTrue(OutletName.isValidOutletName("FinServ Marina"));
+        assertTrue(OutletName.isValidOutletName("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
     }
 
     @Test

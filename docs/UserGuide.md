@@ -6,7 +6,7 @@ title: User Guide
 HireLens is a **desktop app for managing candidates, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, HireLens can get your candidate management tasks done faster than traditional GUI apps.
 
 * Table of Contents
-{:toc}
+  {:toc}
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -26,15 +26,15 @@ HireLens is a **desktop app for managing candidates, optimized for use via a Com
 5. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
-   * `list` : Lists all contacts.
+    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+    * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
 
-   * `delete 3` : Deletes the 3rd contact shown in the current list.
+    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
-   * `clear` : Deletes all contacts.
+    * `clear` : Deletes all contacts.
 
-   * `exit` : Exits the app.
+    * `exit` : Exits the app.
 
 6. Refer to the [Features](#features) below for details of each command.
 
@@ -97,20 +97,22 @@ Format: `list`
 
 ### Editing a person : `edit`
 
-Edits an existing person in the address book.
+Edits at least one existing person in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [pc/POSTAL_CODE] [t/TAG]…​`
+Format: `edit INDEXES [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [pc/POSTAL_CODE] [t/TAG]…​`
 
-* Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
+* Edits the people at the specified `INDEXES`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
+* At least one index must be provided and all the indexes provided must be valid inputs.
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
 * You can remove all the person’s tags by typing `t/` without
-    specifying any tags after it.
+  specifying any tags after it.
 
 Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+*  `edit 1 2 3 t/python` Edits the tags of the 1st, 2nd and 3rd person to be replaced by python.
 
 ### Locating persons by name: `find`
 
@@ -129,7 +131,7 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
 Examples:
 * `find John` returns `john` and `John Doe`
 * `find carl ethan` returns `Carl Kurz`, `Ethan Lim` <br>
-![result for 'find carl ethan'](images/findCarlEthanResult.png)
+  ![result for 'find carl ethan'](images/findCarlEthanResult.png)
 
 ### Locating persons by tag: `filter`
 
@@ -213,16 +215,52 @@ Format: `clear`
 
 ### Undoing previous action : `undo`
 
-Reverts the previous action performed. 
+Reverts the previous action performed.
+Note that the actions of a user are not saved when the app is closed. Thus, closing the app and attempting to
+undo the last action performed will result in the message "Nothing to undo!".
 
 Format: `undo`
 
 * `add` Deletes the `Person` added.
 * `addcsv` Deletes all `Person`s added.
+* `outlet add` Deletes the `Outlet` added.
+* `addtagcombo` Deletes the `tagcombo` added.
 * `delete` Adds the `Person` deleted.
+* `outlet delete` Adds the `Outlet` deleted.
+* `deletetagcombo` Adds the `tagcombo` deleted.
 * `edit` Returns the edited `Person` to original state.
+* `outlet edit` Returns the edited `Outlet` to the original state.
+* `outlet assign` Unassigns the `Person` from the given `Outlet`.
+* `outlet unassign` Reassigns the `Person` to the previous `Outlet`.
 * `list`, `filter`, `find` Returns to the previous view of the Address Book.
 * `clear` Adds all `Person`s deleted.
+
+### Redoing previous action : `undo`
+
+Redoes the previous action performed.
+Note that after performing a new action, the previous undo cannot be redone. This is to prevent complicated interactions
+that may arise from editing an entry and then redoing the previous edit.
+To demonstrate:
+- `edit 1 t/python`
+- `undo`
+- `edit 1 n/John Doe`
+- `redo` -> "Nothing to redo!"
+
+Format: `undo`
+
+* `add` Adds the `Person` deleted.
+* `addcsv` Adds all `Person`s deleted.
+* `outlet add` Adds the `Outlet` deleted.
+* `addtagcombo` Adds the `tagcombo` deleted.
+* `delete` Deletes the `Person` added.
+* `outlet delete` Deletes the `Outlet` added.
+* `deletetagcombo` Deletes the `tagcombo` added.
+* `edit` Returns the original `Person` to edited state.
+* `outlet edit` Returns the original `Outlet` to the edited state.
+* `outlet assign` Reassigns the `Person` to the given `Outlet`.
+* `outlet unassign` Unassigns the `Person` from the previous `Outlet`.
+* `list`, `filter`, `find` Returns to the filtered view of the Address Book.
+* `clear` Deletes all `Person`s added.
 
 ### Exiting the program : `exit`
 
@@ -236,10 +274,50 @@ Adds an `Outlet`.
 
 Format: `outlet add n/<name> a/<address> pc/<postalCode>`
 
+- Outlet name must be at most 26 characters long.
+- Outlet address must be at most 35 characters long.
+- Outlet name and address must not contain delimiters.
+
 Examples:
 
 - `outlet add n/FinServ a/Marina Bay pc/018956`
 - `outlet add n/TechCo a/Raffles Place pc/048623`
+
+### Editing Outlets : `outlet edit`
+
+Edits an existing `Outlet`.
+
+Format: `outlet edit <index> [n/<name>] [a/<address>] [pc/<postalCode>]`
+
+Examples:
+
+- `outlet edit 1 a/One Raffles Place pc/048616`
+- `outlet edit 2 n/TechHub`
+
+### Assigning Candidates to Outlets : `outlet assign`
+
+Assigns a candidate to an `Outlet`.
+
+Format: `outlet assign <candidateIndex> [outletIndex]`
+
+- If `outletIndex` is omitted, the candidate is assigned to the nearest outlet by postal code.
+- If candidate address appears to be outside Singapore, assignment still succeeds and a warning is shown.
+- The outside-Singapore warning is heuristic (keyword-based) and may have false positives/negatives.
+
+Examples:
+
+- `outlet assign 2 1`
+- `outlet assign 2`
+
+### Unassigning Candidates from Outlets : `outlet unassign`
+
+Unassigns a candidate from their working `Outlet`.
+
+Format: `outlet unassign <candidateIndex>`
+
+Examples:
+
+- `outlet unassign 2`
 
 ### Deleting Outlets : `outlet delete`
 
@@ -247,9 +325,23 @@ Deletes an `Outlet`.
 
 Format: `outlet delete <index>`
 
+- If candidates are assigned to the deleted outlet, they are automatically unassigned.
+
 Examples:
 
 - `outlet delete 1`
+
+### Editing Outlets : `outlet edit`
+
+Edits an `Outlet`.
+
+Format: `outlet edit <index> [n/NAME] [a/ADDRESS] [pc/POSTAL_CODE] ​`
+
+Examples:
+
+- `outlet edit 1 n/Techco` Edits the name of the first outlet to be `Techco`
+- `outlet edit 2 a/Marina Bay Sands pc/298429` Edits the address and postal code of the second outlet to be `Marina Bay Sands` and `298429` respectively.
+
 
 ### Listing Outlets : `outlet list`
 
@@ -303,20 +395,26 @@ _Details coming soon ......_
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd pc/123456 t/friend t/colleague`
+**Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS pc/POSTAL_CODE [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd pc/123456 t/friend t/colleague`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [pc/POSTAL_CODE] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Edit** | `edit INDEXES [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [pc/POSTAL_CODE] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**Filter** | `filter`<br> e.g., `filter t/java t/python`
+**Filter** | `filter t/TAG [t/TAG]... [tc/TAG_COMBO]... `<br> e.g., `filter t/java t/python tc/ml dev`
 **List** | `list`
 **Help** | `help`
+**Undo** | `undo`
+**Redo** | `redo`
 **List Tags** | `listtags`
 **Add Tag Combo** | `addtagcombo NAME t/TAG t/TAG [t/TAG]...`<br> e.g., `addtagcombo ml dev t/python t/ml`
 **Delete Tag Combo** | `deletetagcombo INDEX`<br> e.g., `deletetagcombo 1`
 **List Tag Combos** | `listtagcombo`
 **Add by csv** | `addcsv`
 **Add Outlet** | `outlet add n/<name> a/<address> pc/<postalCode>` <br> e.g., `outlet add n/FinServ a/Marina Bay pc/018956`
+**Edit Outlet** | `outlet edit <index> [n/<name>] [a/<address>] [pc/<postalCode>]` <br> e.g., `outlet edit 1 a/One Raffles Place pc/048616`
+**Assign Outlet** | `outlet assign <candidateIndex> [outletIndex]` <br> e.g., `outlet assign 2 1`
+**Unassign Outlet** | `outlet unassign <candidateIndex>` <br> e.g., `outlet unassign 2`
 **Delete Outlet** | `outlet delete <index>` <br> e.g., `outlet delete 1`
+**Edit Outlet** | `outlet edit <index> [n/NAME] [a/ADDRESS] [pc/POSTAL_CODE]` <br> e.g., `outlet edit 1 n/Techco`
 **List Outlets** | `outlet list`
 **Compare Candidates**| `compare INDEX_1 INDEX_2` <br> e.g., `compare 1 2`

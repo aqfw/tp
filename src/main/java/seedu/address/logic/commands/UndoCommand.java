@@ -12,7 +12,6 @@ public class UndoCommand extends Command {
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
-        model.undo();
-        return new CommandResult("Undo successful!");
+        return model.undo();
     }
 }

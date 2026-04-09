@@ -14,6 +14,7 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.Command;
+import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.UndoableCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.outlet.Outlet;
@@ -294,15 +295,15 @@ public class ModelManager implements Model {
 
     /** Undoes the last executed command. */
     @Override
-    public void undo() throws CommandException {
+    public CommandResult undo() throws CommandException {
         if (!canUndo()) {
             throw new CommandException("Nothing to undo.");
         }
 
         UndoableCommand lastCommand = (UndoableCommand) undoStack.pop();
-        lastCommand.undo(this);
-
         redoStack.push(lastCommand);
+
+        return lastCommand.undo(this);
     }
 
     public boolean canRedo() {
@@ -310,14 +311,14 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void redo() throws CommandException {
+    public CommandResult redo() throws CommandException {
         if (!canRedo()) {
             throw new CommandException("Nothing to redo.");
         }
 
         UndoableCommand lastCommand = (UndoableCommand) redoStack.pop();
-        lastCommand.redo(this);
-
         undoStack.push(lastCommand);
+
+        return lastCommand.redo(this);
     }
 }
