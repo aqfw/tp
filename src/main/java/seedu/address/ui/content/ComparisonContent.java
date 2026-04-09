@@ -7,7 +7,6 @@ import java.util.Objects;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-
 import seedu.address.model.person.Person;
 import seedu.address.ui.DetailedPersonCard;
 
