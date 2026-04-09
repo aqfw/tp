@@ -7,6 +7,8 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_POSTAL_CODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.model.tag.TagComboName.MESSAGE_CONSTRAINTS;
+import static seedu.address.model.tag.TagComboName.isValidName;
 
 import java.util.Set;
 import java.util.stream.Stream;
@@ -34,6 +36,9 @@ public class AddTagComboCommandParser implements Parser<AddTagComboCommand> {
 
         if (!arePrefixesPresent(argMultimap, PREFIX_TAG) || argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddTagComboCommand.MESSAGE_USAGE));
+        }
+        if (!isValidName(argMultimap.getPreamble())) {
+            throw new ParseException(MESSAGE_CONSTRAINTS);
         }
 
         argMultimap.verifyDuplicatePrefixesPresent(PREFIX_TAG);

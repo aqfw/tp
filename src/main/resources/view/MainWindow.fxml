@@ -56,7 +56,7 @@
             </padding>
           </StackPane>
 
-          <HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+          <HBox>
             <GridPane HBox.hgrow="ALWAYS" vgap="5" hgap="10" minHeight="18" prefHeight="18" maxHeight="18">
               <columnConstraints>
                 <ColumnConstraints minWidth="50" prefWidth="50" maxWidth="50" hgrow="NEVER" />
