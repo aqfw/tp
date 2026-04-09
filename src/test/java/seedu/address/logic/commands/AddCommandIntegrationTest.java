@@ -83,10 +83,11 @@ public class AddCommandIntegrationTest {
     @Test
     public void redo_addCommand_success() throws CommandException {
         Person validPerson = new PersonBuilder().build();
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
 
         AddCommand addCommand = new AddCommand(validPerson);
         addCommand.execute(model);
-        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.addPerson(validPerson);
         model.recordCommand(addCommand);
 
         model.undo();

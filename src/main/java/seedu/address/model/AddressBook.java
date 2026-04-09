@@ -137,6 +137,10 @@ public class AddressBook implements ReadOnlyAddressBook {
         outlets.add(outlet);
     }
 
+    /**
+     * Adds an outlet to the address book at a specified index.
+     * The outlet must not already exist in the address book.
+     */
     public void addOutletAtIndex(Outlet outlet, Index index) {
         outlets.addAtIndex(outlet, index);
     }
@@ -167,6 +171,14 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     public void addTagCombo(TagCombo tagCombo) {
         tagCombos.add(tagCombo);
+    }
+
+    /**
+     * Adds a {@code tagCombo} to the {@code AddressBook} at a specified index.
+     * The {@code tagCombo} must not already exist in the {@code AddressBook}.
+     */
+    public void addTagComboAtIndex(TagCombo tagCombo, Index index) {
+        tagCombos.addAtIndex(tagCombo, index);
     }
 
     /**

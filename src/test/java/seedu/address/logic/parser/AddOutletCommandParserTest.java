@@ -29,6 +29,8 @@ import seedu.address.testutil.OutletBuilder;
 public class AddOutletCommandParserTest {
 
     private static final String INVALID_OUTLET_NAME_DESC = " n/   ";
+    private static final String INVALID_OUTLET_NAME_TOO_LONG_DESC = " n/ABCDEFGHIJKLMNOPQRSTUVWXYZ1";
+    private static final String INVALID_OUTLET_ADDRESS_TOO_LONG_DESC = " a/123456789012345678901234567890123456";
     private final AddOutletCommandParser parser = new AddOutletCommandParser();
 
     @Test
@@ -66,8 +68,12 @@ public class AddOutletCommandParserTest {
     public void parse_invalidValue_failure() {
         assertParseFailure(parser, INVALID_OUTLET_NAME_DESC + OUTLET_ADDRESS_DESC_ALPHA + OUTLET_POSTAL_CODE_DESC_ALPHA,
                 OutletName.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, INVALID_OUTLET_NAME_TOO_LONG_DESC + OUTLET_ADDRESS_DESC_ALPHA
+                + OUTLET_POSTAL_CODE_DESC_ALPHA, OutletName.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, OUTLET_NAME_DESC_ALPHA + INVALID_ADDRESS_DESC + OUTLET_POSTAL_CODE_DESC_ALPHA,
                 OutletAddress.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, OUTLET_NAME_DESC_ALPHA + INVALID_OUTLET_ADDRESS_TOO_LONG_DESC
+                + OUTLET_POSTAL_CODE_DESC_ALPHA, OutletAddress.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, OUTLET_NAME_DESC_ALPHA + OUTLET_ADDRESS_DESC_ALPHA + INVALID_OUTLET_POSTAL_CODE_DESC,
                 OutletPostalCode.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + OUTLET_NAME_DESC_ALPHA + OUTLET_ADDRESS_DESC_ALPHA

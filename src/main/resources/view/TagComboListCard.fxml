@@ -28,7 +28,8 @@
         <Label fx:id="name"
                GridPane.rowIndex="0"
                GridPane.columnIndex="1"
-               styleClass="tag-combo-label" />
+               styleClass="tag-combo-label"
+               wrapText="true"/>
         <StackPane GridPane.rowIndex="0" GridPane.columnIndex="3"
                    prefWidth="150" maxWidth="150" >
             <FlowPane fx:id="tagsCardTagCombo"

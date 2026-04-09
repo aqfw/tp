@@ -78,6 +78,10 @@ public interface Model {
      */
     void addPerson(Person person);
 
+    /**
+     * Adds the given person at a specified index.
+     * {@code person} must not already exist in the address book.
+     */
     void addPersonAtIndex(Person person, Index index);
 
     /**
@@ -126,6 +130,10 @@ public interface Model {
      */
     void addOutlet(Outlet outlet);
 
+    /**
+     * Adds the given outlet at a specified index.
+     * {@code outlet} must not already exist in the address book.
+     */
     void addOutletAtIndex(Outlet outlet, Index index);
 
     /**
@@ -153,6 +161,12 @@ public interface Model {
      * The given {@code TagCombo} must not already exist in the {@code AddressBook}.
      */
     void addTagCombo(TagCombo tagCombo);
+
+    /**
+     * Adds the given {@code TagCombo} at a specified index.
+     * The given {@code TagCombo} must not already exist in the {@code AddressBook}.
+     */
+    void addTagComboAtIndex(TagCombo tagCombo, Index index);
 
     /**
      * Gets the TagCombo associated with the tagComboName.

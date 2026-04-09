@@ -1,16 +1,23 @@
 package seedu.address.logic.commands;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_ENTRY;
+import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.BENSON;
+import static seedu.address.testutil.TypicalPersons.DANIEL;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -48,4 +55,34 @@ public class ListCommandTest {
         assertCommandSuccess(new ListCommand(), model, ListCommand.MESSAGE_SUCCESS, expectedModel,
                 UiAction.UPDATE_RIGHT_PANE, Optional.of(new TagCountsContent(new TagCounter(tagMap))));
     }
+
+    @Test
+    public void undo_listCommand_success() throws CommandException {
+        Set<Tag> tagSet = Set.of(new Tag("friends"));
+        FilterCommand filterCommand = new FilterCommand(tagSet, Set.of());
+
+        filterCommand.execute(model);
+        ListCommand listCommand = new ListCommand();
+        listCommand.execute(model);
+        model.recordCommand(listCommand);
+        model.undo();
+
+        assertEquals(Arrays.asList(ALICE, BENSON, DANIEL), model.getFilteredPersonList());
+    }
+
+    @Test
+    public void redo_listCommand_success() throws CommandException {
+        Set<Tag> tagSet = Set.of(new Tag("friends"));
+        FilterCommand filterCommand = new FilterCommand(tagSet, Set.of());
+
+        filterCommand.execute(model);
+        ListCommand listCommand = new ListCommand();
+        model.recordCommand(listCommand);
+        listCommand.execute(model);
+        model.undo();
+        model.redo();
+
+        assertEquals(expectedModel.getFilteredPersonList(), model.getFilteredPersonList());
+    }
+
 }

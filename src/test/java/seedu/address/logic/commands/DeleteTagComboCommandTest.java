@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -49,6 +50,37 @@ public class DeleteTagComboCommandTest {
         DeleteTagComboCommand deleteTagComboCommand = new DeleteTagComboCommand(outOfBoundIndex);
 
         assertCommandFailure(deleteTagComboCommand, model, Messages.MESSAGE_INVALID_TAG_COMBO_DISPLAYED_INDEX);
+    }
+
+    @Test
+    public void undo_deleteTagComboCommand_success() throws CommandException {
+        TagCombo tagComboToDelete = model.getTagComboList().get(INDEX_FIRST_ENTRY.getZeroBased());
+        DeleteTagComboCommand deleteTagComboCommand = new DeleteTagComboCommand(INDEX_FIRST_ENTRY);
+
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        deleteTagComboCommand.execute(model);
+        assertFalse(model.hasTagCombo(tagComboToDelete));
+        assertTrue(expectedModel.hasTagCombo(tagComboToDelete));
+        model.recordCommand(deleteTagComboCommand);
+
+        model.undo();
+        assertTrue(model.hasTagCombo(tagComboToDelete));
+        assertEquals(expectedModel, model);
+    }
+
+    @Test
+    public void redo_deleteTagComboCommand_success() throws CommandException {
+        TagCombo tagComboToDelete = model.getTagComboList().get(INDEX_FIRST_ENTRY.getZeroBased());
+        DeleteTagComboCommand deleteTagComboCommand = new DeleteTagComboCommand(INDEX_FIRST_ENTRY);
+
+        ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        deleteTagComboCommand.execute(model);
+        expectedModel.deleteTagCombo(tagComboToDelete);
+        model.recordCommand(deleteTagComboCommand);
+
+        model.undo();
+        model.redo();
+        assertEquals(expectedModel, model);
     }
 
     @Test

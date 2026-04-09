@@ -174,6 +174,11 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public void addTagComboAtIndex(TagCombo tagCombo, Index index) {
+        addressBook.addTagComboAtIndex(tagCombo, index);
+    }
+
+    @Override
     public TagCombo getTagCombo(TagComboName tagComboName) {
         return addressBook.getTagCombo(tagComboName);
     }

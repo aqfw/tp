@@ -9,8 +9,11 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class OutletAddress {
 
-    public static final String MESSAGE_CONSTRAINTS = "Outlet addresses should not be blank";
+    public static final int MAX_LENGTH = 35;
+    public static final String MESSAGE_CONSTRAINTS = "Outlet addresses should not be blank, should be at most "
+            + MAX_LENGTH + " characters long, and should not contain command delimiters such as n/, a/, or pc/.";
     public static final String VALIDATION_REGEX = "[^\\s].*";
+    private static final String[] INVALID_DELIMITERS = {"n/", "a/", "pc/"};
 
     public final String value;
 
@@ -29,7 +32,18 @@ public class OutletAddress {
      * Returns true if a given string is a valid outlet address.
      */
     public static boolean isValidOutletAddress(String test) {
-        return test.matches(VALIDATION_REGEX);
+        return test.matches(VALIDATION_REGEX)
+                && test.length() <= MAX_LENGTH
+                && !containsCommandDelimiters(test);
+    }
+
+    private static boolean containsCommandDelimiters(String test) {
+        for (String delimiter : INVALID_DELIMITERS) {
+            if (test.contains(delimiter)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
