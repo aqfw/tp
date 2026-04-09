@@ -3,6 +3,7 @@ package seedu.address.ui.content;
 import java.util.Objects;
 
 import javafx.geometry.Insets;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -37,8 +38,6 @@ public class ComparisonContent implements RightPaneContent {
         this.secondHeader = secondHeader;
     }
 
-    //need to implemnet abstract vbox method...
-
     // renders two VBoxes which both will scale, in a side-by-side HBox configuration.
     @Override
     public void render(VBox contentPlaceholder) {
@@ -48,13 +47,14 @@ public class ComparisonContent implements RightPaneContent {
         VBox firstWrapper = new VBox(firstCard.getRoot());
         VBox secondWrapper = new VBox(secondCard.getRoot());
 
-        HBox.setHgrow(firstWrapper, Priority.ALWAYS);
-        HBox.setHgrow(secondWrapper, Priority.ALWAYS);
+        VBox.setVgrow(firstWrapper, Priority.ALWAYS);
+        VBox.setVgrow(secondWrapper, Priority.ALWAYS);
 
-        HBox sideBySide = new HBox(CARD_SPACING, firstWrapper, secondWrapper);
-        sideBySide.setPadding(new Insets(CARD_SPACING));
+        SplitPane splitPane = new SplitPane(firstWrapper, secondWrapper);
+        splitPane.setDividerPositions(0.5);
 
-        contentPlaceholder.getChildren().setAll(sideBySide);
+        VBox.setVgrow(splitPane, Priority.ALWAYS);
+        contentPlaceholder.getChildren().setAll(splitPane);
     }
 
     @Override
