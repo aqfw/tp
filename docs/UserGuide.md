@@ -74,7 +74,7 @@ Format: `help`
 
 Adds a person to the address book.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS pc/POSTAL_CODE [t/TAG]…​`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 A person can have any number of tags (including 0)
@@ -132,14 +132,18 @@ Examples:
 
 ### Locating persons by tag: `filter`
 
-Finds persons who contains ALL of the given tags.
+Finds persons who contains ALL of the given tags, and tags given in the tag combo.
 
-Format: `filter t/TAG [t/TAG...]`
+Format: `filter t/TAG [t/TAG...] [tc/TAG_COMBO...]`
 
 * The search is case-insensitive. e.g `hans` will match `Hans`.
 * The search works on the CURRENT view of the AddressBook, rather than the full AddressBook.
+* The search requires at least 1 tag/tag combo to work.
+* The tag combo must exist to work, whereas an invalid tag will simply return 0 persons.
 
 Examples:
+* `filter tc/ml dev`
+* `filter t/java tc/ml dev`
 * `filter t/c` returns `Esther Lim`.
 * `filter t/Java t/Python` returns `Benson Meier`, `Natalie Lim`.
 * ![result for 'filter t/python t/java'](images/filterPythonJavaResult.png)
