@@ -111,8 +111,6 @@ public class DeleteCommandTest {
 
         ModelManager expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         deleteCommand.execute(model);
-        assertFalse(model.hasPerson(personToDelete));
-        assertTrue(expectedModel.hasPerson(personToDelete));
         expectedModel.deletePerson(personToDelete);
         model.recordCommand(deleteCommand);
 

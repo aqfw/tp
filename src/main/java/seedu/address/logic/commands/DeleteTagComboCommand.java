@@ -15,7 +15,7 @@ import seedu.address.ui.UiAction;
 /**
  * Deletes a {@code TagCombo} identified using it's displayed index from the address book.
  */
-public class DeleteTagComboCommand extends Command {
+public class DeleteTagComboCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "deletetagcombo";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
@@ -26,6 +26,7 @@ public class DeleteTagComboCommand extends Command {
     public static final String MESSAGE_DELETE_TAG_COMBO_SUCCESS = "Deleted Tag Combo: %1$s";
 
     private final Index targetIndex;
+    private TagCombo deletedTagCombo;
 
     public DeleteTagComboCommand(Index targetIndex) {
         this.targetIndex = targetIndex;
@@ -40,10 +41,20 @@ public class DeleteTagComboCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_TAG_COMBO_DISPLAYED_INDEX);
         }
 
-        TagCombo deletedTagCombo = tagComboList.get(targetIndex.getZeroBased());
+        deletedTagCombo = tagComboList.get(targetIndex.getZeroBased());
         model.deleteTagCombo(deletedTagCombo);
         return new CommandResult(String.format(MESSAGE_DELETE_TAG_COMBO_SUCCESS, Messages.format(deletedTagCombo)),
                 UiAction.SHOW_TAG_COMBO);
+    }
+
+    @Override
+    public void undo(Model model) {
+        model.addTagComboAtIndex(deletedTagCombo, targetIndex);
+    }
+
+    @Override
+    public void redo(Model model) {
+        model.deleteTagCombo(deletedTagCombo);
     }
 
     @Override

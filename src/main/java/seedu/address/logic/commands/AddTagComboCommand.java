@@ -14,7 +14,7 @@ import seedu.address.ui.UiAction;
 /**
  * Adds a {@code TagCombo} to the {@code AddressBook}.
  */
-public class AddTagComboCommand extends Command {
+public class AddTagComboCommand extends UndoableCommand {
     public static final String COMMAND_WORD = "addtagcombo";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a Tag Combo.\n"
@@ -50,6 +50,16 @@ public class AddTagComboCommand extends Command {
         }
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)), UiAction.SHOW_TAG_COMBO);
+    }
+
+    @Override
+    public void undo(Model model) {
+        model.deleteTagCombo(toAdd);
+    }
+
+    @Override
+    public void redo(Model model) {
+        model.addTagCombo(toAdd);
     }
 
     @Override

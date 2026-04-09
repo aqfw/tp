@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.exceptions.DuplicateTagComboException;
 import seedu.address.model.tag.exceptions.TagComboNotFoundException;
@@ -60,6 +61,18 @@ public class UniqueTagComboList implements Iterable<TagCombo> {
         }
         internalMap.put(toAdd.getName(), toAdd);
         internalList.add(toAdd);
+    }
+
+    /**
+     * Adds a TagCombo at a specified index to the list if no duplicates exist.
+     */
+    public void addAtIndex(TagCombo toAdd, Index index) {
+        requireNonNull(toAdd);
+        if (contains(toAdd)) {
+            throw new DuplicateTagComboException("A tag combo with the same tags or name already exists!");
+        }
+        internalMap.put(toAdd.getName(), toAdd);
+        internalList.add(index.getZeroBased(), toAdd);
     }
 
     /**
