@@ -62,6 +62,32 @@ public class AssignOutletCommandTest {
     }
 
     @Test
+    public void execute_outsideSingaporeAddress_showsWarning() {
+        Model localModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        localModel.addOutlet(new OutletBuilder().build());
+        localModel.addOutlet(new OutletBuilder().withName("FinServ").withAddress("Marina Bay").withPostalCode("018956")
+                .build());
+
+        Person originalPerson = localModel.getFilteredPersonList().get(INDEX_FIRST_ENTRY.getZeroBased());
+        Person outsideSingaporePerson = new PersonBuilder(originalPerson).withAddress("Shibuya, Tokyo, Japan").build();
+        localModel.setPerson(originalPerson, outsideSingaporePerson);
+
+        Outlet outletToAssign = localModel.getFilteredOutletList().get(INDEX_SECOND_ENTRY.getZeroBased());
+        Person assignedPerson = new PersonBuilder(outsideSingaporePerson).withWorkingAddress(outletToAssign).build();
+
+        AssignOutletCommand assignOutletCommand = new AssignOutletCommand(INDEX_FIRST_ENTRY, INDEX_SECOND_ENTRY);
+        String expectedMessage = String.format(AssignOutletCommand.MESSAGE_SUCCESS, outsideSingaporePerson.getName(),
+                outletToAssign.getOutletName()) + "\n" + AssignOutletCommand.MESSAGE_NON_SINGAPORE_ADDRESS_WARNING;
+
+        Model expectedModel = new ModelManager(new AddressBook(localModel.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(outsideSingaporePerson, assignedPerson);
+
+        assertCommandSuccess(assignOutletCommand, localModel, expectedMessage, expectedModel,
+                UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new PersonContent(assignedPerson, "Candidate #" + INDEX_FIRST_ENTRY.getOneBased())));
+    }
+
+    @Test
     public void execute_invalidPersonIndex_failure() {
         Index outOfBoundPersonIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         AssignOutletCommand assignOutletCommand = new AssignOutletCommand(outOfBoundPersonIndex, INDEX_FIRST_ENTRY);

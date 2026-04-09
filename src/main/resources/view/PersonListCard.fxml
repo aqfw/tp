@@ -25,7 +25,7 @@
     <Label fx:id="name" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="cell-small-label" />
 
     <StackPane GridPane.rowIndex="0" GridPane.columnIndex="2"
-               prefWidth="300" maxWidth="300" prefHeight="30">
+               prefWidth="300" maxWidth="300" prefHeight="30" maxHeight="30">
       <FlowPane fx:id="tagsCard"
                 hgap="5"
                 orientation="HORIZONTAL"

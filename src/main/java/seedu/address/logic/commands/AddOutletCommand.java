@@ -24,6 +24,7 @@ public class AddOutletCommand extends UndoableCommand {
             + PREFIX_NAME + "NAME "
             + PREFIX_ADDRESS + "ADDRESS "
             + PREFIX_POSTAL_CODE + "POSTAL_CODE\n"
+            + "Constraints: NAME max 26 chars, ADDRESS max 35 chars, and values must not contain n/, a/, or pc/.\n"
             + "Example: outlet " + COMMAND_WORD + " "
             + PREFIX_NAME + "TechCo "
             + PREFIX_ADDRESS + "Raffles Place "

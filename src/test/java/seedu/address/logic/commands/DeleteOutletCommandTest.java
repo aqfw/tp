@@ -10,6 +10,8 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_ENTRY;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_ENTRY;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +22,11 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.outlet.Outlet;
+import seedu.address.model.person.Person;
 import seedu.address.testutil.OutletBuilder;
+import seedu.address.testutil.PersonBuilder;
+import seedu.address.ui.UiAction;
+import seedu.address.ui.content.PersonContent;
 
 /**
  * Contains integration tests (interaction with the Model) and unit tests for {@code DeleteOutletCommand}.
@@ -49,6 +55,26 @@ public class DeleteOutletCommandTest {
         expectedModel.deleteOutlet(outletToDelete);
 
         assertCommandSuccess(deleteOutletCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_outletInUse_unassignsAffectedCandidate() {
+        Outlet outletToDelete = model.getFilteredOutletList().get(INDEX_FIRST_ENTRY.getZeroBased());
+        Person personToAssign = model.getFilteredPersonList().get(INDEX_FIRST_ENTRY.getZeroBased());
+        Person assignedPerson = new PersonBuilder(personToAssign).withWorkingAddress(outletToDelete).build();
+        Person unassignedPerson = new PersonBuilder(assignedPerson).withWorkingAddress(null).build();
+        model.setPerson(personToAssign, assignedPerson);
+
+        DeleteOutletCommand deleteOutletCommand = new DeleteOutletCommand(INDEX_FIRST_ENTRY);
+        String expectedMessage = String.format(DeleteOutletCommand.MESSAGE_DELETE_OUTLET_SUCCESS,
+                Messages.format(outletToDelete));
+
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.setPerson(assignedPerson, unassignedPerson);
+        expectedModel.deleteOutlet(outletToDelete);
+
+        assertCommandSuccess(deleteOutletCommand, model, expectedMessage, expectedModel, UiAction.UPDATE_RIGHT_PANE,
+                Optional.of(new PersonContent(unassignedPerson, DeleteOutletCommand.RIGHT_PANE_HEADER)));
     }
 
     @Test
