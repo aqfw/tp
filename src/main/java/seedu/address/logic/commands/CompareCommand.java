@@ -3,9 +3,11 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.Optional;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
@@ -28,11 +30,12 @@ public class CompareCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1 2";
 
 
-
     public static final String MESSAGE_COMPARE_SUCCESS = "Comparing candidate %1$d and candidate %2$d.";
     public static final String MESSAGE_SAME_INDEX = "The two indices must refer to different candidates.";
     public static final String MESSAGE_INVALID_INDEX = "One or more indices are out of range. "
             + "There are only %1$d candidates listed.";
+
+    private static final Logger logger = LogsCenter.getLogger(CompareCommand.class);
 
     private final Index firstIndex;
     private final Index secondIndex;
@@ -50,6 +53,9 @@ public class CompareCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+
+        logger.info("Executing compare command with indices: "
+                + firstIndex.getOneBased() + ", " + secondIndex.getOneBased());
 
         if (firstIndex.equals(secondIndex)) {
             throw new CommandException(MESSAGE_SAME_INDEX);
@@ -70,6 +76,9 @@ public class CompareCommand extends Command {
 
         ComparisonContent content = new ComparisonContent(
                 firstPerson, firstHeader, secondPerson, secondHeader);
+
+        logger.info("Comparison result created for: "
+                + firstPerson.getName() + " and " + secondPerson.getName());
 
         return new CommandResult(
                 String.format(MESSAGE_COMPARE_SUCCESS,

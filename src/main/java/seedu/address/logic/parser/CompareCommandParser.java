@@ -37,7 +37,11 @@ public class CompareCommandParser implements Parser<CompareCommand> {
 
         try {
             Index firstIndex = ParserUtil.parseIndex(matcher.group("firstIndex"));
+            assert firstIndex.getOneBased() > 0 : "Parser should not produce a non-positive index";
+
             Index secondIndex = ParserUtil.parseIndex(matcher.group("secondIndex"));
+            assert secondIndex.getOneBased() > 0 : "Parser should not produce a non-positive index";
+
             return new CompareCommand(firstIndex, secondIndex);
         } catch (ParseException pe) {
             throw new ParseException(
