@@ -16,9 +16,6 @@ import seedu.address.model.person.Person;
 public class AddByCsvCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "addcsv";
-    private static final int MAX_CSV_BATCH_SIZE = 25;
-    private static final int MAX_TOTAL_CANDIDATE_CAPACITY = 999;
-
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Adds multiple people to the address book from a CSV file.\n"
             + "Parameters: FILE_PATH (must end with .csv)\n"
@@ -32,6 +29,8 @@ public class AddByCsvCommand extends UndoableCommand {
             "Cannot add %1$d candidate(s) from CSV. You can add at most %2$d candidate(s) now.";
     public static final String UNDO_SUCCESS = "Undo successful: Removed %1$d people.";
     public static final String REDO_SUCCESS = "Redo successful: Added %1$d people.";
+    private static final int MAX_CSV_BATCH_SIZE = 25;
+    private static final int MAX_TOTAL_CANDIDATE_CAPACITY = 999;
 
     private final List<Person> personsToAdd;
 
