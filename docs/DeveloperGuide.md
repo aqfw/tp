@@ -927,7 +927,9 @@ testers are expected to do more *exploratory* testing.
    4. Test case: `outlet delete 0`<br>
    Expected: Deletion fails with invalid index error.
 
-## Appendix: Planned Enhancements
+## **Appendix: Planned Enhancements**
+
+Number of Team Members: 4
 
 1. **Long command names**<br>
    Certain command names such as `addtagcombo` and `deletetagcombo` are relatively long and not well-suited for a typist-oriented UI. These longer names were intentionally chosen as default placeholders to support a future `rebind` feature, which would allow users to map frequently used commands to shorter aliases (e.g., `filter` → `f`). However, this feature has not yet been implemented. In practice, the impact of these longer command names is limited, as they mainly apply to low-frequency operations such as tag combo and outlet-related commands.
@@ -939,3 +941,8 @@ testers are expected to do more *exploratory* testing.
    As each candidate may contain many details, the application is designed to display full information only when required, achieved by clicking on a candidate in the list to reduce visual clutter. Additionally, full details are automatically shown for certain commands such as `add` and `edit`, ensuring that relevant information is surfaced when necessary.
 
    However, this interaction model is not fully aligned with a typist-oriented UI, as it relies on mouse input for navigation. While this may introduce minor inefficiency for keyboard-focused users, the impact is limited since key workflows still surface the required details automatically. Enhancements to support keyboard-based navigation of candidate details are being considered for future iterations.
+
+4. **Maximum capacity of the candidate list is too small at 999**
+   The current limit of 999 candidates may appear restrictive, especially for larger-scale use cases. However, this constraint exists partly because several core operations (such as filtering, searching, and updating entries) run in O(n) time and are not fully optimised in the current version. As the number of candidates increases, the performance of these operations may degrade, leading to slower response times.
+
+   In practical usage, the limit of 999 candidates is generally sufficient for the intended scope of the application, particularly for individual recruiters or small teams. As such, while the limitation may not scale well for larger datasets, it does not significantly impact typical use cases in the current version. Optimisations are considered in future implementations to expand the capacity while adhering to the NFRs.
