@@ -1,0 +1,67 @@
+@startuml
+!include style.puml
+
+skinparam ArrowThickness 1.1
+
+skinparam sequence {
+    ActorBackgroundColor #FFF2CC
+    ParticipantBackgroundColor #D9EAD3
+    LifeLineBorderColor #666666
+    LifeLineBackgroundColor #FFFFFF
+    ArrowColor #2E75B6
+    ActivationBorderColor #999999
+    ActivationBackgroundColor #F4CCCC
+}
+
+actor User
+participant MainWindow
+participant LogicManager
+participant AddressBookParser
+participant ListTagsCommand
+participant CommandResult
+participant RightPaneContent
+
+User -> MainWindow : listtags
+activate MainWindow
+
+MainWindow -> LogicManager : executeCommand("listtags")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("listtags")
+activate AddressBookParser
+
+create ListTagsCommand
+AddressBookParser -> ListTagsCommand
+
+AddressBookParser --> LogicManager : ListTagsCommand
+deactivate AddressBookParser
+
+LogicManager -> ListTagsCommand : execute()
+activate ListTagsCommand
+
+create CommandResult
+ListTagsCommand -> CommandResult
+
+activate CommandResult
+
+CommandResult --> ListTagsCommand
+deactivate CommandResult
+
+ListTagsCommand --> LogicManager : CommandResult
+deactivate ListTagsCommand
+
+LogicManager --> MainWindow : CommandResult
+deactivate LogicManager
+
+MainWindow -> CommandResult : getContent()
+activate CommandResult
+CommandResult --> MainWindow : RightPaneContent
+deactivate CommandResult
+
+MainWindow -> RightPaneContent : render()
+activate RightPaneContent
+deactivate RightPaneContent
+
+deactivate MainWindow
+
+@enduml

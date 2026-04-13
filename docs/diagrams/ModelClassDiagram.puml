@@ -19,8 +19,21 @@ Class Email
 Class Name
 Class Phone
 Class Tag
+Class UniqueOutletList
+Class UniqueTagComboList
+Class Outlet
+Class OutletAddress
+Class OutletName
+Class OutletPostalCode
+Class PostalCode
+Class TagCombo
+Class TagComboName
 
 Class I #FFFFFF
+}
+
+package Logic <<Rectangle>> {
+Class HiddenLogic #FFFFFF
 }
 
 Class HiddenOutside #FFFFFF
@@ -33,15 +46,29 @@ Model .right.> ReadOnlyUserPrefs
 Model .left.> ReadOnlyAddressBook
 ModelManager -left-> "1" AddressBook
 ModelManager -right-> "1" UserPrefs
+ModelManager -right-> Logic
 UserPrefs .up.|> ReadOnlyUserPrefs
 
 AddressBook *--> "1" UniquePersonList
+AddressBook *--> "1" UniqueOutletList
+AddressBook *--> "1" UniqueTagComboList
+
 UniquePersonList --> "~* all" Person
 Person *--> Name
 Person *--> Phone
 Person *--> Email
 Person *--> Address
+Person *--> PostalCode
 Person *--> "*" Tag
+
+UniqueOutletList --> "~* all" Outlet
+Outlet *--> OutletName
+Outlet *--> OutletAddress
+Outlet *--> OutletPostalCode
+
+UniqueTagComboList --> "~* all" TagCombo
+TagCombo *--> TagComboName
+TagCombo *--> "2.." Tag
 
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I
@@ -51,4 +78,5 @@ Phone -[hidden]right-> Address
 Address -[hidden]right-> Email
 
 ModelManager --> "~* filtered" Person
+ModelManager --> "~* filtered" Outlet
 @enduml
