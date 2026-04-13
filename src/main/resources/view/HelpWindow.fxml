@@ -12,7 +12,7 @@
 <?import javafx.stage.Stage?>
 
 <!-- Changed the window root be resizeable with default sizes -->
-<fx:root resizable="true" title="Help" type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" width="900" height="700" minWidth="600" minHeight="400">
+<fx:root resizable="true" title="Help" type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" width="900" height="700" minWidth="300" minHeight="150">
   <icons>
     <Image url="@/images/help_icon.png" />
   </icons>

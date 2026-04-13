@@ -2,6 +2,8 @@ package seedu.address.ui;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
@@ -71,6 +73,19 @@ public class UserGuideParser {
 
         return result.toString();
 
+    }
+
+    //Null check done within UserGuideParser to facilitate testing
+    String loadFromStream(InputStream stream, String startString, String endString) throws IOException {
+        if (stream == null) {
+            throw new IOException("UserGuide.md not found in resources");
+        }
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        try {
+            return extractUserGuide(reader, startString, endString);
+        } finally {
+            reader.close();
+        }
     }
 
 }

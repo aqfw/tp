@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 
 import org.junit.jupiter.api.Test;
@@ -15,8 +17,7 @@ public class HelpWindowTest {
         return new BufferedReader(new StringReader(content));
     }
 
-    // HAPPY CASES
-
+    // Happy cases
     @Test
     public void extractUserGuide_startFoundEndNull_returnsFromStartToEof() throws IOException {
         String input = "## Intro\nhello\n## Features\ncontent here\nmore content";
@@ -73,8 +74,7 @@ public class HelpWindowTest {
         assertEquals("## Features\ncontent here\nmore content", result);
     }
 
-    // FAILURE CASES
-
+    // Failure cases
     @Test
     public void extractUserGuide_startNotFound_throwsIoException() {
         String input = "## Intro\nhello\n## Other\ncontent";
@@ -95,6 +95,26 @@ public class HelpWindowTest {
             fail();
         } catch (IOException e) {
             assertEquals("startString not found: ## Features", e.getMessage());
+        }
+    }
+
+    @Test
+    public void loadFromStream_validStream_returnsSection() throws IOException {
+        String input = "## Features\ncontent here";
+        InputStream stream = new ByteArrayInputStream(input.getBytes());
+        UserGuideParser parser = new UserGuideParser();
+        String result = parser.loadFromStream(stream, "## Features", null);
+        assertEquals("## Features\ncontent here", result);
+    }
+
+    @Test
+    public void loadFromStream_nullStream_throwsIoException() {
+        UserGuideParser parser = new UserGuideParser();
+        try {
+            parser.loadFromStream(null, "## Features", null);
+            fail();
+        } catch (IOException e) {
+            assertEquals("UserGuide.md not found in resources", e.getMessage());
         }
     }
 }
