@@ -3,6 +3,8 @@ package seedu.address.logic.commands;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.DESC_ALPHA;
+import static seedu.address.logic.commands.CommandTestUtil.DESC_BETA;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_OUTLET_ADDRESS_BETA;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_OUTLET_NAME_ALPHA;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_OUTLET_NAME_BETA;
@@ -148,6 +150,31 @@ public class EditOutletCommandTest {
         model.undo();
         model.redo();
         assertEquals(expectedModel, model);
+    }
+
+    @Test
+    public void equals() {
+        final EditOutletCommand standardCommand = new EditOutletCommand(INDEX_FIRST_ENTRY, DESC_BETA);
+
+        // same values -> returns true
+        EditOutletDescriptor copyDescriptor = new EditOutletDescriptor(DESC_BETA);
+        EditOutletCommand commandWithSameValues = new EditOutletCommand(INDEX_FIRST_ENTRY, copyDescriptor);
+        assertTrue(standardCommand.equals(commandWithSameValues));
+
+        // same object -> returns true
+        assertTrue(standardCommand.equals(standardCommand));
+
+        // null -> returns false
+        assertFalse(standardCommand.equals(null));
+
+        // different types -> returns false
+        assertFalse(standardCommand.equals(new ClearCommand()));
+
+        // different index -> returns false
+        assertFalse(standardCommand.equals(new EditOutletCommand(INDEX_SECOND_ENTRY, DESC_ALPHA)));
+
+        // different descriptor -> returns false
+        assertFalse(standardCommand.equals(new EditOutletCommand(INDEX_FIRST_ENTRY, DESC_ALPHA)));
     }
 
     @Test

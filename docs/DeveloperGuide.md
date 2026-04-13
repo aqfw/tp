@@ -310,6 +310,60 @@ The command operates on the current filtered candidate list index.
 `outlet delete` sequence diagram:
 ![OutletDeleteSequenceDiagram](images/OutletDeleteSequenceDiagram.png)
 
+### Undo and Redo Commands
+
+#### Implementation
+
+The undo/redo mechanism is split between command-level responsibility (`UndoableCommand` and its subclasses), history 
+management (`ModelManager`), and execution orchestration (`LogicManager`).
+
+`UndoableCommand` handles command-level reversal logic:
+1. Declares abstract methods `undo(Model)` and `redo(Model)` that must be implemented by all undoable commands.
+2. Each concrete command (e.g. `AddCommand`, `EditCommand`, `DeleteCommand`) is responsible for:
+   1. Storing sufficient state to reverse its effects (e.g. original objects, previous filters). 
+   2. Implementing `undo()` to revert the model to its previous state.
+   3. Implementing `redo()` to reapply the original mutation.
+3. Ensures that undo/redo logic is encapsulated within each command rather than centralized.
+
+`LogicManager` handles command execution and history recording:
+1. Parses user input into a `Command` and executes it on the model.
+2. After successful execution:
+   1. Checks if the command is an instance of `UndoableCommand`.
+   2. If so, records it via `ModelManager.recordCommand(...)`.
+3. Ensures only successfully executed undoable commands are added to history.
+4. Persists the updated model state to storage after execution.
+
+`ModelManager` handles undo/redo history and coordination:
+
+Maintains two stacks:
+- `undoStack`: stores executed undoable commands.
+- `redoStack`: stores commands that have been undone.
+
+Provides the following functionality:
+1. Recording commands
+   1. Pushes newly executed undoable commands onto `undoStack`.
+   2. Clears `redoStack` upon new command execution to prevent invalid redo states.
+2. Undo operation
+   1. Validates that `undoStack` is not empty.
+   2. Pops the most recent command from `undoStack`.
+   3. Pushes it onto `redoStack`.
+   4. Invokes `undo(model)` on the command to reverse its effects.
+3. Redo operation
+   1. Validates that `redoStack` is not empty.
+   2. Pops the most recent command from `redoStack`.
+   3. Pushes it back onto `undoStack`.
+   4. Invokes `redo(model)` on the command to reapply its effects.
+
+`UndoCommand` and `RedoCommand` act as triggers:
+`UndoCommand` calls `model.undo()` to revert the most recent undoable command.
+`RedoCommand` calls `model.redo()` to reapply the most recently undone command.
+Both commands delegate all logic to ModelManager and do not directly manipulate state.
+
+`UndoableCommand` sequence diagram:
+![UndoableCommandSequenceDiagram](images/UndoableCommandSequenceDiagram.png)
+
+`undo` on `AddCommand` sequence diagram:
+![UndoAddCommandSequenceDiagram](images/UndoAddCommandSequenceDiagram.png)
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Documentation, logging, testing, configuration, dev-ops**

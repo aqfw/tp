@@ -117,13 +117,13 @@ public class EditOutletCommand extends UndoableCommand {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof EditCommand)) {
+        if (!(other instanceof EditOutletCommand)) {
             return false;
         }
 
-        EditOutletCommand otherEditCommand = (EditOutletCommand) other;
-        return index.equals(otherEditCommand.index)
-                && editOutletDescriptor.equals(otherEditCommand.editOutletDescriptor);
+        EditOutletCommand otherEditOutletCommand = (EditOutletCommand) other;
+        return index.equals(otherEditOutletCommand.index)
+                && editOutletDescriptor.equals(otherEditOutletCommand.editOutletDescriptor);
     }
 
     @Override

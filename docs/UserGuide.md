@@ -97,6 +97,7 @@ Example: Entering `help` in the Command Box opens a new Help Window with the fea
 ### Adding a candidate: `add`
 
 Adds a candidate to the candidate list.
+- You cannot have a duplicate `PHONE_NUMBER` or `EMAIL` already in the address book.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS pc/POSTAL_CODE [t/TAG]…​`
 
@@ -115,6 +116,7 @@ Examples:
 Adds multiple candidates from a CSV file.
 
 Format: `addcsv PATH_TO_CSV_FILE`
+- You cannot have a duplicate `PHONE_NUMBER` or `EMAIL` already in the address book or within the csv file.
 
 * `PATH_TO_CSV_FILE` must point to a `.csv` file that exists.
 * The file path is resolved from the current working directory (typically the folder where you run the app/JAR).
@@ -156,8 +158,9 @@ Tag counts are displayed on the **Right Panel** on success, similar to calling `
 ### Editing a candidate : `edit`
 
 Edits at least one existing candidate in the candidate list.
+- You cannot have a duplicate `PHONE_NUMBER` or `EMAIL` already in the address book or within the candidates being edited.
 
-Format: `edit INDEXES {[n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [pc/POSTAL_CODE] [t/TAG]} [t/TAG]…​`
+Format: `edit INDEX [INDEX]… {[n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [pc/POSTAL_CODE] [t/TAG]} [t/TAG]…​`
 
 * Edits the candidates at the specified `INDEXES`. The index refers to the index number shown in the displayed candidate list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one index must be provided and all the indexes provided must be valid inputs.
@@ -236,6 +239,8 @@ Format: `listtags`
 ### Adding tag combos: `addtagcombo`
 
 Adds a tag combo to the Tag Combo List.
+- You cannot have a duplicate `TAGS` or `NAME` already in the address book. In this case, `TAGS` refers to the tags stored within the tag combo. 
+- For example, `addtagcombo HR t/marketing t/leadership` has `TAGS` marketing and leadership.
 
 Format: `addtagcombo NAME t/TAG t/TAG [t/TAG]...`
 
@@ -340,6 +345,9 @@ Format: `redo`
 * `list`, `filter`, `find` Returns to the filtered view of the Address Book.
 * `clear` Deletes all `Candidate`s added.
 
+* `delete 2` followed by `undo` restores the person deleted at index 2.
+* `list` followed by `find Alice` followed by `undo` restores the view to a list of all persons in the address book.
+
 ### Exiting the program : `exit`
 
 Exits the program.
@@ -349,6 +357,7 @@ Format: `exit`
 ### Adding Outlets : `outlet add`
 
 Adds an `Outlet`.
+- You cannot have a duplicate `ADDRESS` and `POSTAL_CODE` both already in the address book.
 
 Format: `outlet add n/NAME a/ADDRESS pc/POSTAL_CODE`
 
@@ -371,13 +380,14 @@ Examples:
 ### Editing Outlets : `outlet edit`
 
 Edits an existing `Outlet`.
+- You cannot have a duplicate `ADDRESS` and `POSTAL_CODE` both already in the address book.
 
-Format: `outlet edit <index> {[n/NAME] [a/ADDRESS] [pc/POSTAL_CODE]}`
+- Format: `outlet edit <index> {[n/NAME] [a/ADDRESS] [pc/POSTAL_CODE]}`
 
 Examples:
 
-- `outlet edit 1 a/One Raffles Place pc/048616`
-- `outlet edit 2 n/TechHub`
+- `outlet edit 1 a/One Raffles Place pc/048616` Edits the address and the postal code of the 1st outlet to be `One Raffles Place` and `048616` respectively.
+- `outlet edit 2 n/TechHub` Edits the name of the 2nd outlet to be `TechHub`.
 
 ### Assigning Candidates to Outlets : `outlet assign`
 
@@ -495,7 +505,7 @@ Action | Format, Examples
 **Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS pc/POSTAL_CODE [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd pc/123456 t/friend t/colleague`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEXES {[n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [pc/POSTAL_CODE] [t/TAG]} [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Edit** | `edit INDEX [INDEX]… {[n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [pc/POSTAL_CODE] [t/TAG]} [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **Filter** | `filter {[t/TAG] [tc/TAG_COMBO]} [t/TAG]... [tc/TAG_COMBO]... `<br> e.g., `filter t/java t/python tc/ml dev`
 **Compare Candidates** | `compare INDEX INDEX`<br> e.g. `compare 1 2`

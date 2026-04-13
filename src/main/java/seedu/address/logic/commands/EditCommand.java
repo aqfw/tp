@@ -54,14 +54,15 @@ public class EditCommand extends UndoableCommand {
             + PREFIX_EMAIL + "johndoe@example.com "
             + PREFIX_POSTAL_CODE + "120311";
 
-    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited %d person(s). First: %s";
+    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited %d person(s). ";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
+    public static final String MESSAGE_DUPLICATE_INDEX = "Duplicate indexes are not allowed.";
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
     public static final String RIGHT_PANE_HEADER = "CANDIDATE EDITED";
     public static final String UNDO_SUCCESS = "Undo successful: Reverted edits on %d person(s). First: %s";
     public static final String REDO_SUCCESS = "Redo successful: Re-edited %d person(s). First: %s";
 
-    private final Set<Index> indexes;
+    private final List<Index> indexes;
     private final EditPersonDescriptor editPersonDescriptor;
 
     private final List<Person> editedPersons = new ArrayList<>();
@@ -71,7 +72,7 @@ public class EditCommand extends UndoableCommand {
      * @param indexes of the person(s) in the filtered person list to edit
      * @param editPersonDescriptor details to edit the person(s) with
      */
-    public EditCommand(Set<Index> indexes, EditPersonDescriptor editPersonDescriptor) {
+    public EditCommand(List<Index> indexes, EditPersonDescriptor editPersonDescriptor) {
         requireNonNull(indexes);
         requireNonNull(editPersonDescriptor);
 
@@ -86,6 +87,13 @@ public class EditCommand extends UndoableCommand {
 
         originalPersons.clear();
         editedPersons.clear();
+
+        Set<Index> set = new HashSet<>(indexes);
+        boolean hasDuplicates = set.size() < indexes.size();
+        if (hasDuplicates) {
+            throw new CommandException(MESSAGE_DUPLICATE_INDEX);
+        }
+
 
         for (Index index : indexes) {
             if (index.getZeroBased() >= lastShownList.size()) {
@@ -122,9 +130,15 @@ public class EditCommand extends UndoableCommand {
             model.setPerson(originalPersons.get(idx), editedPersons.get(idx));
         }
 
+        StringBuilder successMessage = new StringBuilder(String.format(MESSAGE_EDIT_PERSON_SUCCESS,
+                editedPersons.size()));
+        for (int idx = 1; idx < originalPersons.size() + 1; idx++) {
+            successMessage.append("\n");
+            successMessage.append("Person ").append(idx).append(" edited: ")
+                    .append(Messages.format(editedPersons.get(idx - 1)));
+        }
         model.resetFilteredPersonList();
-        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS,
-                editedPersons.size(), Messages.format(editedPersons.get(0))),
+        return new CommandResult(successMessage.toString(),
                 UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(editedPersons.get(0), RIGHT_PANE_HEADER)));
     }
 

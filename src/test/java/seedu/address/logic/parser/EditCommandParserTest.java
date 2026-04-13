@@ -40,7 +40,7 @@ import static seedu.address.testutil.TypicalIndexes.SET_FIRST_ENTRY;
 import static seedu.address.testutil.TypicalIndexes.SET_SECOND_ENTRY;
 import static seedu.address.testutil.TypicalIndexes.SET_THIRD_ENTRY;
 
-import java.util.Set;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -125,7 +125,7 @@ public class EditCommandParserTest {
                 .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_AMY).withAddress(VALID_ADDRESS_AMY)
                 .withPostalCode(VALID_POSTAL_CODE_AMY)
                 .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).build();
-        Set<Index> targetSet = SET_SECOND_ENTRY;
+        List<Index> targetSet = SET_SECOND_ENTRY;
         EditCommand expectedCommand = new EditCommand(targetSet, descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);
@@ -138,7 +138,7 @@ public class EditCommandParserTest {
 
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withPhone(VALID_PHONE_BOB)
                 .withEmail(VALID_EMAIL_AMY).build();
-        Set<Index> targetSet = SET_FIRST_ENTRY;
+        List<Index> targetSet = SET_FIRST_ENTRY;
 
         EditCommand expectedCommand = new EditCommand(targetSet, descriptor);
 
@@ -151,7 +151,7 @@ public class EditCommandParserTest {
         Index targetIndex = INDEX_THIRD_ENTRY;
         String userInput = targetIndex.getOneBased() + NAME_DESC_AMY;
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY).build();
-        Set<Index> targetSet = SET_THIRD_ENTRY;
+        List<Index> targetSet = SET_THIRD_ENTRY;
         EditCommand expectedCommand = new EditCommand(targetSet, descriptor);
         assertParseSuccess(parser, userInput, expectedCommand);
 
@@ -228,7 +228,7 @@ public class EditCommandParserTest {
         String userInput = targetIndex.getOneBased() + TAG_EMPTY;
 
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withTags().build();
-        Set<Index> targetSet = SET_THIRD_ENTRY;
+        List<Index> targetSet = SET_THIRD_ENTRY;
         EditCommand expectedCommand = new EditCommand(targetSet, descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);

@@ -11,6 +11,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -36,7 +37,7 @@ public class EditCommandParser implements Parser<EditCommand> {
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
                         PREFIX_POSTAL_CODE, PREFIX_TAG);
 
-        Set<Index> indexes;
+        List<Index> indexes;
 
         try {
             indexes = ParserUtil.parseIndexes(argMultimap.getPreamble());

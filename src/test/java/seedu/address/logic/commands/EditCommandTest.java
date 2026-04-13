@@ -19,8 +19,8 @@ import static seedu.address.testutil.TypicalIndexes.SET_FIRST_ENTRY;
 import static seedu.address.testutil.TypicalIndexes.SET_SECOND_ENTRY;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,7 +59,7 @@ public class EditCommandTest {
         EditCommand editCommand = new EditCommand(SET_FIRST_ENTRY, descriptor);
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
-                1, Messages.format(editedPerson));
+                1) + "\n" + "Person 1 edited: " + Messages.format(editedPerson);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
@@ -71,7 +71,7 @@ public class EditCommandTest {
     @Test
     public void execute_someFieldsSpecifiedUnfilteredList_success() {
         Index indexLastPerson = Index.fromOneBased(model.getFilteredPersonList().size());
-        Set<Index> setLastPerson = Set.of(indexLastPerson);
+        List<Index> setLastPerson = List.of(indexLastPerson);
         Person lastPerson = model.getFilteredPersonList().get(indexLastPerson.getZeroBased());
 
         PersonBuilder personInList = new PersonBuilder(lastPerson);
@@ -82,8 +82,8 @@ public class EditCommandTest {
                 .withPhone(VALID_PHONE_BOB).withTags(VALID_TAG_HUSBAND).build();
         EditCommand editCommand = new EditCommand(setLastPerson, descriptor);
 
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, 1,
-                Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, 1) + "\n" + "Person 1 edited: "
+                        + Messages.format(editedPerson);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(lastPerson, editedPerson);
@@ -98,7 +98,7 @@ public class EditCommandTest {
         Person editedPerson = model.getFilteredPersonList().get(INDEX_FIRST_ENTRY.getZeroBased());
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
-                1, Messages.format(editedPerson));
+                1) + "\n" + "Person 1 edited: " + Messages.format(editedPerson);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
 
@@ -115,14 +115,41 @@ public class EditCommandTest {
         Person editedPerson = new PersonBuilder(personInFilteredList).withName(VALID_NAME_BOB).build();
         EditCommand editCommand = new EditCommand(SET_FIRST_ENTRY,
                 new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB).build());
-        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, 1,
-                Messages.format(editedPerson));
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, 1) + "\n" + "Person 1 "
+                + "edited: " + Messages.format(editedPerson);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel,
                 UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(editedPerson, RIGHT_PANE_HEADER)));
+    }
+
+    @Test
+    public void execute_editMultipleCandidates_success() {
+        List<Index> listMultipleIndexes = List.of(INDEX_FIRST_ENTRY, INDEX_SECOND_ENTRY);
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB)
+                .withTags(VALID_TAG_HUSBAND).build();
+        EditCommand editCommand = new EditCommand(listMultipleIndexes, descriptor);
+
+        Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_ENTRY.getZeroBased());
+        PersonBuilder firstPersonInList = new PersonBuilder(firstPerson);
+        Person editedFirstPerson = firstPersonInList.withName(VALID_NAME_BOB).withTags(VALID_TAG_HUSBAND).build();
+
+        Person secondPerson = model.getFilteredPersonList().get(INDEX_SECOND_ENTRY.getZeroBased());
+        PersonBuilder secondPersonInList = new PersonBuilder(secondPerson);
+        Person editedSecondPerson = secondPersonInList.withName(VALID_NAME_BOB).withTags(VALID_TAG_HUSBAND).build();
+
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, 2);
+        expectedMessage += "\n" + "Person 1 edited: " + Messages.format(editedFirstPerson);
+        expectedMessage += "\n" + "Person 2 edited: " + Messages.format(editedSecondPerson);
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(firstPerson, editedFirstPerson);
+        expectedModel.setPerson(secondPerson, editedSecondPerson);
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel,
+                UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(editedFirstPerson, RIGHT_PANE_HEADER)));
     }
 
     @Test
@@ -138,7 +165,7 @@ public class EditCommandTest {
     public void execute_multipleDuplicatePersonUnfilteredList_failure() {
         Person existingPerson = model.getFilteredPersonList().get(INDEX_FIRST_ENTRY.getZeroBased());
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(existingPerson).build();
-        Set<Index> setMultipleIndexes = Set.of(INDEX_SECOND_ENTRY, INDEX_THIRD_ENTRY);
+        List<Index> setMultipleIndexes = List.of(INDEX_SECOND_ENTRY, INDEX_THIRD_ENTRY);
         EditCommand editCommand = new EditCommand(setMultipleIndexes, descriptor);
 
         assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_PERSON);
@@ -146,7 +173,7 @@ public class EditCommandTest {
 
     @Test
     public void execute_multipleEditDuplicateFields_failure() {
-        Set<Index> setMultipleIndexes = Set.of(INDEX_FIRST_ENTRY, INDEX_SECOND_ENTRY);
+        List<Index> setMultipleIndexes = List.of(INDEX_FIRST_ENTRY, INDEX_SECOND_ENTRY);
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withPhone(VALID_PHONE_BOB).build();
         EditCommand editCommand = new EditCommand(setMultipleIndexes, descriptor);
 
@@ -168,7 +195,7 @@ public class EditCommandTest {
     @Test
     public void execute_invalidPersonIndexUnfilteredList_failure() {
         Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
-        Set<Index> outOfBoundSet = Set.of(outOfBoundIndex);
+        List<Index> outOfBoundSet = List.of(outOfBoundIndex);
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB).build();
         EditCommand editCommand = new EditCommand(outOfBoundSet, descriptor);
 
@@ -183,7 +210,7 @@ public class EditCommandTest {
     public void execute_invalidPersonIndexFilteredList_failure() {
         showPersonAtIndex(model, INDEX_FIRST_ENTRY);
         Index outOfBoundIndex = INDEX_SECOND_ENTRY;
-        Set<Index> outOfBoundSet = Set.of(outOfBoundIndex);
+        List<Index> outOfBoundSet = List.of(outOfBoundIndex);
 
         // ensures that outOfBoundIndex is still in bounds of address book list
         assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
@@ -260,7 +287,7 @@ public class EditCommandTest {
     @Test
     public void toStringMethod() {
         Index index = Index.fromOneBased(1);
-        Set<Index> set = Set.of(index);
+        List<Index> set = List.of(index);
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
         EditCommand editCommand = new EditCommand(set, editPersonDescriptor);
         String expected = EditCommand.class.getCanonicalName() + "{indexes=" + set + ", editPersonDescriptor="
