@@ -22,9 +22,6 @@ public class HelpWindow extends UiPart<Stage> {
     private static final Logger logger = LogsCenter.getLogger(HelpWindow.class);
     private static final String FXML = "HelpWindow.fxml";
 
-    // Path to UserGuide.md relative to project root
-    private static final String USERGUIDE_PATH = "docs/Userguide.md";
-
     // Heading line from Userguide.md to start from
     private static final String START_HEADING = "## Features";
 
@@ -102,12 +99,12 @@ public class HelpWindow extends UiPart<Stage> {
     }
 
     /**
-     * Reads UserGuide.md from the relative path USERGUIDE_PATH,
+     * Reads UserGuide.md from src/main/resources
      * runs extractUserGuide to extract UserGuide from START_HEADING to END_HEADING.
      */
     private String loadUserGuide() {
         try {
-            InputStream stream = HelpWindow.class.getResourceAsStream("/Userguide.md");
+            InputStream stream = HelpWindow.class.getResourceAsStream("/UserGuide.md");
             UserGuideParser parser = new UserGuideParser();
             return parser.loadFromStream(stream, START_HEADING, END_HEADING);
         } catch (Exception e) {
