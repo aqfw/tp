@@ -1,0 +1,91 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":OutletCommandParser" as OutletCommandParser LOGIC_COLOR
+participant ":AssignOutletCommandParser" as AssignOutletCommandParser LOGIC_COLOR
+participant "c:AssignOutletCommand" as AssignOutletCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("outlet assign 1 [2]")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("outlet assign ...")
+activate AddressBookParser
+
+AddressBookParser -> OutletCommandParser : parse(" assign ...")
+activate OutletCommandParser
+
+OutletCommandParser -> AssignOutletCommandParser : parse(" 1 [2]")
+activate AssignOutletCommandParser
+
+create AssignOutletCommand
+AssignOutletCommandParser -> AssignOutletCommand
+activate AssignOutletCommand
+AssignOutletCommand --> AssignOutletCommandParser
+deactivate AssignOutletCommand
+
+AssignOutletCommandParser --> OutletCommandParser : c
+deactivate AssignOutletCommandParser
+
+OutletCommandParser --> AddressBookParser : c
+deactivate OutletCommandParser
+
+AddressBookParser --> LogicManager : c
+deactivate AddressBookParser
+
+LogicManager -> AssignOutletCommand : execute(m)
+activate AssignOutletCommand
+
+AssignOutletCommand -> Model : getFilteredPersonList()
+activate Model
+Model --> AssignOutletCommand : lastShownPersons
+deactivate Model
+
+AssignOutletCommand -> Model : getFilteredOutletList()
+activate Model
+Model --> AssignOutletCommand : lastShownOutlets
+deactivate Model
+
+alt OUTLET_INDEX provided
+AssignOutletCommand -> AssignOutletCommand : resolveSpecifiedOutlet(lastShownOutlets)
+else OUTLET_INDEX omitted
+AssignOutletCommand -> AssignOutletCommand : resolveNearestOutlet(person, lastShownOutlets)
+note right AssignOutletCommand
+Loads SG postal coordinates lazily.
+If nearest cannot be resolved from dataset,
+falls back to random outlet selection.
+end note
+end
+
+AssignOutletCommand -> Model : setPerson(originalPerson, assignedPerson)
+activate Model
+Model --> AssignOutletCommand
+deactivate Model
+
+AssignOutletCommand -> Model : resetFilteredPersonList()
+activate Model
+Model --> AssignOutletCommand
+deactivate Model
+
+create CommandResult
+AssignOutletCommand -> CommandResult
+activate CommandResult
+CommandResult --> AssignOutletCommand
+deactivate CommandResult
+
+AssignOutletCommand --> LogicManager : r
+deactivate AssignOutletCommand
+
+[<-- LogicManager
+deactivate LogicManager
+
+@enduml

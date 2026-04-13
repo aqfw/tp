@@ -1,0 +1,75 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":OutletCommandParser" as OutletCommandParser LOGIC_COLOR
+participant ":UnassignOutletCommandParser" as UnassignOutletCommandParser LOGIC_COLOR
+participant "c:UnassignOutletCommand" as UnassignOutletCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("outlet unassign 1")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("outlet unassign 1")
+activate AddressBookParser
+
+AddressBookParser -> OutletCommandParser : parse(" unassign 1")
+activate OutletCommandParser
+
+OutletCommandParser -> UnassignOutletCommandParser : parse(" 1")
+activate UnassignOutletCommandParser
+
+create UnassignOutletCommand
+UnassignOutletCommandParser -> UnassignOutletCommand
+activate UnassignOutletCommand
+UnassignOutletCommand --> UnassignOutletCommandParser
+deactivate UnassignOutletCommand
+
+UnassignOutletCommandParser --> OutletCommandParser : c
+deactivate UnassignOutletCommandParser
+
+OutletCommandParser --> AddressBookParser : c
+deactivate OutletCommandParser
+
+AddressBookParser --> LogicManager : c
+deactivate AddressBookParser
+
+LogicManager -> UnassignOutletCommand : execute(m)
+activate UnassignOutletCommand
+
+UnassignOutletCommand -> Model : getFilteredPersonList()
+activate Model
+Model --> UnassignOutletCommand : lastShownPersons
+deactivate Model
+
+UnassignOutletCommand -> Model : setPerson(assignedPerson, unassignedPerson)
+activate Model
+Model --> UnassignOutletCommand
+deactivate Model
+
+UnassignOutletCommand -> Model : resetFilteredPersonList()
+activate Model
+Model --> UnassignOutletCommand
+deactivate Model
+
+create CommandResult
+UnassignOutletCommand -> CommandResult
+activate CommandResult
+CommandResult --> UnassignOutletCommand
+deactivate CommandResult
+
+UnassignOutletCommand --> LogicManager : r
+deactivate UnassignOutletCommand
+
+[<-- LogicManager
+deactivate LogicManager
+
+@enduml

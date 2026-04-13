@@ -1,0 +1,65 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":OutletCommandParser" as OutletCommandParser LOGIC_COLOR
+participant ":AddOutletCommandParser" as AddOutletCommandParser LOGIC_COLOR
+participant "c:AddOutletCommand" as AddOutletCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("outlet add n/... a/... pc/...")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("outlet add ...")
+activate AddressBookParser
+
+AddressBookParser -> OutletCommandParser : parse(" add ...")
+activate OutletCommandParser
+
+OutletCommandParser -> AddOutletCommandParser : parse(" n/... a/... pc/...")
+activate AddOutletCommandParser
+
+create AddOutletCommand
+AddOutletCommandParser -> AddOutletCommand
+activate AddOutletCommand
+AddOutletCommand --> AddOutletCommandParser
+deactivate AddOutletCommand
+
+AddOutletCommandParser --> OutletCommandParser : c
+deactivate AddOutletCommandParser
+
+OutletCommandParser --> AddressBookParser : c
+deactivate OutletCommandParser
+
+AddressBookParser --> LogicManager : c
+deactivate AddressBookParser
+
+LogicManager -> AddOutletCommand : execute(m)
+activate AddOutletCommand
+
+AddOutletCommand -> Model : addOutlet(outlet)
+activate Model
+Model --> AddOutletCommand
+deactivate Model
+
+create CommandResult
+AddOutletCommand -> CommandResult
+activate CommandResult
+CommandResult --> AddOutletCommand
+deactivate CommandResult
+
+AddOutletCommand --> LogicManager : r
+deactivate AddOutletCommand
+
+[<-- LogicManager
+deactivate LogicManager
+
+@enduml

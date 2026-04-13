@@ -1,0 +1,98 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":AddByCsvParser" as AddByCsvParser LOGIC_COLOR
+participant "c:AddByCsvCommand" as AddByCsvCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("addcsv data/candidates.csv")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("addcsv ...")
+activate AddressBookParser
+
+AddressBookParser -> AddByCsvParser : parse(" data/candidates.csv")
+activate AddByCsvParser
+
+note right AddByCsvParser
+Validates:
+- .csv extension
+- file existence/readability
+- header format
+- per-row candidate fields
+Builds List<Person>
+end note
+
+create AddByCsvCommand
+AddByCsvParser -> AddByCsvCommand
+activate AddByCsvCommand
+AddByCsvCommand --> AddByCsvParser
+deactivate AddByCsvCommand
+
+AddByCsvParser --> AddressBookParser : c
+deactivate AddByCsvParser
+
+AddressBookParser --> LogicManager : c
+deactivate AddressBookParser
+
+LogicManager -> AddByCsvCommand : execute(m)
+activate AddByCsvCommand
+
+loop for each pair of parsed persons (i, j>i)
+AddByCsvCommand -> AddByCsvCommand : personsToAdd[i].isSamePerson(personsToAdd[j])?
+alt duplicate detected within CSV batch
+AddByCsvCommand --> LogicManager : throws CommandException
+break stop execution
+end
+end
+
+loop for each parsed person
+AddByCsvCommand -> Model : hasPerson(person)
+activate Model
+Model --> AddByCsvCommand
+deactivate Model
+alt duplicate candidate found in existing model
+AddByCsvCommand --> LogicManager : throws CommandException
+break stop execution
+end
+end
+
+AddByCsvCommand -> Model : getAddressBook().getPersonList().size()
+activate Model
+Model --> AddByCsvCommand : currentTotalCandidates
+deactivate Model
+
+alt CSV batch exceeds addable limit
+AddByCsvCommand --> LogicManager : throws CommandException
+else CSV batch within addable limit
+loop for each parsed person
+AddByCsvCommand -> Model : addPerson(person)
+activate Model
+Model --> AddByCsvCommand
+deactivate Model
+end
+
+create CommandResult
+AddByCsvCommand -> CommandResult
+activate CommandResult
+CommandResult --> AddByCsvCommand
+deactivate CommandResult
+
+AddByCsvCommand --> LogicManager : r
+end
+
+deactivate AddByCsvCommand
+
+[<-- LogicManager
+deactivate LogicManager
+
+@enduml

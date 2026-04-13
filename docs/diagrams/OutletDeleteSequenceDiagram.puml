@@ -1,0 +1,82 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":OutletCommandParser" as OutletCommandParser LOGIC_COLOR
+participant ":DeleteOutletCommandParser" as DeleteOutletCommandParser LOGIC_COLOR
+participant "c:DeleteOutletCommand" as DeleteOutletCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("outlet delete 1")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("outlet delete 1")
+activate AddressBookParser
+
+AddressBookParser -> OutletCommandParser : parse(" delete 1")
+activate OutletCommandParser
+
+OutletCommandParser -> DeleteOutletCommandParser : parse(" 1")
+activate DeleteOutletCommandParser
+
+create DeleteOutletCommand
+DeleteOutletCommandParser -> DeleteOutletCommand
+activate DeleteOutletCommand
+DeleteOutletCommand --> DeleteOutletCommandParser
+deactivate DeleteOutletCommand
+
+DeleteOutletCommandParser --> OutletCommandParser : c
+deactivate DeleteOutletCommandParser
+
+OutletCommandParser --> AddressBookParser : c
+deactivate OutletCommandParser
+
+AddressBookParser --> LogicManager : c
+deactivate AddressBookParser
+
+LogicManager -> DeleteOutletCommand : execute(m)
+activate DeleteOutletCommand
+
+DeleteOutletCommand -> Model : getFilteredOutletList()
+activate Model
+Model --> DeleteOutletCommand : lastShownOutlets
+deactivate Model
+
+DeleteOutletCommand -> Model : getAddressBook().getPersonList()
+activate Model
+Model --> DeleteOutletCommand : allPersons
+deactivate Model
+
+loop for each person assigned to target outlet
+DeleteOutletCommand -> Model : setPerson(assignedPerson, unassignedPerson)
+activate Model
+Model --> DeleteOutletCommand
+deactivate Model
+end
+
+DeleteOutletCommand -> Model : deleteOutlet(targetOutlet)
+activate Model
+Model --> DeleteOutletCommand
+deactivate Model
+
+create CommandResult
+DeleteOutletCommand -> CommandResult
+activate CommandResult
+CommandResult --> DeleteOutletCommand
+deactivate CommandResult
+
+DeleteOutletCommand --> LogicManager : r
+deactivate DeleteOutletCommand
+
+[<-- LogicManager
+deactivate LogicManager
+
+@enduml

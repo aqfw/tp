@@ -148,7 +148,7 @@ This section describes some noteworthy details on how certain features are imple
 
 ### Right Panel Content
 
-The right panel is used by several different commands, such as `listtags`, `add`, `delete`, `listtagcombos`, `compare` etc. The different kinds of details that can be displayed on the right panel are full details of a `Person`, the frequency of `Tag`s, and the `TagCombo` list, comparison of 2 different `Person`s.
+The right panel is used by several different commands, such as `listtags`, `add`, `delete`, `listtagcombo`, `compare` etc. The different kinds of details that can be displayed on the right panel are full details of a `Person`, the frequency of `Tag`s, and the `TagCombo` list, comparison of 2 different `Person`s.
 
 #### Implementation
 
@@ -238,6 +238,102 @@ The class and sequence diagrams of the feature is as follows:
 ![CompareCommandClassDiagram](images/CompareCommandClassDiagram.png)
 
 ![CompareCommandSequenceDiagram](images/CompareCommandSequenceDiagram.png)
+
+### AddByCsv Command
+
+#### Implementation
+
+The `addcsv` flow is split between parsing/validation (`AddByCsvParser`) and model mutation (`AddByCsvCommand`).
+
+`AddByCsvParser` handles file and row-level parsing:
+1. Parses and trims the file path argument.
+2. Validates file extension (`.csv`) and file existence.
+3. Reads all lines and validates header structure:
+   required ordered columns are `name,phone,email,address,postalCode`,
+   with optional sixth column `tags`.
+   Any extra columns beyond `tags` are rejected.
+4. Parses each non-empty data row into a `Person`:
+   first fields (`name`, `phone`, `email`) are parsed directly,
+   `postalCode` is parsed from the tail of the row,
+   and address is reconstructed by joining the middle fields with commas.
+   This allows addresses containing commas to be accepted.
+5. Parses `tags` (if present) as semicolon-separated values.
+6. Throws `ParseException` with row context for invalid data.
+
+`AddByCsvCommand` enforces command-level constraints before mutating the model:
+1. Detects duplicates within the parsed CSV batch using `Person#isSamePerson`.
+2. Detects duplicates against existing candidates in model state.
+   Candidate identity follows `Person#isSamePerson`:
+   duplicate if phone matches, or email matches.
+3. Enforces import limit:
+   `maxAddableNow = min(25, 999 - currentCandidateCount)`.
+4. Adds all candidates only after all checks pass (all-or-nothing behavior).
+
+This design keeps row parsing concerns in the parser and keeps model mutation rules in the command.
+
+![AddByCsvSequenceDiagram](images/AddByCsvSequenceDiagram.png)
+
+### Outlet Add, Assignment, and Deletion Commands
+
+#### Implementation
+
+`outlet add` (`AddOutletCommand`) validates outlet fields in `AddOutletCommandParser`
+(`n/`, `a/`, `pc/` required, no duplicate prefixes), then adds the outlet through
+`Model#addOutlet`.
+Duplicate detection follows outlet identity semantics in the model and fails the command if violated.
+
+`outlet add` sequence diagram:
+![OutletAddSequenceDiagram](images/OutletAddSequenceDiagram.png)
+
+`outlet assign` (`AssignOutletCommand`) supports two modes:
+1. Direct assignment mode (`outlet assign CANDIDATE_INDEX OUTLET_INDEX`):
+   validates both indexes against current filtered lists, then assigns directly.
+2. Nearest-assignment mode (`outlet assign CANDIDATE_INDEX`):
+   resolves outlet using postal-coordinate lookup from `SG_postal.csv`.
+
+Nearest-assignment mode uses lazy-loaded postal coordinates:
+1. Coordinates are loaded once into a static in-memory map.
+2. Candidate and outlet postal codes are normalized (leading zeros trimmed).
+3. If candidate postal code is found in dataset:
+   nearest outlet is selected by Euclidean distance over latitude/longitude,
+   considering outlets with known coordinates.
+   If no outlet has known coordinates, selection falls back to random outlet.
+4. If candidate postal code is not found:
+   if at least one outlet postal code is also unknown, random selection is done among unknown outlets;
+   otherwise random selection is done among all outlets.
+
+Nearest-assignment decision summary:
+
+| Candidate postal in SG dataset | Any outlet postal missing in SG dataset | Selected outlet |
+| --- | --- | --- |
+| Yes | N/A | Nearest among outlets with known coordinates; if none known, random among all outlets |
+| No | Yes | Random among outlets with missing SG postal entries |
+| No | No | Random among all outlets |
+
+Additional assignment behavior:
+* If no outlets are available, command fails.
+* If dataset loading fails in nearest-assignment mode, command fails.
+* A heuristic warning is appended when candidate address appears likely non-Singapore.
+
+`outlet assign` sequence diagram:
+![OutletAssignSequenceDiagram](images/OutletAssignSequenceDiagram.png)
+
+`outlet unassign` (`UnassignOutletCommand`) updates the selected candidate by replacing `workingAddress` with `null`.
+The command operates on the current filtered candidate list index.
+
+`outlet unassign` sequence diagram:
+![OutletUnassignSequenceDiagram](images/OutletUnassignSequenceDiagram.png)
+
+`outlet delete` (`DeleteOutletCommand`) performs cascading unassignment:
+1. Validates outlet index from current filtered outlet list.
+2. Scans the full address book candidate list for candidates assigned to the target outlet.
+3. Replaces each affected candidate with an unassigned copy (`workingAddress = null`).
+4. Deletes the outlet.
+5. Supports undo/redo by restoring/removing both outlet and affected assignments.
+   Undo re-inserts the outlet at the original index and restores all previously assigned candidates.
+
+`outlet delete` sequence diagram:
+![OutletDeleteSequenceDiagram](images/OutletDeleteSequenceDiagram.png)
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -466,102 +562,144 @@ Use case ends.
 
 Use case ends.
 
-**Use case: UC12 - Add multiple candidates by csv**
+**Use case: UC12 - Add multiple candidates by CSV**
 
 **MSS**
 
-1. User requests to add candidate using a csv file.
-2. HireLens checks whether the provided file is in the `.csv` format.
-3. HireLens adds all candidates specified by the csv file.
-4. HireLens displays the full candidate list.
+1. User requests to add candidates using a CSV file.
+2. HireLens validates that the file exists and has the `.csv` extension.
+3. HireLens validates the CSV header and each row's candidate data format.
+4. HireLens validates duplicates and import capacity constraints.
+5. HireLens adds all candidates from the CSV file in a single batch.
+6. HireLens displays a success message and the updated candidate view.
 
 Use case ends.
 
 **Extensions**
 
-1a. The specified csv file does not exist.<br>
-1a1. HireLens informs the user the csv file does not exist.<br>
-1a2. HireLens displays the current view of the candidate list.
+2a. The specified CSV file does not exist.<br>
+2a1. HireLens informs the user that the CSV file does not exist.<br>
+2a2. HireLens displays the current candidate view.
 
 Use case ends.
 
-1b. The specified file is not in `.csv` format (e.g. wrong file extension).<br>
-1b1. HireLens informs the user that only `.csv` files are accepted and prompts for a valid file.<br>
-1b2. HireLens displays the current view of the candidate list.
+2b. The specified file is not in `.csv` format (e.g. wrong file extension).<br>
+2b1. HireLens informs the user that only `.csv` files are accepted.<br>
+2b2. HireLens displays the current candidate view.
 
 Use case ends.
 
-1c. The specified csv file contains information in the wrong format.<br>
-1c1. HireLens informs the user the csv file contains information in the wrong format.<br>
-1c2. HireLens displays the current view of the candidate list.
+3a. The CSV header/rows contain invalid format or invalid field values.<br>
+3a1. HireLens informs the user which row/header is invalid.<br>
+3a2. HireLens does not add any candidates (all-or-nothing import).
 
 Use case ends.
 
-**Use case: UC13 - Add possible working address**
+3b. CSV has a valid header but no candidate rows.<br>
+3b1. HireLens informs the user that the CSV is empty (no candidate rows).<br>
+3b2. HireLens does not add any candidates.
+
+Use case ends.
+
+4a. Duplicate candidates are detected (against existing candidates or within the same CSV).<br>
+4a1. HireLens informs the user that duplicate candidates exist.<br>
+4a2. HireLens does not add any candidates (all-or-nothing import).
+
+Use case ends.
+
+4b. CSV import size exceeds allowed limit.<br>
+4b1. HireLens informs the user of the current maximum importable count.<br>
+4b2. HireLens does not add any candidates.
+
+Use case ends.
+
+**Use case: UC13 - Add outlet**
 
 **MSS**
 
-1. User requests to add a possible working address for future candidates.
-2. User enters address to add as new working location possible.
-3. System checks that the entered address follows the required address format.
-4. System adds the entered address to the list of possible working addresses.
-5. System displays confirmation that the possible working address has been successfully added.
+1. User requests to add an outlet.
+2. User enters outlet details (name, address, postal code).
+3. HireLens validates required fields and field constraints.
+4. HireLens checks that the outlet is not a duplicate.
+5. HireLens adds the outlet and displays confirmation.
 
 Use case ends.
 
 **Extensions**
 
-3a. User entered invalid address.<br>
-3a1. System informs the user that the entered addres does not follow the required address format.<br>
-3a2. System prompts the user to enter the address again.<br>
-3a3. User re-enters the address.
+3a. User input is missing required fields or contains invalid values.<br>
+3a1. HireLens informs the user of the invalid format/constraint violation.<br>
+3a2. HireLens does not add the outlet.
 
-Use case resumes at step 2.
+Use case ends.
 
-**Use case: UC14 - Remove possible working address**
+4a. A duplicate outlet is detected.<br>
+4a1. HireLens informs the user that the outlet already exists.<br>
+4a2. HireLens does not add the outlet.
+
+Use case ends.
+
+**Use case: UC14 - Delete outlet**
 
 **MSS**
 
-1. User requests to delete possible working addresses.
-2. System displays the list of possible working addresses.
-3. User selects a possible working address to delete.
-4. System requests confirmation for deletion.
-5. User confirms the deletion.
-6. System deletes the selected address from the list of possible working addresses.
-7. System displays confirmation that the possible working address has been successfully deleted.
+1. User requests to delete an outlet by index from the displayed outlet list.
+2. HireLens validates the outlet index.
+3. HireLens unassigns all candidates currently assigned to that outlet.
+4. HireLens deletes the outlet.
+5. HireLens displays confirmation and updates relevant candidate details if needed.
 
 Use case ends.
 
 **Extensions**
 
-1a. No office locations added yet.<br>
-1a1. System informs the user that there are no possible working addresses added to the system yet.
+2a. The provided outlet index is invalid.<br>
+2a1. HireLens informs the user that the outlet index is invalid.<br>
+2a2. HireLens does not delete any outlet.
 
 Use case ends.
 
-4a. User cancels the deletion.<br>
-4a1. System cancels the deletion requests.
-
-Use case ends.
-
-**Use case: UC15 - Assign candidate to nearest working address possible**
+**Use case: UC15 - Assign candidate to outlet**
 
 **MSS**
 
-1. User requests to compare a candidate’s residential address with available office locations.
-2. System retrieves the candidate’s stored residential address.
-3. System retrieves the list of available office locations.
-4. System calculates the distance between the candidate's residential address and each office location.
-5. System displays a comparison of office locations relative to candidate’s residential address sorted by nearest distance.
-6. User reviews the comparison result.
-7. User selects which office location is most suitable for candidate.
+1. User requests to assign a candidate to an outlet using candidate index and optional outlet index.
+2. HireLens validates the candidate index and checks that at least one outlet exists.
+3. If outlet index is provided, HireLens validates that outlet index and selects that outlet.
+4. If outlet index is omitted, HireLens resolves an outlet using nearest-outlet logic based on postal coordinates.
+   If required postal-coordinate data for nearest resolution is unavailable, HireLens uses random fallback selection.
+5. HireLens assigns the candidate to the selected outlet and displays updated candidate details.
 
 Use case ends.
 
 **Extensions**
 
-3a. No office locations added yet.<br>
-3a1. System informs the user that there are no possible working addresses added to the system yet.
+2a. The provided candidate index is invalid.<br>
+2a1. HireLens informs the user that the candidate index is invalid.<br>
+2a2. HireLens does not update any assignment.
+
+Use case ends.
+
+2b. No outlets are available.<br>
+2b1. HireLens informs the user that no outlets are available.<br>
+2b2. HireLens does not update any assignment.
+
+Use case ends.
+
+3a. The provided outlet index is invalid.<br>
+3a1. HireLens informs the user that the outlet index is invalid.<br>
+3a2. HireLens does not update any assignment.
+
+Use case ends.
+
+4a. The SG postal dataset is unavailable for nearest assignment mode (when outlet index is omitted).<br>
+4a1. HireLens informs the user that nearest-assignment data could not be loaded.<br>
+4a2. HireLens does not update any assignment.
+
+Use case ends.
+
+5a. Candidate address appears likely outside Singapore.<br>
+5a1. HireLens completes the assignment and shows a warning message.
 
 Use case ends.
 
@@ -572,7 +710,8 @@ Use case ends.
    * System should be able to handle up to 999 contacts without a noticeable lag.
 2. Capacity
    * System should be able to store up to 999 contacts.
-   * System should be able to read and enter up to 50 contacts from a csv file at a time.
+   * System should support importing up to 25 candidates per CSV command,
+     subject to the overall candidate capacity limit of 999.
 3. Quality
    * A new user should be able to learn, and add a candidate to the system within 60 seconds of launching the app.
    * System should have clear error messages that explain the source of the error and how to correct the error.
@@ -710,3 +849,71 @@ testers are expected to do more *exploratory* testing.
    6. Test an integer outside the size of the current list: `compare 1 99`, `compare 99 1`, `compare 98 99`
    Expected: In all cases, the relevant error message should be returned in the message box, and no right pane content
    should be shown.
+
+### Adding candidates by CSV (`addcsv`)
+
+   1. Prerequisites: Candidate list is visible. Prepare CSV files in an accessible local path.
+
+   2. Test case: `addcsv src/test/data/AddByCsvParserTest/validCandidates.csv`<br>
+   Expected: Candidates from file are added; success message reports added count.
+
+   3. Test case: `addcsv src/test/data/AddByCsvParserTest/missingPostalCodeHeader.csv`<br>
+   Expected: No candidates are added; header error is shown.
+
+   4. Test case: `addcsv src/test/data/AddByCsvParserTest/headerOnly.csv`<br>
+   Expected: No candidates are added; empty-CSV message is shown.
+
+   5. Test case: CSV with duplicate candidate identity rows (same phone or same email), then run `addcsv <file>`.<br>
+   Expected: No candidates are added (all-or-nothing); duplicate error is shown.
+
+### Adding outlets (`outlet add`)
+
+   1. Prerequisites: None.
+
+   2. Test case: `outlet add n/TechCo a/Raffles Place pc/048623`<br>
+   Expected: Outlet is added and shown in outlet panel.
+
+   3. Test case: `outlet add n/UnAssigned a/Marina Bay pc/018956`<br>
+   Expected: Outlet is not added; outlet name constraint error is shown.
+
+   4. Test case: `outlet add n/TechCo a/Raffles Place pc/048623` again.<br>
+   Expected: Outlet is not added; duplicate outlet error is shown.
+
+### Assigning outlets (`outlet assign`)
+
+   1. Prerequisites: At least one outlet exists; candidate list is visible.
+
+   2. Test case: `outlet assign 1 1`<br>
+   Expected: Candidate #1 is assigned to outlet #1.
+
+   3. Test case: `outlet assign 1`<br>
+   Expected: Candidate #1 is assigned using nearest-assignment mode (or documented fallback path).
+
+   4. Test case: `outlet assign 0` or `outlet assign 1 0`<br>
+   Expected: Assignment fails with invalid index error.
+
+   5. Test case: No outlets in system, then run `outlet assign 1`.<br>
+   Expected: Assignment fails with "No outlets available to assign.".
+
+### Unassigning outlets (`outlet unassign`)
+
+   1. Prerequisites: At least one candidate exists.
+
+   2. Test case: `outlet unassign 1` on assigned candidate.<br>
+   Expected: Candidate #1 working outlet becomes unassigned.
+
+   3. Test case: `outlet unassign 1` on already-unassigned candidate.<br>
+   Expected: Command succeeds; candidate remains unassigned.
+
+### Deleting outlets (`outlet delete`)
+
+   1. Prerequisites: At least one outlet exists; at least one candidate assigned to that outlet.
+
+   2. Test case: `outlet delete 1`<br>
+   Expected: Outlet #1 is removed; all candidates previously assigned to that outlet are automatically unassigned.
+
+   3. Test case: `undo` immediately after deletion.<br>
+   Expected: Deleted outlet is restored and affected candidates are reassigned back.
+
+   4. Test case: `outlet delete 0`<br>
+   Expected: Deletion fails with invalid index error.
