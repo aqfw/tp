@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 
 import org.junit.jupiter.api.Test;
@@ -108,7 +108,7 @@ public class HelpWindowTest {
     }
 
     @Test
-    public void loadFromStream_nullStream_throwsIOException() {
+    public void loadFromStream_nullStream_throwsIoException() {
         UserGuideParser parser = new UserGuideParser();
         try {
             parser.loadFromStream(null, "## Features", null);
