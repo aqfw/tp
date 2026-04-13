@@ -260,50 +260,48 @@ The class and sequence diagrams of the feature is as follows:
 * Designed for HR recruiters
 * Prefer desktop apps over other types
 * Is reasonably comfortable using CLI apps
-* Wants to enter candidates’ credentials, which could be extremely large
+* Wants to enter candidates’ credentials quickly, which could be extremely large
 * Wants to filter and compare candidates by qualifications, distances to workplaces etc
 * Wants to use the program to speed up their other workflows, e.g. writing emails
-* Strongly values punctuality and is strict about lateness, while still aiming to remain fair
-
 
 **Value proposition**:
 * Fast and easy search/filter that can check different fields such as salary, qualifications, positions and more.
 * Pin certain entries for fast comparison or easy access.
 * Take an input of a .csv file with the correct format and with relevant data and automatically add the candidates to the list.
 * Quickly filter through the candidates for those with the ideal skills (and any other factors).
-* Calculate the distance between a candidate’s address and the available offices such that the candidate can be sent to the nearest office.
+* Assign candidates to offices quickly.
 
 
 ### User stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                                                | I want to …​                                                                         | So that I can…​                                                     |
-|----------|------------------------------------------------------------------------|--------------------------------------------------------------------------------------|---------------------------------------------------------------------|
-| `* * *`  | new recruiter                                                          | be able to request a help menu pop-up                                                | know which commands to use when unfamiliar with the app             |
-| `* * *`  | recruiter                                                              | add candidates with their names, phone numbers, email addresses                      | easily contact them for future job openings                         |
-| `* * *`  | recruiter                                                              | be able to edit contacts                                                             | fix any minor mistakes I make                                       |
-| `* * *`  | recruiter                                                              | be able to delete contacts                                                           | un-track candidates I am no longer interested in                    |
-| `* * *`  | recruiter                                                              | be able to filter contacts                                                           | search for tags I am interested in                                  |
-| `* * *`  | recruiter                                                              | be able to view all candidates                                                       | know who I have added to the addressbook                            |
-| `* * *`  | recruiter                                                              | tag candidates by their skills                                                       | categorise them by their skills                                     |
-| `* * *`  | recruiter facing candidates with a variety of names                    | be able to add two candidates with the same name                                     | so that all candidates can be entered into the system               |
-| `* * *`  | recruiter                                                              | filter candidates by multiple tags simultaneously                                    | immediately get a shortlisted list of candidates for a job opening  |
-| `* * *`  | time-pressed recruiter                                                 | be able to use a spreadsheet to add many candidates to this address book all at once | save time adding entries                                            |
-| `* *`    | recruiter                                                              | have a log of recent changes made to a candidate                                     | check for mistakes                                                  |
-| `* *`    | careless recruiter                                                     | be able to undo my commands                                                          | my mistakes can be amended quickly                                  |
-| `* *`    | careless recruiter                                                     | be able to copy candidate details for use in another program                         | reduce my chance of mis-typing                                      |
-| `* *`    | recruiter                                                              | be able to create common tag combinations                                            | reuse the same filters easily                                       |
-| `* *`    | recruiter                                                              | be able to assign a status to candidates in the pipeline                             | manage the hiring progress for a particular opening                 |
-| `* *`    | recruiter examining hiring options                                     | be able to compare more than one candidate with each other                           | judge correctly while avoiding manual error                         |
-| `* *`    | recruiter                                                              | be able to view recently viewed candidates                                           | save time from not searching again                                  |
-| `* *`    | recruiter                                                              | be able to assign a rating score to each candidate and filter by rating score        | compare in a quick and objective manner during the final selection  |
-| `*`      | recruiter                                                              | have an email template popup in one click                                            | contact candidates easily                                           |
-| `*`      | recruiter bulk importing data                                          | be notified if there already exists an identical record                              | don’t mistakenly add duplicates and bloat the database              |
-| `*`      | time-pressed recruiter                                                 | be able to edit multiple entries at once                                             | efficiently manage large batches of candidates                      |
-| `*`      | be able to see a quick summary of the most common tags in the database | understand the talent pool better                                                    | so that I can make the best hiring decision                         |
-| `*`      | recruiter                                                              | be able to compare candidates’ living addresses with potential work addresses        | understand how best to hire and deploy them across our many offices |
-| `*`      | new recruiter                                                          | auto fill-in suggestions with tooltips explaining what each field means              | correctly enter candidate information without making mistakes       |
+| Priority | As a …​                                             | I want to …​                                                                           | So that I can…​                                                     |
+|----------|-----------------------------------------------------|----------------------------------------------------------------------------------------|---------------------------------------------------------------------|
+| `* * *`  | new recruiter                                       | be able to request a help menu pop-up                                                  | know which commands to use when unfamiliar with the app             |
+| `* * *`  | recruiter                                           | add candidates with their names, phone numbers, email addresses                        | easily contact them for future job openings                         |
+| `* * *`  | recruiter                                           | be able to edit candidates                                                             | fix any minor mistakes I make                                       |
+| `* * *`  | recruiter                                           | be able to delete candidates                                                             | un-track candidates I am no longer interested in                    |
+| `* * *`  | recruiter                                           | be able to filter candidates                                                             | search for tags I am interested in                                  |
+| `* * *`  | recruiter                                           | be able to view all candidates                                                         | know who I have added to the candidate list                         |
+| `* * *`  | recruiter                                           | tag candidates by their skills                                                         | categorise them by their skills                                     |
+| `* * *`  | recruiter facing candidates with a variety of names | be able to add two candidates with the same name                                       | so that all candidates can be entered into the system               |
+| `* * *`  | recruiter                                           | filter candidates by multiple tags simultaneously                                      | immediately get a shortlisted list of candidates for a job opening  |
+| `* * *`  | time-pressed recruiter                              | be able to use a spreadsheet to add many candidates to this candidate list all at once | save time adding entries                                            |
+| `* *`    | recruiter                                           | have a log of recent changes made to a candidate                                       | check for mistakes                                                  |
+| `* *`    | careless recruiter                                  | be able to undo my commands                                                            | my mistakes can be amended quickly                                  |
+| `* *`    | careless recruiter                                  | be able to copy candidate details for use in another program                           | reduce my chance of mis-typing                                      |
+| `* *`    | recruiter                                           | be able to create common tag combinations                                              | reuse the same filters easily                                       |
+| `* *`    | recruiter                                           | be able to assign a status to candidates in the pipeline                               | manage the hiring progress for a particular opening                 |
+| `* *`    | recruiter examining hiring options                  | be able to compare more than one candidate with each other                             | judge correctly while avoiding manual error                         |
+| `* *`    | recruiter                                           | be able to view recently viewed candidates                                             | save time from not searching again                                  |
+| `* *`    | recruiter                                           | be able to assign a rating score to each candidate and filter by rating score          | compare in a quick and objective manner during the final selection  |
+| `*`      | recruiter                                           | have an email template popup in one click                                              | contact candidates easily                                           |
+| `*`      | recruiter bulk importing data                       | be notified if there already exists an identical record                                | don’t mistakenly add duplicates and bloat the database              |
+| `*`      | time-pressed recruiter                              | be able to edit multiple entries at once                                               | efficiently manage large batches of candidates                      |
+| `*`      | recruiter                                           | be able to see a quick summary of the most common tags in the database                                                      | so that I can understand the talent pool better                     |
+| `*`      | recruiter                                           | be able to compare candidates’ living addresses with potential work addresses          | understand how best to hire and deploy them across our many offices |
+| `*`      | new recruiter                                       | auto fill-in suggestions with tooltips explaining what each field means                | correctly enter candidate information without making mistakes       |
 
 *{More to be added}*
 
@@ -330,18 +328,18 @@ Steps 1a1-1a2 are repeated until the data entered are correct.
 
 Use case resumes from step 2.
 
-**Use case: UC02 - Edit Contact**
+**Use case: UC02 - Edit Candidate**
 
 **MSS**
 
-1. User provides HireLens with the person to modify, and the fields to modify, alongside their new values.
-2. HireLens displays the current view of the candidate book, with the specific candidate's details updated.
+1. User provides HireLens with the candidate to modify, and the fields to modify, alongside their new values.
+2. HireLens displays the current view of the candidate list, with the specific candidate's details updated.
 
 Use case ends.
 
 **Extensions**
 
-1a. User provides an invalid index.<br>
+1a. User provides an invalid candidate.<br>
 1a1. HireLens informs the user of the error made and requests corrected information.<br>
 1a2. User enters corrected data.<br>
 Steps 1a1-1a2 are repeated until the data entered are correct.
@@ -386,7 +384,7 @@ Use case ends.
 **MSS**
 
 1. User requests to undo the previous action they performed.
-2. HireLens restores the state of the contact list before the last action was performed and displays the view of the candidate book one command ago.
+2. HireLens restores the state of the candidate list before the last action was performed and displays the view of the candidate list one command ago.
 
 Use case ends.
 
@@ -464,7 +462,7 @@ Use case ends.
 
 1. User requests to add a remark to a specific candidate.
 2. HireLens overwrites the remark to the candidate.
-3. HireLens displays the current view of the candidate book, with the specific candidate updated.
+3. HireLens displays the current view of the candidate list, with the specific candidate updated.
 
 Use case ends.
 
@@ -474,8 +472,8 @@ Use case ends.
 
 1. User requests to add candidate using a csv file.
 2. HireLens checks whether the provided file is in the `.csv` format.
-3. HireLens adds all contacts specified by the csv file.
-4. HireLens displays the full candidate book.
+3. HireLens adds all candidates specified by the csv file.
+4. HireLens displays the full candidate list.
 
 Use case ends.
 
@@ -483,19 +481,19 @@ Use case ends.
 
 1a. The specified csv file does not exist.<br>
 1a1. HireLens informs the user the csv file does not exist.<br>
-1a2. HireLens displays the current view of the candidate book.
+1a2. HireLens displays the current view of the candidate list.
 
 Use case ends.
 
 1b. The specified file is not in `.csv` format (e.g. wrong file extension).<br>
 1b1. HireLens informs the user that only `.csv` files are accepted and prompts for a valid file.<br>
-1b2. HireLens displays the current view of the candidate book.
+1b2. HireLens displays the current view of the candidate list.
 
 Use case ends.
 
 1c. The specified csv file contains information in the wrong format.<br>
 1c1. HireLens informs the user the csv file contains information in the wrong format.<br>
-1c2. HireLens displays the current view of the candidate book.
+1c2. HireLens displays the current view of the candidate list.
 
 Use case ends.
 
@@ -588,10 +586,9 @@ Use case ends.
 ### Glossary
 1. **Candidate**: Each person stored in the candidate list will be referred to as a candidate. A Candidate consists of the following details: **Name**, **Address**, **Email Address**, **Postal Code**, **Phone Number**, **Tags** (optional).<br>
    In the implementation, a candidate is represented by a `Person` object, with related classes named accordingly (e.g., `UniquePersonList`). While the terms *candidate* and *person* may be used interchangeably in the Developer Guide, only *candidate* is used in the User Guide to reflect the application’s intended use for HR recruiters.
-2. **View**: A view refers to the graphical display of the candidate book. The current view refers to list of candidates that is currently visible in the graphical view. This distinction is important as some commands are performed on the current view of the address book, rather than the full candidate book.
+2. **View**: A view refers to the graphical display of the candidate list. The current view refers to list of candidates that is currently visible in the graphical view. This distinction is important as some commands are performed on the current view of the candidate list, rather than the full candidate list.
 3. **Tag Combination**: A set of tags defined by the user under a specific name (E.g The **MLE** tag combination could contain the tags **Python**, **SQL** and **Machine Learning**).
 4. **Outlet**: An outlet corresponds to a physical location of an office/asset of the company, with the following details: **Name**, **Address** and **Postal Code**.
-5. Tag Combination: A set of tags defined by the user under a specific name (E.g The **MLE** tag combination could contain the tags **Python**, **SQL** and **Machine Learning**).
 
 #### UI Glossary Terms
 
@@ -688,10 +685,10 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: There must be persons in the address book with the tags `python` and `java`. No tag combos yet defined.
 
    2. Test case: `filter t/java`<br>
-   Expected: The addressbook shows only persons with the `java` tag. Status message displays the number of people after the filter has been applied. The right pane displays the frequency of the tags in the filtered address book in descending order, similar to the `listtags` command.
+   Expected: The candidate list shows only persons with the `java` tag. Status message displays the number of people after the filter has been applied. The right pane displays the frequency of the tags in the filtered address book in descending order, similar to the `listtags` command.
 
    3. Test case: `filter t/java t/python`<br>
-   Expected: The addressbook shows only persons with both the `java` and `python` tags. Status message displays the number of people after the filter has been applied. The right pane displays the frequency of the tags in the filtered address book in descending order, similar to the `listtags` command.
+   Expected: The candidate list shows only persons with both the `java` and `python` tags. Status message displays the number of people after the filter has been applied. The right panel displays the frequency of the tags in the filtered candidate list in descending order, similar to the `listtags` command.
 
    4. Test case: `filter t/java`, followed by `filter t/python`.<br>
    Expected: Exact same behaviour as previous.
@@ -700,9 +697,9 @@ testers are expected to do more *exploratory* testing.
    Expected: Exact same behaviour as previous.
 
    6. Test case: `filter tc/ml`<br>
-   Expected: The addressbook is not filtered. Status message displays that there is no tag combo called `ml`. Right pane remains the same.
+   Expected: The candidate list is not filtered. Status message displays that there is no tag combo called `ml`. Right pane remains the same.
 
-## Comparing Candidates
+### Comparing Candidates
    1.  Test the positive case from any list of candidates you see: e.g. `compare 1 2`<br>
     Expected: All of the relevant candidates' information are shown in a resizeable right pane.
 

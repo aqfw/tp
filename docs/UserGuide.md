@@ -40,7 +40,7 @@ HireLens is a **desktop app for HR recruiters to manage candidates, optimized fo
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Ui Components and Glossary
+## UI Components and Glossary
 
 ![UiComponents](images/UiComponents.png)
 
@@ -58,7 +58,6 @@ The image above shows the key UI Components, which are described in detail below
 2. **View**: A view refers to the graphical display of the candidate book. The current view refers to list of candidates that is currently visible in the graphical view. This distinction is important as some commands are performed on the current view of the address book, rather than the full candidate book.
 3. **Tag Combination**: A set of tags defined by the user under a specific name (E.g The **MLE** tag combination could contain the tags **Python**, **SQL** and **Machine Learning**).
 4. **Outlet**: An outlet corresponds to a physical location of an office/asset of the company, with the following details: **Name**, **Address** and **Postal Code**.
-5. Tag Combination: A set of tags defined by the user under a specific name (E.g The **MLE** tag combination could contain the tags **Python**, **SQL** and **Machine Learning**).
 
 ## Features
 
@@ -102,6 +101,8 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS pc/POSTAL_CODE [t/TAG]…�
 A candidate can have any number of tags (including 0)
 </div>
 
+The full details of the candidate are displayed on the **Right Panel** on success.
+
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 pc/123456`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 pc/654321 t/criminal`
@@ -116,24 +117,30 @@ Shows a list of all candidates in the candidate list.
 
 Format: `list`
 
-### Editing acandidate : `edit`
+Tag counts are displayed on the **Right Panel** on success, similar to calling `listtags`.
+
+### Editing a candidate : `edit`
 
 Edits at least one existing candidate in the candidate list.
 
-Format: `edit INDEXES [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [pc/POSTAL_CODE] [t/TAG]…​`
+Format: `edit INDEXES {[n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [pc/POSTAL_CODE] [t/TAG]} [t/TAG]…​`
 
-* Edits the candidatea at the specified `INDEXES`. The index refers to the index number shown in the displayed candidate list. The index **must be a positive integer** 1, 2, 3, …​
+* Edits the candidates at the specified `INDEXES`. The index refers to the index number shown in the displayed candidate list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one index must be provided and all the indexes provided must be valid inputs.
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the candidate will be removed i.e adding of tags is not cumulative.
 * You can remove all the candidate’s tags by typing `t/` without
   specifying any tags after it.
+* The full details of the edited candidated is displayed on the **Right Panel** on success.
 
 Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st candidate to be `91234567` and `johndoe@example.com` respectively.
 *  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd candidate to be `Betsy Crower` and clears all existing tags.
 *  `edit 1 2 3 t/python` Edits the tags of the 1st, 2nd and 3rd candidate to be replaced by python.
+*  `edit 1 t/Java` displays the following results.
+
+![result for `edit 1 t/Java`](images/editPaulineJava.png)
 
 ### Locating candidates by name : `find`
 
@@ -164,16 +171,17 @@ Format: `filter {[t/TAG] [tc/TAG_COMBO]} [t/TAG]... [tc/TAG_COMBO]...`
 * The search works on the CURRENT view of the Candidate List, rather than the full Candidate List.
 * The search requires at least 1 tag/tag combo to work.
 * The tag combo must exist to work, whereas an invalid tag will simply return 0 candidates.
+* The tag counts after filtering are displayed on the **Right Panel** on success.
 
 Examples:
 * `filter tc/ml dev`
 * `filter t/java tc/ml dev`
 * `filter t/Java t/Python` returns `Benson Meier`, `Natalie Lim`.
-* ![result for 'filter t/python t/java'](images/filterPythonJavaResult.png)
+  ![result for 'filter t/python t/java'](images/filterPythonJavaResult.png)
 
 ### Listing existing tags: `listtags`
 
-Lists all tags in descending order of frequencies, along with their frequencies.
+Lists all tags in descending order of frequencies, along with their frequencies in the **Right Panel**.
 
 * Order is not guaranteed in the case of ties.
 
@@ -187,10 +195,12 @@ Format: `addtagcombo NAME t/TAG t/TAG [t/TAG]...`
 
 * The name of the tag combo must consist of only alphanumeric characters, and be at most 25 characters long.
 * Minimally 2 tags are needed to define a tag combo, as a tag combo with only one tag is functionally equivalent to a tag with an alias.
+* The list of tag combos are displayed in the **Right Panel** on success, similar to `listtagcombo`.
 
 Examples:
 * `addtagcombo ml dev t/python t/ml`
 * `addtagcombo java backend dev t/java t/backend t/docker`
+  ![result for `addtagcombo java backend dev t/java t/backend t/docker`](images/addTagComboResult.png)
 
 ### Deleting tag combos: `deletetagcombo`
 
@@ -201,6 +211,7 @@ Format: `deletetagcombo INDEX`
 * Deletes the tag combo at the specified `INDEX`.
 * The index refers to the index number shown in the displayed tag combo list.
 * The index **must be a positive integer** 1, 2, 3, …​
+* The full tag combo list is displayed on the **Right Panel** on success, similar to `listtagcombo`.
 
 Examples:
 * `deletetagcombo 1`
@@ -211,7 +222,7 @@ Lists all tag combos in the Right Panel.
 
 Format: `listtagcombo`
 
-* ![result for 'listtagcombo'](images/listTagComboResult.png)
+  ![result for 'listtagcombo'](images/listTagComboResult.png)
 
 ### Deleting a candidate : `delete`
 
@@ -222,6 +233,7 @@ Format: `delete INDEX`
 * Deletes the candidate at the specified `INDEX`.
 * The index refers to the index number shown in the displayed candidate list.
 * The index **must be a positive integer** 1, 2, 3, …​
+* The full details of the deleted candidate are displayed on the **Right Panel** on success.
 
 Examples:
 * `list` followed by `delete 2` deletes the 2nd candidate in the address book.
@@ -255,7 +267,7 @@ Format: `undo`
 * `list`, `filter`, `find` Returns to the previous view of the Address Book.
 * `clear` Adds all `Candidate`s deleted.
 
-### Comparing Candidates: `compare INDEX_1 INDEX_2`
+### Comparing Candidates: `compare`
 
 Compare two candidates from the current list by displayed index, side-by-side in the right-hand-side display pane.
 Information clears when another action takes up the right-hand-side pane.
@@ -301,7 +313,7 @@ Format: `exit`
 
 Adds an `Outlet`.
 
-Format: `outlet add n/<name> a/<address> pc/<postalCode>`
+Format: `outlet add n/NAME a/ADDRESS pc/POSTAL_CODE`
 
 - Outlet name must be at most 26 characters long.
 - Outlet address must be at most 35 characters long.
@@ -316,7 +328,7 @@ Examples:
 
 Edits an existing `Outlet`.
 
-Format: `outlet edit <index> [n/<name>] [a/<address>] [pc/<postalCode>]`
+Format: `outlet edit <index> {[n/NAME] [a/ADDRESS] [pc/POSTAL_CODE]}`
 
 Examples:
 
@@ -327,7 +339,7 @@ Examples:
 
 Assigns a candidate to an `Outlet`.
 
-Format: `outlet assign <candidateIndex> [outletIndex]`
+Format: `outlet assign CANDIDATE_INDEX [OUTLET_INDEX]`
 
 - If `outletIndex` is omitted, the candidate is assigned to the nearest outlet by postal code.
 - If candidate address appears to be outside Singapore, assignment still succeeds and a warning is shown.
@@ -342,7 +354,7 @@ Examples:
 
 Unassigns a candidate from their working `Outlet`.
 
-Format: `outlet unassign <candidateIndex>`
+Format: `outlet unassign CANDIDATE_INDEX`
 
 Examples:
 
@@ -352,7 +364,7 @@ Examples:
 
 Deletes an `Outlet`.
 
-Format: `outlet delete <index>`
+Format: `outlet delete INDEX`
 
 - If candidates are assigned to the deleted outlet, they are automatically unassigned.
 
@@ -415,9 +427,9 @@ Action | Format, Examples
 **Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS pc/POSTAL_CODE [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd pc/123456 t/friend t/colleague`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEXES [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [pc/POSTAL_CODE] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Edit** | `edit INDEXES {[n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [pc/POSTAL_CODE] [t/TAG]} [T/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**Filter** | `filter t/TAG [t/TAG]... [tc/TAG_COMBO]... `<br> e.g., `filter t/java t/python tc/ml dev`
+**Filter** | `filter {[t/TAG] [tc/TAG_COMBO]} [t/TAG]... [tc/TAG_COMBO]... `<br> e.g., `filter t/java t/python tc/ml dev`
 **List** | `list`
 **Help** | `help`
 **Undo** | `undo`
@@ -427,11 +439,11 @@ Action | Format, Examples
 **Delete Tag Combo** | `deletetagcombo INDEX`<br> e.g., `deletetagcombo 1`
 **List Tag Combos** | `listtagcombo`
 **Add by csv** | `addcsv`
-**Add Outlet** | `outlet add n/<name> a/<address> pc/<postalCode>` <br> e.g., `outlet add n/FinServ a/Marina Bay pc/018956`
-**Edit Outlet** | `outlet edit <index> [n/<name>] [a/<address>] [pc/<postalCode>]` <br> e.g., `outlet edit 1 a/One Raffles Place pc/048616`
-**Assign Outlet** | `outlet assign <candidateIndex> [outletIndex]` <br> e.g., `outlet assign 2 1`
-**Unassign Outlet** | `outlet unassign <candidateIndex>` <br> e.g., `outlet unassign 2`
-**Delete Outlet** | `outlet delete <index>` <br> e.g., `outlet delete 1`
-**Edit Outlet** | `outlet edit <index> [n/NAME] [a/ADDRESS] [pc/POSTAL_CODE]` <br> e.g., `outlet edit 1 n/Techco`
+**Add Outlet** | `outlet add n/NAME a/ADDRESS pc/POSTAL_CODE` <br> e.g., `outlet add n/FinServ a/Marina Bay pc/018956`
+**Edit Outlet** | `outlet edit INDEX {[n/NAME] [a/ADDRESS] [pc/POSTAL_CODE]}` <br> e.g., `outlet edit 1 a/One Raffles Place pc/048616`
+**Assign Outlet** | `outlet assign CANDIDATE_INDEX OUTLET_INDEX` <br> e.g., `outlet assign 2 1`
+**Unassign Outlet** | `outlet unassign INDEX` <br> e.g., `outlet unassign 2`
+**Delete Outlet** | `outlet delete INDEX` <br> e.g., `outlet delete 1`
+**Edit Outlet** | `outlet edit INDEX [n/NAME] [a/ADDRESS] [pc/POSTAL_CODE]` <br> e.g., `outlet edit 1 n/Techco`
 **List Outlets** | `outlet list`
 **Compare candidates** | `compare INDEX INDEX`<br> e.g. `compare 1 2`
