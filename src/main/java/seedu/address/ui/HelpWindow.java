@@ -2,6 +2,8 @@ package seedu.address.ui;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.logging.Logger;
 
@@ -110,10 +112,12 @@ public class HelpWindow extends UiPart<Stage> {
      */
     private String loadUserGuide() {
         try {
-            FileInputStream userGuideInput = new FileInputStream(USERGUIDE_PATH);
-            InputStreamReader inputStreamReader = new InputStreamReader(userGuideInput);
+            InputStream stream = HelpWindow.class.getResourceAsStream("/UserGuide.md");
+            if (stream == null) {
+                throw new IOException("UserGuide.md not found in resources");
+            }
+            InputStreamReader inputStreamReader = new InputStreamReader(stream);
             BufferedReader reader = new BufferedReader(inputStreamReader);
-
             try {
                 UserGuideParser parser = new UserGuideParser();
                 return parser.extractUserGuide(reader, START_HEADING, END_HEADING);
