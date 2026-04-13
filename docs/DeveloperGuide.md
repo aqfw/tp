@@ -72,7 +72,7 @@ The **API** of this component is specified in [`Ui.java`](https://github.com/AY2
 
 The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
-The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/AY2526S2-CS2103-F08-3/tp/blob/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
+The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/AY2526S2-CS2103-F08-3/tp/blob/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/AY2526S2-CS2103-F08-3/tp/blob/master/src/main/resources/view/MainWindow.fxml)
 
 The `UI` component,
 
@@ -100,7 +100,7 @@ How the `Logic` component works:
 
 1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
 1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteCommand`) which is executed by the `LogicManager`.
-1. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
+1. The command can communicate with the `Model` when it is executed (e.g. to delete a candidate).<br>
    Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
 1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
 
@@ -113,7 +113,7 @@ How the parsing works:
 * All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
 ### Model component
-**API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
+**API** : [`Model.java`](https://github.com/AY2526S2-CS2103-F08-3/tp/blob/master/src/main/java/seedu/address/model/Model.java)
 
 <img src="images/ModelClassDiagram.png" width="450" />
 
@@ -165,33 +165,18 @@ The UML diagram for the design is shown below.
 An example sequence diagram when the command `listtags` is called is shown below.
 
 1. The user enters `listtags` in the UI.
-2. **MainWindow** passes the command to **LogicManager** via `executeCommand("listtags")`.
-3. **LogicManager** forwards the request to **AddressBookParser**, which parses the input and creates a `ListTagsCommand`.
-4. **LogicManager** executes the `ListTagsCommand`.
-5. The command creates a `CommandResult` during execution and returns it to **LogicManager**, which propagates it back to **MainWindow**.
-6. **MainWindow** retrieves the `RightPaneContent` from the `CommandResult` using `getContent()`.
-7. **MainWindow** calls `render()` on the `RightPaneContent` to update the UI.
+2. `MainWindow` passes the command to `LogicManager` via `executeCommand("listtags")`.
+3. `LogicManager` forwards the request to `AddressBookParser`, which parses the input and creates a `ListTagsCommand`.
+4. `LogicManager` executes the `ListTagsCommand`.
+5. The command creates a `CommandResult` during execution and returns it to `LogicManager`, which propagates it back to `MainWindow`.
+6. `MainWindow` retrieves the `RightPaneContent` from the `CommandResult` using `getContent()`.
+7. `MainWindow` calls `render()` on the `RightPaneContent` to update the UI.
 
 <img src="images/RightPaneContentSequenceDiagram.png" width="550" />
 
-#### Design considerations:
+### Help Function That Displays The User Guide
 
-**Aspect: How undo & redo executes:**
-
-* **Alternative 1 (current choice):** Saves the entire address book.
-  * Pros: Easy to implement.
-  * Cons: May have performance issues in terms of memory usage.
-
-* **Alternative 2:** Individual command knows how to undo/redo by
-  itself.
-  * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-  * Cons: We must ensure that the implementation of each individual command are correct.
-
-_{more aspects and alternatives to be added}_
-
-### \[Proposed\] Help Function That Displays The User Guide
-
-#### Proposed Implementation
+#### Implementation
 
 The proposed Help Function is implemented via a Help Window that displays the raw UserGuide.md to the user, to be
 extended as a rendered HTML in the future. It is implemented across the classes HelpWindow and UserGuideParser.
@@ -210,13 +195,13 @@ This separated design was made to make the function's internal logic easier to t
 Manual testing would involve changing the contents, location and possibly format of the user guide, but it is only
 designed to handle correct .md files.
 
-### \[Proposed\] Compare Command
+### Compare Command
 
-#### Proposed Implementation
+#### Implementation
 
 In order to allow the user to view two Person's information at the same time to compare them, the user inputs
 a command of the form: compare Index_1 Index 2, for instance, command 1 2. The indices are one-based indices
-corresponding to the indices of any entry currently shown in the current personList.
+corresponding to the indices of any entry currently shown in the current candidate list.
 
 The user's input calls executeCommand("command 1 2") of the MainWindow where the input signature is command 1 2, as a
 String.
@@ -253,11 +238,6 @@ The class and sequence diagrams of the feature is as follows:
 ![CompareCommandClassDiagram](images/CompareCommandClassDiagram.png)
 
 ![CompareCommandSequenceDiagram](images/CompareCommandSequenceDiagram.png)
-
-### \[Proposed\] Data archiving
-
-_{Explain here how the data archiving feature will be implemented}_
-
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -606,9 +586,24 @@ Use case ends.
    * System should be able to export data, and read in data back from the same format to support transfer of data between devices.
 
 ### Glossary
-1. Tag Combination: A set of tags defined by the user under a specific name (E.g The **MLE** tag combination could contain the tags **Python**, **SQL** and **Machine Learning**).
-2. View: A view refers to the graphical display of the candidate book. The current view refers to list of candidates that is currently visible in the graphical view. This distinction is important as some commands are performed on the current view of the address book, rather than the full candidate book.
-3. Candidate: A job applicant whose personal information is to be stored in the system. This includes information such as name, phone number, address, email and postal code.
+1. **Candidate**: Each person stored in the candidate list will be referred to as a candidate. A Candidate consists of the following details: **Name**, **Address**, **Email Address**, **Postal Code**, **Phone Number**, **Tags** (optional).<br>
+   In the implementation, a candidate is represented by a `Person` object, with related classes named accordingly (e.g., `UniquePersonList`). While the terms *candidate* and *person* may be used interchangeably in the Developer Guide, only *candidate* is used in the User Guide to reflect the application’s intended use for HR recruiters.
+2. **View**: A view refers to the graphical display of the candidate book. The current view refers to list of candidates that is currently visible in the graphical view. This distinction is important as some commands are performed on the current view of the address book, rather than the full candidate book.
+3. **Tag Combination**: A set of tags defined by the user under a specific name (E.g The **MLE** tag combination could contain the tags **Python**, **SQL** and **Machine Learning**).
+4. **Outlet**: An outlet corresponds to a physical location of an office/asset of the company, with the following details: **Name**, **Address** and **Postal Code**.
+5. Tag Combination: A set of tags defined by the user under a specific name (E.g The **MLE** tag combination could contain the tags **Python**, **SQL** and **Machine Learning**).
+
+#### UI Glossary Terms
+
+![UiComponents](images/UiComponents.png)
+
+The image above shows the key UI Components, which are described in detail below.
+
+1. **Command Box**: This is where commands are entered into.
+2. **Status Message Box**: Upon submitting a command, this is where the status message is displayed.
+3. **Candidate List**: This is where the list of candidates is stored. It shows 4 different fields of the candidate: their **ID**, **Name**, **Tags**, and their **Address**. Clicking on each candidate in the **Candidate List** shows their full details in the **Right Panel** (described below), including **Postal Code** and **Email Address**, alongside any truncated fields in the **Candidate List**.
+4. **Right Panel**: This is where additional information is displayed. The **Right Panel** can display information such as tag counts, tag combos, full person details etc. Refer to [Features](#features) below for details of each command and their interaction with the right panel.
+5. **Outlet Panel**: This is where the list of outlets are displayed.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -636,78 +631,85 @@ testers are expected to do more *exploratory* testing.
    1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-### Deleting a person
+### Deleting a candidate
 
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+   1. Prerequisites: List all candidates using the `list` command. Multiple candidates in the list.
 
    1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Full details of the deleted person is displayed in the right panel.
+      Expected: First candidate is deleted from the list. Details of the deleted contact shown in the status message. Full details of the deleted candidate is displayed in the right panel.
 
    1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Right pane remains the same.
+      Expected: No candidate is deleted. Error details shown in the status message. Right pane remains the same.
 
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
 
-### Adding a person
+### Adding a candidate
 
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+   1. Prerequisites: List all candidates using the `list` command. Multiple candidates in the list.
+
    2. Test case: `add n/example e/example@example.com p/123456 pc/123456 a/example`<br>
-   Expected: Person is added to the end of the list. Full details of the added person is displayed in the right panel and the status message.
+   Expected: Candidate is added to the end of the list. Full details of the added candidate is displayed in the right panel and the status message.
+
    3. Test case: `add n/example e/example@example p/12345 pc/123456 a/example`<br>
-   Expected: No person is added. Status prompts that the email format is wrong. Right pane remains the same.
-   4. Test case: `add n/`
-   Expected: No person is added. Status message prompts that the command format is invalid. Right pane remains the same.
+   Expected: No candidate is added. Status prompts that the email format is wrong. Right pane remains the same.
+
+   4. Test case: `add n/`<br>
+   Expected: No candidate is added. Status message prompts that the command format is invalid. Right pane remains the same.
+
    5. Other invalid add commands to try : `add`, `add e/`, `...`<br>
    Expected: Similar to 3 or 4, depending on whether all prefixes required are specified, and which prefixes contain invalid values.
 
 ### Adding a tag combo
 
    1. Prerequisites: None
-   2. Test case: `addtagcombo ml dev t/python t/java`
+
+   2. Test case: `addtagcombo ml dev t/python t/java`<br>
    Expected: Tag combo is added to the end of the tag combo list. System message shows the name of the tag combo alongside its associated tags. The tag combo list is displayed on the right pane.
-   3. Test case: `addtagcombo ml_dev t/python t/java`
+
+   3. Test case: `addtagcombo ml_dev t/python t/java`<br>
    Expected: Tag combo is not added to the end of the tag combo list. System message shows that the tag combo name is invalid. Right pane remains the same.
-   4. Test case: `addtagcombo ml dev t/python`
+
+   4. Test case: `addtagcombo ml dev t/python`<br>
    Expected: Tag combo is not added to the end of the tag combo list. System message shows that the tag combo does not contain at least 2 tags.
 
 ### Deleting a tag combo
 
    1. Prerequisites: There must be at least 1 valid tag combo already added. List all tag combos using `listtagcombo` command.
-   2. Test case: `deletetagcombo 1`
+
+   2. Test case: `deletetagcombo 1`<br>
    Expected: Tag combo is deleted from the tag combo list. Details of the tag combo deleted is displayed in the status message, and the right pane shows the remaining tag combo list after deletion.
-   3. Test case: `deletetagcombo 0`
+
+   3. Test case: `deletetagcombo 0`<br>
    Expected: Tag combo is not deleted from the tag combo list. Status message displays that the command format is invalid, as it only accepts positive integers.
 
 ### Filtering by tag/tagcombo
 
    1. Prerequisites: There must be persons in the address book with the tags `python` and `java`. No tag combos yet defined.
-   2. Test case: `filter t/java`
+
+   2. Test case: `filter t/java`<br>
    Expected: The addressbook shows only persons with the `java` tag. Status message displays the number of people after the filter has been applied. The right pane displays the frequency of the tags in the filtered address book in descending order, similar to the `listtags` command.
-   3. Test case: `filter t/java t/python`
+
+   3. Test case: `filter t/java t/python`<br>
    Expected: The addressbook shows only persons with both the `java` and `python` tags. Status message displays the number of people after the filter has been applied. The right pane displays the frequency of the tags in the filtered address book in descending order, similar to the `listtags` command.
-   4. Test case: `filter t/java`, followed by `filter t/python`.
+
+   4. Test case: `filter t/java`, followed by `filter t/python`.<br>
    Expected: Exact same behaviour as previous.
-   5. Test case: `addtagcombo ml dev t/python t/java` followed by `filter tc/ml dev`
+
+   5. Test case: `addtagcombo ml dev t/python t/java` followed by `filter tc/ml dev`<br>
    Expected: Exact same behaviour as previous.
-   6. Test case: `filter tc/ml`
+
+   6. Test case: `filter tc/ml`<br>
    Expected: The addressbook is not filtered. Status message displays that there is no tag combo called `ml`. Right pane remains the same.
 
 ## Comparing Candidates
-1.  Test the positive case from any list of candidates you see: e.g. `compare 1 2`
+   1.  Test the positive case from any list of candidates you see: e.g. `compare 1 2`<br>
     Expected: All of the relevant candidates' information are shown in a resizeable right pane.
 
-1. Test negative cases:
-1. Test identical integers: `compare 1 1`
-2. Test any non-integer argument: `compare 1 ]`, `compare ] 1` & `compare ] ]`
-3. Test an integer less than 1: `compare 0 1`, `compare 1 0`
-4. Test an integer outside the size of the current list: `compare 1 99`, `compare 99 1`, `compare 98 99`
+   2. Test negative cases:
+   3. Test identical integers: `compare 1 1`
+   4. Test any non-integer argument: `compare 1 ]`, `compare ] 1` & `compare ] ]`
+   5. Test an integer less than 1: `compare 0 1`, `compare 1 0`
+   6. Test an integer outside the size of the current list: `compare 1 99`, `compare 99 1`, `compare 98 99`
    Expected: In all cases, the relevant error message should be returned in the message box, and no right pane content
    should be shown.
-
-## Appendix: Known Issues
-
-1. Long command names<br>
-   Certain command names such as `addtagcombo` and `deletetagcombo` are relatively long and not well-suited for a typist-oriented UI. These longer names were intentionally chosen as default placeholders to support a future `rebind` feature, which would allow users to map frequently used commands to shorter aliases (e.g., `filter` → `f`). However, this feature has not yet been implemented. In practice, the impact of these longer command names is limited, as they mainly apply to low-frequency operations such as tag combo and outlet-related commands.
-2. Large indices give the wrong error message
-   When very large indices are provided (e.g., integers that cause overflow), the system displays an incorrect error message indicating an invalid command format instead of signalling that the integer is too large. Fixing this issue would require introducing additional validation checks or flags, and is therefore considered low priority. As the bug stems from overly aggressive input validation and offers a low effort-to-reward ratio, it was not addressed in v1.6.
