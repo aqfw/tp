@@ -15,7 +15,7 @@ public class OutletTest {
             new OutletPostalCode("048623"));
 
     private static final Outlet OUTLET_ALPHA_EDITED = new Outlet(
-            new OutletName("TechCo Branch"),
+            new OutletName("TechBrc2"),
             new OutletAddress("Raffles Place"),
             new OutletPostalCode("048623"));
 
@@ -43,7 +43,7 @@ public class OutletTest {
         assertFalse(OUTLET_ALPHA.isSameOutlet(null));
 
         // same location, different name
-        assertTrue(OUTLET_ALPHA.isSameOutlet(OUTLET_ALPHA_EDITED));
+        assertFalse(OUTLET_ALPHA.isSameOutlet(OUTLET_ALPHA_EDITED));
 
         // different location
         assertFalse(OUTLET_ALPHA.isSameOutlet(OUTLET_BETA));

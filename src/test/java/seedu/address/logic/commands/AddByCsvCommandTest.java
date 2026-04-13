@@ -17,6 +17,7 @@ import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.index.Index;
@@ -31,6 +32,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.tag.TagCombo;
 import seedu.address.model.tag.TagComboName;
 import seedu.address.model.tag.TagCounter;
+import seedu.address.testutil.PersonBuilder;
 
 /**
  * Tests for {@code AddByCsvCommand}.
@@ -78,6 +80,60 @@ public class AddByCsvCommandTest {
     }
 
     @Test
+    public void execute_duplicatePersonWithinCsv_throwsCommandException() {
+        ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
+        Person duplicateAlice = new PersonBuilder(ALICE).withName("Alice Clone").build();
+        List<Person> personsToAdd = Arrays.asList(ALICE, duplicateAlice);
+        AddByCsvCommand command = new AddByCsvCommand(personsToAdd);
+        String expectedMessage = String.format(
+                AddByCsvCommand.MESSAGE_DUPLICATE_PERSON, Messages.format(duplicateAlice));
+
+        assertThrows(CommandException.class, expectedMessage, () -> command.execute(modelStub));
+        assertTrue(modelStub.personsAdded.isEmpty());
+    }
+
+    @Test
+    public void execute_moreThanBatchSize_throwsCommandException() {
+        List<Person> personsToAdd = buildUniquePersons(26);
+        AddByCsvCommand command = new AddByCsvCommand(personsToAdd);
+        ModelStub modelStub = new ModelStubWithExistingCandidates(0);
+        String expectedMessage = String.format(AddByCsvCommand.MESSAGE_CSV_LIMIT_EXCEEDED, 26, 25);
+
+        assertThrows(CommandException.class, expectedMessage, () -> command.execute(modelStub));
+    }
+
+    @Test
+    public void execute_exceedsRemainingCapacity_throwsCommandException() {
+        List<Person> personsToAdd = buildUniquePersons(10);
+        AddByCsvCommand command = new AddByCsvCommand(personsToAdd);
+        ModelStub modelStub = new ModelStubWithExistingCandidates(990);
+        String expectedMessage = String.format(AddByCsvCommand.MESSAGE_CSV_LIMIT_EXCEEDED, 10, 9);
+
+        assertThrows(CommandException.class, expectedMessage, () -> command.execute(modelStub));
+    }
+
+    @Test
+    public void execute_atRemainingCapacityBoundary_success() throws Exception {
+        ModelStubAcceptingPersonAdded modelStub = new ModelStubWithExistingCandidates(990);
+        List<Person> personsToAdd = buildUniquePersons(9);
+
+        CommandResult commandResult = new AddByCsvCommand(personsToAdd).execute(modelStub);
+
+        assertEquals(String.format(AddByCsvCommand.MESSAGE_SUCCESS, 9), commandResult.getFeedbackToUser());
+        assertEquals(personsToAdd, modelStub.personsAdded);
+    }
+
+    @Test
+    public void execute_atFullCapacity_throwsCommandException() {
+        List<Person> personsToAdd = buildUniquePersons(1);
+        AddByCsvCommand command = new AddByCsvCommand(personsToAdd);
+        ModelStub modelStub = new ModelStubWithExistingCandidates(999);
+        String expectedMessage = String.format(AddByCsvCommand.MESSAGE_CSV_LIMIT_EXCEEDED, 1, 0);
+
+        assertThrows(CommandException.class, expectedMessage, () -> command.execute(modelStub));
+    }
+
+    @Test
     public void equals() {
         AddByCsvCommand addAliceCommand = new AddByCsvCommand(Collections.singletonList(ALICE));
         AddByCsvCommand addBobCommand = new AddByCsvCommand(Collections.singletonList(BOB));
@@ -106,6 +162,20 @@ public class AddByCsvCommandTest {
         String expected = AddByCsvCommand.class.getCanonicalName()
                 + "{personsToAdd=" + personsToAdd + "}";
         assertEquals(expected, command.toString());
+    }
+
+    private List<Person> buildUniquePersons(int count) {
+        List<Person> persons = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            persons.add(new PersonBuilder()
+                    .withName("Person " + i)
+                    .withPhone(String.format("%08d", 80000000 + i))
+                    .withEmail("p" + i + "@example.com")
+                    .withAddress("Blk " + i + " Street")
+                    .withPostalCode(String.format("%06d", 100000 + i))
+                    .build());
+        }
+        return persons;
     }
 
     /**
@@ -332,6 +402,37 @@ public class AddByCsvCommandTest {
         @Override
         public ReadOnlyAddressBook getAddressBook() {
             return new AddressBook();
+        }
+    }
+
+    /**
+     * A Model stub that accepts persons being added with a configurable existing candidate count.
+     */
+    private class ModelStubWithExistingCandidates extends ModelStubAcceptingPersonAdded {
+        private final int existingCandidates;
+
+        ModelStubWithExistingCandidates(int existingCandidates) {
+            this.existingCandidates = existingCandidates;
+        }
+
+        @Override
+        public ReadOnlyAddressBook getAddressBook() {
+            return new ReadOnlyAddressBook() {
+                @Override
+                public ObservableList<Person> getPersonList() {
+                    return FXCollections.observableArrayList(Collections.nCopies(existingCandidates, ALICE));
+                }
+
+                @Override
+                public ObservableList<Outlet> getOutletList() {
+                    return FXCollections.observableArrayList();
+                }
+
+                @Override
+                public ObservableList<TagCombo> getTagComboList() {
+                    return FXCollections.observableArrayList();
+                }
+            };
         }
     }
 }

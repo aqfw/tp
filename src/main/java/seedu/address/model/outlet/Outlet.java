@@ -39,7 +39,7 @@ public class Outlet {
     }
 
     /**
-     * Returns true if both outlets have the same location.
+     * Returns true if both outlets have the same identity fields.
      */
     public boolean isSameOutlet(Outlet otherOutlet) {
         if (otherOutlet == this) {
@@ -47,6 +47,7 @@ public class Outlet {
         }
 
         return otherOutlet != null
+                && otherOutlet.getOutletName().equals(getOutletName())
                 && otherOutlet.getOutletAddress().equals(getOutletAddress())
                 && otherOutlet.getPostalCode().equals(getPostalCode());
     }

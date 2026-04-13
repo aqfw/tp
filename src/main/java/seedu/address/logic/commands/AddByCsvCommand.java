@@ -16,7 +16,6 @@ import seedu.address.model.person.Person;
 public class AddByCsvCommand extends UndoableCommand {
 
     public static final String COMMAND_WORD = "addcsv";
-
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Adds multiple people to the address book from a CSV file.\n"
             + "Parameters: FILE_PATH (must end with .csv)\n"
@@ -26,8 +25,12 @@ public class AddByCsvCommand extends UndoableCommand {
     public static final String MESSAGE_SUCCESS = "%1$d person(s) added from CSV file.";
     public static final String MESSAGE_DUPLICATE_PERSON =
             "%1$s already exists in the address book.";
+    public static final String MESSAGE_CSV_LIMIT_EXCEEDED =
+            "Cannot add %1$d candidate(s) from CSV. You can add at most %2$d candidate(s) now.";
     public static final String UNDO_SUCCESS = "Undo successful: Removed %1$d people.";
     public static final String REDO_SUCCESS = "Redo successful: Added %1$d people.";
+    private static final int MAX_CSV_BATCH_SIZE = 25;
+    private static final int MAX_TOTAL_CANDIDATE_CAPACITY = 999;
 
     private final List<Person> personsToAdd;
 
@@ -43,11 +46,27 @@ public class AddByCsvCommand extends UndoableCommand {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
+        for (int i = 0; i < personsToAdd.size() - 1; i++) {
+            for (int j = i + 1; j < personsToAdd.size(); j++) {
+                if (personsToAdd.get(i).isSamePerson(personsToAdd.get(j))) {
+                    throw new CommandException(
+                            String.format(MESSAGE_DUPLICATE_PERSON, Messages.format(personsToAdd.get(j))));
+                }
+            }
+        }
+
         for (Person person : personsToAdd) {
             if (model.hasPerson(person)) {
                 throw new CommandException(
                         String.format(MESSAGE_DUPLICATE_PERSON, Messages.format(person)));
             }
+        }
+
+        int currentTotalCandidates = model.getAddressBook().getPersonList().size();
+        int remainingCapacity = MAX_TOTAL_CANDIDATE_CAPACITY - currentTotalCandidates;
+        int maxAddableNow = Math.max(0, Math.min(MAX_CSV_BATCH_SIZE, remainingCapacity));
+        if (personsToAdd.size() > maxAddableNow) {
+            throw new CommandException(String.format(MESSAGE_CSV_LIMIT_EXCEEDED, personsToAdd.size(), maxAddableNow));
         }
 
         for (Person person : personsToAdd) {

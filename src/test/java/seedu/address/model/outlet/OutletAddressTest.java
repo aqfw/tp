@@ -26,12 +26,12 @@ public class OutletAddressTest {
 
         assertFalse(OutletAddress.isValidOutletAddress(""));
         assertFalse(OutletAddress.isValidOutletAddress("   "));
-        assertFalse(OutletAddress.isValidOutletAddress("123456789012345678901234567890123456"));
+        assertFalse(OutletAddress.isValidOutletAddress("1234567890123456789"));
         assertFalse(OutletAddress.isValidOutletAddress("Something Street a/Something"));
 
         assertTrue(OutletAddress.isValidOutletAddress("Raffles Place"));
-        assertTrue(OutletAddress.isValidOutletAddress("18 Cross St, #08-01"));
-        assertTrue(OutletAddress.isValidOutletAddress("12345678901234567890123456789012345"));
+        assertTrue(OutletAddress.isValidOutletAddress("18 Cross St #08-1"));
+        assertTrue(OutletAddress.isValidOutletAddress("123456789012345678"));
     }
 
     @Test

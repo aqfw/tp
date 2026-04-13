@@ -38,7 +38,8 @@ public class AddByCsvParser implements Parser<AddByCsvCommand> {
     public static final String MESSAGE_EMPTY_CSV =
             "The CSV file is empty or contains only a header row.";
     public static final String MESSAGE_INVALID_CSV_HEADER =
-            "The CSV file must have a header row with at least: name,phone,email,address,postalCode";
+            "The CSV file must have a header row with at least: name,phone,email,address,postalCode. "
+                    + "Please do not use Excel to create/edit the CSV file.";
     public static final String MESSAGE_INVALID_ROW =
             "Invalid data at row %1$d: %2$s";
 

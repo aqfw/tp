@@ -114,9 +114,9 @@ public class AssignOutletCommandTest {
     @Test
     public void execute_withoutOutletIndexNearest_success() {
         Model localModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        Outlet furtherOutlet = new OutletBuilder().withName("Further Outlet").withAddress("Addr 1")
+        Outlet furtherOutlet = new OutletBuilder().withName("FarOut1").withAddress("Addr 1")
                 .withPostalCode("018907").build();
-        Outlet nearestOutlet = new OutletBuilder().withName("Nearest Outlet").withAddress("Addr 2")
+        Outlet nearestOutlet = new OutletBuilder().withName("NearOut1").withAddress("Addr 2")
                 .withPostalCode("018906").build();
         localModel.addOutlet(furtherOutlet);
         localModel.addOutlet(nearestOutlet);
@@ -141,7 +141,7 @@ public class AssignOutletCommandTest {
     @Test
     public void execute_candidatePostalMissing_success() {
         Model localModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        Outlet outletInPostalData = new OutletBuilder().withName("Marina Outlet").withAddress("Addr 1")
+        Outlet outletInPostalData = new OutletBuilder().withName("Marina01").withAddress("Addr 1")
                 .withPostalCode("018906").build();
         localModel.addOutlet(outletInPostalData);
 
@@ -162,7 +162,7 @@ public class AssignOutletCommandTest {
     @Test
     public void execute_outletPostalMissing_success() {
         Model localModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        Outlet outletNotInPostalData = new OutletBuilder().withName("Unknown Outlet").withAddress("Addr 1")
+        Outlet outletNotInPostalData = new OutletBuilder().withName("Unknown1").withAddress("Addr 1")
                 .withPostalCode("640123").build();
         localModel.addOutlet(outletNotInPostalData);
 
@@ -187,9 +187,9 @@ public class AssignOutletCommandTest {
     @Test
     public void execute_candidatePostalMissingPrefersUnknown_success() {
         Model localModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        Outlet outletInPostalData = new OutletBuilder().withName("Marina Outlet").withAddress("Addr 1")
+        Outlet outletInPostalData = new OutletBuilder().withName("Marina01").withAddress("Addr 1")
                 .withPostalCode("018906").build();
-        Outlet outletNotInPostalData = new OutletBuilder().withName("Unknown Outlet").withAddress("Addr 2")
+        Outlet outletNotInPostalData = new OutletBuilder().withName("Unknown1").withAddress("Addr 2")
                 .withPostalCode("640123").build();
         localModel.addOutlet(outletInPostalData);
         localModel.addOutlet(outletNotInPostalData);

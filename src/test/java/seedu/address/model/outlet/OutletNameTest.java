@@ -21,17 +21,24 @@ public class OutletNameTest {
     }
 
     @Test
+    public void constructor_reservedOutletName_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new OutletName("UnAssigned"));
+    }
+
+    @Test
     public void isValidOutletName() {
         assertThrows(NullPointerException.class, () -> OutletName.isValidOutletName(null));
 
         assertFalse(OutletName.isValidOutletName(""));
         assertFalse(OutletName.isValidOutletName("   "));
-        assertFalse(OutletName.isValidOutletName("ABCDEFGHIJKLMNOPQRSTUVWXYZ1"));
+        assertFalse(OutletName.isValidOutletName("ABCDEFGHIJK"));
         assertFalse(OutletName.isValidOutletName("Something n/Something"));
+        assertFalse(OutletName.isValidOutletName("unassigned"));
+        assertFalse(OutletName.isValidOutletName("UnAssigned"));
 
         assertTrue(OutletName.isValidOutletName("TechCo"));
-        assertTrue(OutletName.isValidOutletName("FinServ Marina"));
-        assertTrue(OutletName.isValidOutletName("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+        assertTrue(OutletName.isValidOutletName("FinServ"));
+        assertTrue(OutletName.isValidOutletName("ABCDEFGHIJ"));
     }
 
     @Test

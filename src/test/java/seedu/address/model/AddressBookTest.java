@@ -40,7 +40,7 @@ public class AddressBookTest {
             new OutletAddress("Raffles Place"),
             new OutletPostalCode("048623"));
     private static final Outlet OUTLET_ALPHA_EDITED = new Outlet(
-            new OutletName("TechCo Branch"),
+            new OutletName("TechCo"),
             new OutletAddress("Raffles Place"),
             new OutletPostalCode("048623"));
     private static final TagCombo TAG_COMBO_ONE = new TagCombo(new TagComboName("developer"), Set.of(

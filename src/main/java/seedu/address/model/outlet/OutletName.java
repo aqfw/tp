@@ -9,10 +9,12 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  */
 public class OutletName {
 
-    public static final int MAX_LENGTH = 26;
+    public static final int MAX_LENGTH = 10;
     public static final String MESSAGE_CONSTRAINTS = "Outlet names should not be blank, should be at most "
-            + MAX_LENGTH + " characters long, and should not contain command delimiters such as n/, a/, or pc/.";
+            + MAX_LENGTH + " characters long, should not contain command delimiters such as n/, a/, or pc/, "
+            + "and cannot be the reserved word 'unassigned' in any capitalization (e.g., UnAssigned).";
     public static final String VALIDATION_REGEX = "[^\\s].*";
+    private static final String RESERVED_NAME = "unassigned";
     private static final String[] INVALID_DELIMITERS = {"n/", "a/", "pc/"};
 
     public final String value;
@@ -34,7 +36,8 @@ public class OutletName {
     public static boolean isValidOutletName(String test) {
         return test.matches(VALIDATION_REGEX)
                 && test.length() <= MAX_LENGTH
-                && !containsCommandDelimiters(test);
+                && !containsCommandDelimiters(test)
+                && !test.equalsIgnoreCase(RESERVED_NAME);
     }
 
     private static boolean containsCommandDelimiters(String test) {
