@@ -174,6 +174,10 @@ An example sequence diagram when the command `listtags` is called is shown below
 
 <img src="images/RightPaneContentSequenceDiagram.png" width="550" />
 
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `ListTagsParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.<br>
+Additionally, `RightPaneContent` is part of `CommandResult`, and are created at the same time, but cannot be shown on the same horizontal level as `CommandResult` due to a limitation of PlantUML.
+</div>
+
 ### Help Function That Displays The User Guide
 
 #### Implementation

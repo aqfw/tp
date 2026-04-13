@@ -50,6 +50,8 @@ deactivate CommandResult
 ListTagsCommand --> LogicManager : CommandResult
 deactivate ListTagsCommand
 
+destroy ListTagsCommand
+
 LogicManager --> MainWindow : CommandResult
 deactivate LogicManager
 
