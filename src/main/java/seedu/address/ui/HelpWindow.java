@@ -110,24 +110,12 @@ public class HelpWindow extends UiPart<Stage> {
      */
     private String loadUserGuide() {
         try {
-            InputStream stream = HelpWindow.class.getResourceAsStream("/UserGuide.md");
-            if (stream == null) {
-                throw new IOException("UserGuide.md not found in resources");
-            }
-            InputStreamReader inputStreamReader = new InputStreamReader(stream);
-            BufferedReader reader = new BufferedReader(inputStreamReader);
-            try {
-                UserGuideParser parser = new UserGuideParser();
-                return parser.extractUserGuide(reader, START_HEADING, END_HEADING);
-            } finally {
-                reader.close();
-            }
-
+            InputStream stream = HelpWindow.class.getResourceAsStream("/Userguide.md");
+            UserGuideParser parser = new UserGuideParser();
+            return parser.loadFromStream(stream, START_HEADING, END_HEADING);
         } catch (Exception e) {
-            logger.warning("Failed to load UserGuide.md from path " + USERGUIDE_PATH
-                    + e.getMessage());
-            return "Failed to load local user-guide. \n Visit: " + USERGUIDE_URL
-                    + " instead";
+            logger.warning("Failed to load UserGuide.md: " + e.getMessage());
+            return "Failed to load local user-guide. \n Visit: " + USERGUIDE_URL + " instead";
         }
     }
 
