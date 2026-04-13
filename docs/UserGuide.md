@@ -107,9 +107,40 @@ Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 pc/123456`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 pc/654321 t/criminal`
 
-### Adding candidates by csv file: `addcsv`
+### Adding Candidates by CSV File : `addcsv`
 
-Format: `addcsv path/to/csv/from/root.csv`
+Adds multiple candidates from a CSV file.
+
+Format: `addcsv PATH_TO_CSV_FILE`
+
+* `PATH_TO_CSV_FILE` must point to a `.csv` file that exists.
+* The file path is resolved from the current working directory (typically the folder where you run the app/JAR).
+* Header row is required and must be:
+  `name,phone,email,address,postalCode` with an optional sixth column `tags`.
+* Header names are case-insensitive, but order must remain the same.
+* Extra columns beyond the optional `tags` column are not allowed.
+* `postalCode` is required.
+* `tags` is optional; when present, multiple tags in one cell must be separated by `;`.
+* Addresses containing commas are supported.
+* Blank lines are ignored.
+* Duplicate rules (same as `add`):
+  a candidate is considered a duplicate if phone matches an existing candidate, or email matches an existing candidate.
+* Duplicate checks are performed against:
+  all existing candidates in the app, and candidates within the same CSV file.
+* Import is all-or-nothing:
+  if any row is invalid, or any duplicate candidate is detected, no candidates are added.
+* Batch size is limited to:
+  `min(25, 999 - current number of candidates)`.
+  If the file exceeds this limit, no candidates are added.
+
+Examples:
+* `addcsv data/candidates.csv`
+* `addcsv 1/2/test.csv`
+
+<div markdown="span" class="alert alert-warning">**Caution:**
+Please do not use Excel to create/edit CSV files for `addcsv`.
+Use a plain text editor to avoid hidden formatting/encoding issues for the headers.
+</div>
 
 ### Listing all candidates : `list`
 
@@ -315,9 +346,12 @@ Adds an `Outlet`.
 
 Format: `outlet add n/NAME a/ADDRESS pc/POSTAL_CODE`
 
-- Outlet name must be at most 26 characters long.
-- Outlet address must be at most 35 characters long.
+- Outlet name must be at most 10 characters long.
+- Outlet address must be at most 18 characters long.
 - Outlet name and address must not contain delimiters.
+- Outlet name cannot be the reserved word `unassigned` (in any capitalization).
+- Duplicate outlet definition:
+  an outlet is considered duplicate only when name, address, and postal code all match an existing outlet.
 
 Examples:
 
@@ -439,11 +473,10 @@ Action | Format, Examples
 **Add Tag Combo** | `addtagcombo NAME t/TAG t/TAG [t/TAG]...`<br> e.g., `addtagcombo ml dev t/python t/ml`
 **Delete Tag Combo** | `deletetagcombo INDEX`<br> e.g., `deletetagcombo 1`
 **List Tag Combos** | `listtagcombo`
-**Add by csv** | `addcsv`
+**Add by CSV** | `addcsv PATH_TO_CSV_FILE` <br> e.g., `addcsv data/candidates.csv`
 **Add Outlet** | `outlet add n/NAME a/ADDRESS pc/POSTAL_CODE` <br> e.g., `outlet add n/FinServ a/Marina Bay pc/018956`
 **Edit Outlet** | `outlet edit INDEX {[n/NAME] [a/ADDRESS] [pc/POSTAL_CODE]}` <br> e.g., `outlet edit 1 a/One Raffles Place pc/048616`
-**Assign Outlet** | `outlet assign CANDIDATE_INDEX OUTLET_INDEX` <br> e.g., `outlet assign 2 1`
-**Unassign Outlet** | `outlet unassign INDEX` <br> e.g., `outlet unassign 2`
+**Assign Outlet** | `outlet assign CANDIDATE_INDEX [OUTLET_INDEX]` <br> e.g., `outlet assign 2 1` or `outlet assign 2`
+**Unassign Outlet** | `outlet unassign CANDIDATE_INDEX` <br> e.g., `outlet unassign 2`
 **Delete Outlet** | `outlet delete INDEX` <br> e.g., `outlet delete 1`
-**Edit Outlet** | `outlet edit INDEX [n/NAME] [a/ADDRESS] [pc/POSTAL_CODE]` <br> e.g., `outlet edit 1 n/Techco`
 **List Outlets** | `outlet list`
