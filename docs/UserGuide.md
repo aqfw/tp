@@ -40,7 +40,7 @@ HireLens is a **desktop app for HR recruiters to manage candidates, optimized fo
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Ui Components and Glossary
+## UI Components and Glossary
 
 ![UiComponents](images/UiComponents.png)
 
