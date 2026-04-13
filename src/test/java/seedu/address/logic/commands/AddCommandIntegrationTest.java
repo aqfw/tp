@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.AddCommand.RIGHT_PANE_HEADER;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.model.person.UniquePersonList.MAX_LEN_PERSON_LIST;
+import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.BOB;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.util.Optional;
@@ -94,5 +97,18 @@ public class AddCommandIntegrationTest {
         model.redo();
         assertTrue(model.hasPerson(validPerson));
         assertEquals(expectedModel, model);
+    }
+
+    @Test
+    public void execute_exceededCapacity_throwsExceededPersonListCapacityError() throws CommandException {
+        model = new ModelManager();
+        for (int i = 0; i < MAX_LEN_PERSON_LIST; i++) {
+            model.addPerson(new PersonBuilder(ALICE).withEmail("user" + i + "@example.com")
+                    .withPhone("123456" + i).build());
+        }
+        AddCommand addCommand = new AddCommand(BOB);
+        assertCommandFailure(addCommand, model, "The maximum capacity of the candidate book is "
+                + MAX_LEN_PERSON_LIST + "! Delete some candidates"
+                + " before performing this command again!");
     }
 }

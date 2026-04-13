@@ -16,6 +16,7 @@ import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.exceptions.ExceededPersonListCapacityException;
 import seedu.address.ui.UiAction;
 import seedu.address.ui.content.PersonContent;
 
@@ -69,7 +70,13 @@ public class AddCommand extends UndoableCommand {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         }
         previousPredicate = model.getFilteredPersonPredicate();
-        model.addPerson(toAdd);
+
+        try {
+            model.addPerson(toAdd);
+        } catch (ExceededPersonListCapacityException e) {
+            throw new CommandException(e.getMessage());
+        }
+
 
         return new CommandResult(String.format(MESSAGE_SUCCESS, Messages.format(toAdd)),
                 UiAction.UPDATE_RIGHT_PANE, Optional.of(new PersonContent(toAdd, RIGHT_PANE_HEADER)));

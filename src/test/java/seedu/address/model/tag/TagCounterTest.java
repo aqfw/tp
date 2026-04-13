@@ -107,8 +107,8 @@ public class TagCounterTest {
         }
 
         LinkedHashMap<Tag, Integer> tagMap = new LinkedHashMap<Tag, Integer>();
-        tagMap.put(new Tag("friends"), 3);
         tagMap.put(new Tag("owesMoney"), 1);
+        tagMap.put(new Tag("friends"), 3);
 
         TagCounter tagCounter = new TagCounter();
         tagCounter.decrementTags(BENSON, uniquePersonList.asUnmodifiableObservableList());

@@ -84,14 +84,19 @@ public class TagCounter {
     }
 
     /**
-     * Resets the {@code TagCounter} using an {@code UniquePersonList} by counting all tags present. This method is to
-     * be called as a last resort to reset the TagCounter to the correct state should any errors occur.
+     * Resets the {@code TagCounter} using an {@code UniquePersonList} by counting all tags present.
      */
     public void resetTagCounter(ObservableList<Person> personList) {
         tagCounter = new LinkedHashMap<Tag, Integer>();
         for (Person person : personList) {
             this.incrementTags(person, personList);
         }
+        tagCounter = tagCounter.entrySet()
+                .stream()
+                .sorted(Map.Entry.<Tag, Integer>comparingByValue().reversed())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
     }
 
     public LinkedHashMap<Tag, Integer> getTagCounter() {

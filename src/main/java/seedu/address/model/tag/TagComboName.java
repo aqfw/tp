@@ -7,8 +7,8 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  * A class representing the name of a {@code TagCombo}.
  */
 public class TagComboName {
-    public static final String MESSAGE_CONSTRAINTS = "Names should only contain alphanumeric characters and spaces, "
-            + "and it should not be blank. Should contain at most 25 characters.";
+    public static final String MESSAGE_CONSTRAINTS = "Tag combo names should only contain alphanumeric characters and"
+            + " spaces, and it should not be blank. Should contain at most 25 characters.";
 
     /*
      * The first character of the address must not be a whitespace,

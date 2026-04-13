@@ -17,6 +17,7 @@ public class Name {
      * otherwise " " (a blank string) becomes a valid input.
      */
     public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum} ]*";
+    public static final int MAX_NAME_LENGTH = 50;
 
     public final String fullName;
 
@@ -35,7 +36,7 @@ public class Name {
      * Returns true if a given string is a valid name.
      */
     public static boolean isValidName(String test) {
-        return test.matches(VALIDATION_REGEX);
+        return test.matches(VALIDATION_REGEX) && test.length() <= MAX_NAME_LENGTH;
     }
 
 

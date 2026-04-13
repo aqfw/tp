@@ -9,8 +9,6 @@ title: Developer Guide
 
 ## **Acknowledgements**
 
-* {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
-
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Setting up, getting started**
@@ -279,6 +277,7 @@ _{Explain here how the data archiving feature will be implemented}_
 
 **Target user profile**:
 
+* Designed for HR recruiters
 * Prefer desktop apps over other types
 * Is reasonably comfortable using CLI apps
 * Wants to enter candidates’ credentials, which could be extremely large
@@ -308,7 +307,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | recruiter                                                              | be able to filter contacts                                                           | search for tags I am interested in                                  |
 | `* * *`  | recruiter                                                              | be able to view all candidates                                                       | know who I have added to the addressbook                            |
 | `* * *`  | recruiter                                                              | tag candidates by their skills                                                       | categorise them by their skills                                     |
-| `* * *`  | recruiter facing candidates with a variety of names                    | be able to add two candidates with the same name                                     |                                                                     |
+| `* * *`  | recruiter facing candidates with a variety of names                    | be able to add two candidates with the same name                                     | so that all candidates can be entered into the system               |
 | `* * *`  | recruiter                                                              | filter candidates by multiple tags simultaneously                                    | immediately get a shortlisted list of candidates for a job opening  |
 | `* * *`  | time-pressed recruiter                                                 | be able to use a spreadsheet to add many candidates to this address book all at once | save time adding entries                                            |
 | `* *`    | recruiter                                                              | have a log of recent changes made to a candidate                                     | check for mistakes                                                  |
@@ -322,7 +321,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `*`      | recruiter                                                              | have an email template popup in one click                                            | contact candidates easily                                           |
 | `*`      | recruiter bulk importing data                                          | be notified if there already exists an identical record                              | don’t mistakenly add duplicates and bloat the database              |
 | `*`      | time-pressed recruiter                                                 | be able to edit multiple entries at once                                             | efficiently manage large batches of candidates                      |
-| `*`      | be able to see a quick summary of the most common tags in the database | understand the talent pool better                                                    |                                                                     |
+| `*`      | be able to see a quick summary of the most common tags in the database | understand the talent pool better                                                    | so that I can make the best hiring decision                         |
 | `*`      | recruiter                                                              | be able to compare candidates’ living addresses with potential work addresses        | understand how best to hire and deploy them across our many offices |
 | `*`      | new recruiter                                                          | auto fill-in suggestions with tooltips explaining what each field means              | correctly enter candidate information without making mistakes       |
 
@@ -355,7 +354,7 @@ Use case resumes from step 2.
 
 **MSS**
 
-1. User provides the requested data above and the modified data.
+1. User provides HireLens with the person to modify, and the fields to modify, alongside their new values.
 2. HireLens displays the current view of the candidate book, with the specific candidate's details updated.
 
 Use case ends.
@@ -592,16 +591,16 @@ Use case ends.
 
 1. Efficiency
    * System should be able to process commands such as add, edit, delete, and list within 0.2 second.
-   * System should be able to handle at least 1000 contacts without a noticeable lag.
+   * System should be able to handle up to 999 contacts without a noticeable lag.
 2. Capacity
-   * System should be able to store at least 1000 contacts.
-   * System should be able to read and enter at least 100 contacts from a csv file at a time.
+   * System should be able to store up to 999 contacts.
+   * System should be able to read and enter up to 50 contacts from a csv file at a time.
 3. Quality
-   * System should be able to be used by a beginner who has never used the system before.
+   * A new user should be able to learn, and add a candidate to the system within 60 seconds of launching the app.
    * System should have clear error messages that explain the source of the error and how to correct the error.
 4. Reliability
    * Data should persist between usage sessions.
-   * Data should not be corruptible.
+   * If data corruption does occur due to exceptional circumstances, the system should not silently continue operating on corrupted data. Instead, it should detect the inconsistency and display appropriate error messages or recovery prompts to ensure the user is aware that the data integrity has been compromised.
 5. Compatibility
    * System should run on Windows, macOS, and Linux with Java 17 and above installed.
    * System should be able to export data, and read in data back from the same format to support transfer of data between devices.
@@ -609,6 +608,7 @@ Use case ends.
 ### Glossary
 1. Tag Combination: A set of tags defined by the user under a specific name (E.g The **MLE** tag combination could contain the tags **Python**, **SQL** and **Machine Learning**).
 2. View: A view refers to the graphical display of the candidate book. The current view refers to list of candidates that is currently visible in the graphical view. This distinction is important as some commands are performed on the current view of the address book, rather than the full candidate book.
+3. Candidate: A job applicant whose personal information is to be stored in the system. This includes information such as name, phone number, address, email and postal code.
 
 --------------------------------------------------------------------------------------------------------------------
 

@@ -3,10 +3,10 @@ layout: page
 title: User Guide
 ---
 
-HireLens is a **desktop app for managing candidates, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, HireLens can get your candidate management tasks done faster than traditional GUI apps.
+HireLens is a **desktop app for HR recruiters to manage candidates, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, HireLens can get your candidate management tasks done faster than traditional GUI apps.
 
-* Table of Contents
-  {:toc}
+* Table of Contents 
+{:toc}
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ HireLens is a **desktop app for managing candidates, optimized for use via a Com
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-2. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
+2. Download the latest `.jar` file from [here](https://github.com/AY2526S2-CS2103-F08-3/tp/releases/tag/v1.5).
 
 3. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
 
@@ -28,7 +28,7 @@ HireLens is a **desktop app for managing candidates, optimized for use via a Com
 
     * `list` : Lists all contacts.
 
-    * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+    * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 pc/123456` : Adds a contact named `John Doe` to the Address Book.
 
     * `delete 3` : Deletes the 3rd contact shown in the current list.
 
@@ -146,13 +146,12 @@ Format: `filter t/TAG [t/TAG...] [tc/TAG_COMBO...]`
 Examples:
 * `filter tc/ml dev`
 * `filter t/java tc/ml dev`
-* `filter t/c` returns `Esther Lim`.
 * `filter t/Java t/Python` returns `Benson Meier`, `Natalie Lim`.
 * ![result for 'filter t/python t/java'](images/filterPythonJavaResult.png)
 
 ### Listing existing tags: `listtags`
 
-Lists all tags in descending order, along with their frequencies.
+Lists all tags in descending order of frequencies, along with their frequencies.
 
 * Order is not guaranteed in the case of ties.
 
@@ -357,10 +356,6 @@ AddressBook data are saved automatically as a JSON file `[JAR file location]/dat
 If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
 Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </div>
-
-### Archiving data files `[coming in v2.0]`
-
-_Details coming soon ......_
 
 --------------------------------------------------------------------------------------------------------------------
 
