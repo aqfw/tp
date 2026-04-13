@@ -346,10 +346,13 @@ Adds an `Outlet`.
 
 Format: `outlet add n/NAME a/ADDRESS pc/POSTAL_CODE`
 
+- All three prefixes `n/`, `a/`, and `pc/` are required.
+- Each prefix should appear at most once.
 - Outlet name must be at most 10 characters long.
 - Outlet address must be at most 18 characters long.
 - Outlet name and address must not contain delimiters.
 - Outlet name cannot be the reserved word `unassigned` (in any capitalization).
+- Outlet postal code must be exactly 6 digits.
 - Duplicate outlet definition:
   an outlet is considered duplicate only when name, address, and postal code all match an existing outlet.
 
