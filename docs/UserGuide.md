@@ -267,7 +267,7 @@ Format: `undo`
 * `list`, `filter`, `find` Returns to the previous view of the Address Book.
 * `clear` Adds all `Candidate`s deleted.
 
-### Comparing Candidates: `compare INDEX_1 INDEX_2`
+### Comparing Candidates: `compare`
 
 Compare two candidates from the current list by displayed index, side-by-side in the right-hand-side display pane.
 Information clears when another action takes up the right-hand-side pane.
