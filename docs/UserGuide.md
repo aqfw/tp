@@ -17,9 +17,9 @@ HireLens is a **desktop app for HR recruiters to manage candidates, optimized fo
 
 2. Download the latest `.jar` file from [here](https://github.com/AY2526S2-CS2103-F08-3/tp/releases/tag/v1.5).
 
-3. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+3. Copy the file to the folder you want to use as the _home folder_ for your HireLens.
 
-4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar addressbook.jar` command to run the application.<br>
+4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar HireLens.jar` command to run the application.<br>
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
