@@ -87,9 +87,12 @@ The image above shows the key UI Components, which are described in detail below
 
 ### Viewing help : `help`
 
-Displays the user guide markdown file as raw, but readable markdown text.
+Displays this `UserGuide.md` markdown file as raw markdown text with special characters included. A Copy URL button is provided in event of a missing `UserGuide.md` so that a link to the project Github repo's user guide is copied to the clipboard.
 
 Format: `help`
+
+Example: Entering `help` in the Command Box opens a new Help Window with the features described above. Status Message Box output is: `Opened help window.`
+* Alternatively, clicking the "help" button opens the Help Window as well, though it does not produce the Status Message Box output.
 
 ### Adding a candidate: `add`
 
@@ -181,12 +184,15 @@ Examples:
 
 ### Comparing Candidates: `compare`
 
-Compare two candidates from the current list by displayed index, side-by-side in the right-hand-side display pane.
-Information clears when another action takes up the right-hand-side pane.
+Compare two candidates from the currently shown candidate list by the candidate's number (e.g. 1 in the case of `1. Benson Huang`), side-by-side in the right panel.
+Information clears when another action takes up the right panel.
 
 Format: `compare INDEX_1 INDEX_2`
 
-Example: `compare 1 12` selects candidate numbered 1 and 12 in the list for comparison
+Example: `compare 1 2` selects candidate numbered 1 and 2 in the list for comparison, displaying them in the right pane. 
+* Order is the candidate identified by INDEX_1 on the left and that by INDEX_2 on the right
+* Status message box shows: `Comparing candidate 1 and candidate 2.`
+
 
 ### Listing existing tags: `listtags`
 
