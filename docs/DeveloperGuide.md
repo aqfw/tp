@@ -178,60 +178,35 @@ An example sequence diagram when the command `listtags` is called is shown below
 
 #### Implementation
 
-The proposed Help Function is implemented via a Help Window that displays the raw UserGuide.md to the user, to be
-extended as a rendered HTML in the future. It is implemented across the classes HelpWindow and UserGuideParser.
+The proposed Help Function is implemented via a Help Window that displays the raw `UserGuide.md` to the user, to be extended as a rendered HTML in the future. It is implemented across the classes `HelpWindow` and `UserGuideParser`.
 
-UserGuideParser.extractUserGuide() handles the logic of reading and extracting text. It accepts a BufferedReader
-and two heading strings, a start heading and and end heading which are used to delineate between the start of the text
-to be rendered and the end. The lines between them are returned as a single string. If the start heading is not found,
-it throws an IOException.
+`UserGuideParser.extractUserGuide()` handles the logic of reading and extracting text. It accepts a `BufferedReader` and two heading strings, a start heading and an end heading which are used to delineate between the start of the text to be rendered and the end. The lines between them are returned as a single string. If the start heading is not found, it throws an `IOException`.
 
-HelpWindow.loadUserGuide() handles the file I/O. It opens UserGuide.md via a BufferedReader inside a try block,
-ensuring the file handle remains closed no matter if an exception occurs. It passes the BufferedReader object to
-UserGuideParser.extractUserGuide() and returns the result.
+`HelpWindow.loadUserGuide()` handles the file I/O. It opens `UserGuide.md` via a `BufferedReader` inside a `try` block, ensuring the file handle remains closed no matter if an exception occurs. It passes the `BufferedReader` object to `UserGuideParser.extractUserGuide()` and returns the result.
 
 This separated design was made to make the function's internal logic easier to test.
 
-Manual testing would involve changing the contents, location and possibly format of the user guide, but it is only
-designed to handle correct .md files.
+Manual testing would involve changing the contents, location and possibly format of the user guide, but it is only designed to handle correct .md files.
 
 ### Compare Command
 
 #### Implementation
 
-In order to allow the user to view two Person's information at the same time to compare them, the user inputs
-a command of the form: compare Index_1 Index 2, for instance, command 1 2. The indices are one-based indices
-corresponding to the indices of any entry currently shown in the current candidate list.
+In order to allow the user to view two Candidates' information at the same time to compare them, the user inputs a command of the form: `compare INDEX_1 INDEX 2`, for instance, `compare 1 2`. The indices are one-based indices corresponding to the indices of any entry currently shown in the current candidate list.
 
-The user's input calls executeCommand("command 1 2") of the MainWindow where the input signature is command 1 2, as a
-String.
+The user's input calls `execute("command 1 2")` of the `LogicManager` where the input signature is `compare 1 2`, as a `String`.
 
-MainWindow.executeCommand then calls parseCommand of the AddressBookParser, which extracts the word "compare", and passes the
-subsequent argument string " 1 2" to CompareCommandParser, which is-a child class Parser that provides an overriden
-parse method whose function is simply to use the regex to ensure that the indexes are of the correct format, i.e.
-they must have the relevant spaces and must have two positive integers. If the pattern is not exactly matched, e.g. if
-noninteger, zero or negative values are encountered, then a ParseException is safely thrown and no command object is
-created (although CompareCommand's error message is used to show to the user.)
+It then calls `parseCommand("compare 1 2")` of the `AddressBookParser`, which extracts the word "compare", and passes the subsequent argument string " 1 2" to `CompareCommandParser`, which is-a child class of `Parser` that provides an overridden `parse(String: s)` method whose function is simply to use the regex to ensure that the indexes are of the correct format, i.e. they must have the relevant spaces and must have two positive integers. If the pattern is not exactly matched, e.g. if noninteger, zero or negative values are encountered, then a `ParseException` is safely thrown and no command object is created (although `CompareCommand`'s error message is used to show to the user.)
 
-If the initial input format checks are passed, then a CompareCommand object is created and CompareCommand.execute() is
-created, returned to the MainWindow, from which the execute method is called on the Model.
+If the initial input format checks are passed, then a `CompareCommand` object is created and `CompareCommand.execute()` is run and the result returned to the `MainWindow`, from which the `execute(Model: m)` method is called in `CompareCommand`.
 
-CompareCommand.execute() then checks whether the indexes are the same, whether the indexes are within the size of the
-current personlist, and throwing the relevant errors into the user's pane if so, by using getFilteredPersonList() of Model
-to obtain the lastShownList to check against.
+`CompareCommand.execute(Model: m)` then checks whether the indexes are the same, whether the indexes are within the size of the current `personlist`, and throwing the relevant errors into the user's Status Message Panel if so, by using `getFilteredPersonList()` of `Model` to obtain the `lastShownList` to check against.
 
-Finally it uses these indexes to call the first Person and Header and second Person and Header, from the filteredPersonList
-in order to create the Content object ComparisonContent (which is-a RightPaneConte child class) for display in the
-right pane. This returns the relevant CommandResult to be displayed as the final return of executeCommand.
+Finally it uses these indexes to call the first `Person` and `Header` and second `Person` and `Header`, from the `filteredPersonList` in order to create the `Content` object `ComparisonContent` (which is-a `RightPaneContent` child class) as the `result` for display in the right panel. This returns the relevant `CommandResult` to be displayed as the final return of `executeCommand()`.
 
-As with other commands, it is rendered in the right pane, using JavaFX's SplitPane library to allow the compared
-person cards to be resized in the MainWindow.
+The `CompareCommand`'s `CommandResult` is only cleared when other functions act on the model to display a new `CommandResult`, and it does not itself act on the model to change it, so it is safe.
 
-The CompareCommand's CommandResult is only cleared when other functions act on the model to display a new CommandResult,
-and it does not itself act on the model to change it, so it is safe.
-
-CompareCommand was also not designed to inherit UndoCommand since it only retrieves from the model, rather than inducing
-a potentially permanent change to the display that a careless user may need to undo.
+`CompareCommand` was also not designed to inherit `UndoCommand` since it only retrieves from the model, rather than inducing a potentially permanent change to the display that a careless user may need to `undo`.
 
 The class and sequence diagrams of the feature is as follows:
 
@@ -485,15 +460,15 @@ Use case ends.
 
 Use case ends.
 
-1b. The specified file is not in `.csv` format (e.g. wrong file extension).<br>
-1b1. HireLens informs the user that only `.csv` files are accepted and prompts for a valid file.<br>
-1b2. HireLens displays the current view of the candidate list.
+2a. The specified file is not in `.csv` format (e.g. wrong file extension).<br>
+2a1. HireLens informs the user that only `.csv` files are accepted and prompts for a valid file.<br>
+2a2. HireLens displays the current view of the candidate list.
 
 Use case ends.
 
-1c. The specified csv file contains information in the wrong format.<br>
-1c1. HireLens informs the user the csv file contains information in the wrong format.<br>
-1c2. HireLens displays the current view of the candidate list.
+2b. The specified csv file contains information in the wrong format.<br>
+2bHireLens informs the user the csv file contains information in the wrong format.<br>
+2bHireLens displays the current view of the candidate list.
 
 Use case ends.
 
@@ -636,7 +611,7 @@ testers are expected to do more *exploratory* testing.
       Expected: First candidate is deleted from the list. Details of the deleted contact shown in the status message. Full details of the deleted candidate is displayed in the right panel.
 
    1. Test case: `delete 0`<br>
-      Expected: No candidate is deleted. Error details shown in the status message. Right pane remains the same.
+      Expected: No candidate is deleted. Error details shown in the status message. Right panel remains the same.
 
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
@@ -649,10 +624,10 @@ testers are expected to do more *exploratory* testing.
    Expected: Candidate is added to the end of the list. Full details of the added candidate is displayed in the right panel and the status message.
 
    3. Test case: `add n/example e/example@example p/12345 pc/123456 a/example`<br>
-   Expected: No candidate is added. Status prompts that the email format is wrong. Right pane remains the same.
+   Expected: No candidate is added. Status prompts that the email format is wrong. Right panel remains the same.
 
    4. Test case: `add n/`<br>
-   Expected: No candidate is added. Status message prompts that the command format is invalid. Right pane remains the same.
+   Expected: No candidate is added. Status message prompts that the command format is invalid. Right panel remains the same.
 
    5. Other invalid add commands to try : `add`, `add e/`, `...`<br>
    Expected: Similar to 3 or 4, depending on whether all prefixes required are specified, and which prefixes contain invalid values.
@@ -665,7 +640,7 @@ testers are expected to do more *exploratory* testing.
    Expected: Tag combo is added to the end of the tag combo list. System message shows the name of the tag combo alongside its associated tags. The tag combo list is displayed on the right pane.
 
    3. Test case: `addtagcombo ml_dev t/python t/java`<br>
-   Expected: Tag combo is not added to the end of the tag combo list. System message shows that the tag combo name is invalid. Right pane remains the same.
+   Expected: Tag combo is not added to the end of the tag combo list. System message shows that the tag combo name is invalid. Right panel remains the same.
 
    4. Test case: `addtagcombo ml dev t/python`<br>
    Expected: Tag combo is not added to the end of the tag combo list. System message shows that the tag combo does not contain at least 2 tags.
@@ -697,16 +672,41 @@ testers are expected to do more *exploratory* testing.
    Expected: Exact same behaviour as previous.
 
    6. Test case: `filter tc/ml`<br>
-   Expected: The candidate list is not filtered. Status message displays that there is no tag combo called `ml`. Right pane remains the same.
+   Expected: The candidate list is not filtered. Status message displays that there is no tag combo called `ml`. Right panel remains the same.
 
 ### Comparing Candidates
-   1.  Test the positive case from any list of candidates you see: e.g. `compare 1 2`<br>
-    Expected: All of the relevant candidates' information are shown in a resizeable right pane.
+   1.  Prerequisites: There must be at least 2 but fewer than 998 candidates in the Candidate List for the test. 
 
-   2. Test negative cases:
+   2. Test the positive case: e.g. `compare 1 2`<br>
+   Expected: All of the relevant candidates' information are shown side by side in the right panel, Candidate #1 on the left then Candidate #2 on the right. Status message box shows: `Comparing candidate 1 and candidate 2.`
+
    3. Test identical integers: `compare 1 1`
+   Expected: Right panel should not change from prior content. Status message box shows: `The two indices must refer to different candidates.`
+
    4. Test any non-integer argument: `compare 1 ]`, `compare ] 1` & `compare ] ]`
+   Expected: Right panel should not change from prior content. Status message box shows: 
+   `Invalid command format! compare: Compares two candidates side-by-side using their displayed list indices.
+   Parameters: INDEX_1 INDEX_2 (both must be positive integers)
+   Example: compare 1 2`
+
    5. Test an integer less than 1: `compare 0 1`, `compare 1 0`
-   6. Test an integer outside the size of the current list: `compare 1 99`, `compare 99 1`, `compare 98 99`
-   Expected: In all cases, the relevant error message should be returned in the message box, and no right pane content
-   should be shown.
+   Expected: Right panel should not change from prior content. Status message box shows:
+   `Invalid command format! compare: Compares two candidates side-by-side using their displayed list indices.
+   Parameters: INDEX_1 INDEX_2 (both must be positive integers)
+   Example: compare 1 2`
+
+   6. Test an integer outside the size of the current list: `compare 1 999`, `compare 999 1`, `compare 998 999`
+   Expected: Right panel should not change from prior content. Status message box shows:
+   `Invalid command format! compare: Compares two candidates side-by-side using their displayed list indices.
+   Parameters: INDEX_1 INDEX_2 (both must be positive integers)
+   Example: compare 1 2`
+
+### Help Command
+   1. Test the text input: e.g. `help`
+   Expected: A Help Window should open with a plain text rendering of the `UserGuide.md` file including formatting characters but without full markdown rendering. Status message box shows: `Opened help window.`
+
+   2. Test the copy URL button: click on the "Copy URL" button at the bottom of the Help Window
+   Expected: The URL: https://github.com/AY2526S2-CS2103-F08-3/tp/blob/master/docs/UserGuide.md should be copied to the OS clipboard
+   
+   3. Test the help button: click on the HELP button at the top of the Main Window
+   Expected: A Help Window should open with a plain text rendering of the `UserGuide.md` file including formatting characters but without full markdown rendering.
