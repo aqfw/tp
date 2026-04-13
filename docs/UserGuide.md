@@ -3,10 +3,10 @@ layout: page
 title: User Guide
 ---
 
-HireLens is a **desktop app for managing candidates, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, HireLens can get your candidate management tasks done faster than traditional GUI apps.
+HireLens is a **desktop app for HR recruiters to manage candidates, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, HireLens can get your candidate management tasks done faster than traditional GUI apps.
 
-* Table of Contents
-  {:toc}
+* Table of Contents 
+{:toc}
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ HireLens is a **desktop app for managing candidates, optimized for use via a Com
 1. Ensure you have Java `17` or above installed in your Computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
-2. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
+2. Download the latest `.jar` file from [here](https://github.com/AY2526S2-CS2103-F08-3/tp/releases/tag/v1.5).
 
 3. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
 
@@ -28,17 +28,37 @@ HireLens is a **desktop app for managing candidates, optimized for use via a Com
 
     * `list` : Lists all contacts.
 
-    * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+    * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 pc/123456` : Adds a contact named `John Doe` to the Address Book.
 
-    * `delete 3` : Deletes the 3rd contact shown in the current list.
+    * `delete 3` : Deletes the 3rd candidate shown in the current candidate list.
 
-    * `clear` : Deletes all contacts.
+    * `clear` : Deletes all candidates, outlets and tagcombos.
 
     * `exit` : Exits the app.
 
 6. Refer to the [Features](#features) below for details of each command.
 
 --------------------------------------------------------------------------------------------------------------------
+
+## Ui Components and Glossary
+
+![UiComponents](images/UiComponents.png)
+
+The image above shows the key UI Components, which are described in detail below.
+
+1. **Command Box**: This is where commands are entered into.
+2. **Status Message Box**: Upon submitting a command, this is where the status message is displayed.
+3. **Candidate List**: This is where the list of candidates is stored. It shows 4 different fields of the candidate: their **ID**, **Name**, **Tags**, and their **Address**. Clicking on each candidate in the **Candidate List** shows their full details in the **Right Panel** (described below), including **Postal Code** and **Email Address**, alongside any truncated fields in the **Candidate List**.
+4. **Right Panel**: This is where additional information is displayed. The **Right Panel** can display information such as tag counts, tag combos, full person details etc. Refer to [Features](#features) below for details of each command and their interaction with the right panel.
+5. **Outlet Panel**: This is where the list of outlets are displayed.
+
+### Additional Glossary Terms
+
+1. **Candidate**: Each person stored in the candidate list will be referred to as a candidate. A Candidate consists of the following details: **Name**, **Address**, **Email Address**, **Postal Code**, **Phone Number**, **Tags** (optional).
+2. **View**: A view refers to the graphical display of the candidate book. The current view refers to list of candidates that is currently visible in the graphical view. This distinction is important as some commands are performed on the current view of the address book, rather than the full candidate book.
+3. **Tag Combination**: A set of tags defined by the user under a specific name (E.g The **MLE** tag combination could contain the tags **Python**, **SQL** and **Machine Learning**).
+4. **Outlet**: An outlet corresponds to a physical location of an office/asset of the company, with the following details: **Name**, **Address** and **Postal Code**.
+5. Tag Combination: A set of tags defined by the user under a specific name (E.g The **MLE** tag combination could contain the tags **Python**, **SQL** and **Machine Learning**).
 
 ## Features
 
@@ -51,6 +71,8 @@ HireLens is a **desktop app for managing candidates, optimized for use via a Com
 
 * Items in square brackets are optional.<br>
   e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
+
+* Multiple square bracket items within a curly brace implies that all fields within the curly brace are optional, but at least 1 of such field is required. e.g. `{[t/TAG] [tc/TAG_COMBO]}` means that both `t/` and `tc/` are optional, but at least 1 is required.
 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
   e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
@@ -70,52 +92,52 @@ Displays the user guide markdown file as raw, but readable markdown text.
 
 Format: `help`
 
-### Adding a person: `add`
+### Adding a candidate: `add`
 
-Adds a person to the address book.
+Adds a candidate to the candidate list.
 
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS pc/POSTAL_CODE [t/TAG]…​`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-A person can have any number of tags (including 0)
+A candidate can have any number of tags (including 0)
 </div>
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 pc/123456`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 pc/654321 t/criminal`
 
-### Adding persons by csv file: `addcsv`
+### Adding candidates by csv file: `addcsv`
 
 Format: `addcsv path/to/csv/from/root.csv`
 
-### Listing all persons : `list`
+### Listing all candidates : `list`
 
-Shows a list of all persons in the address book.
+Shows a list of all candidates in the candidate list.
 
 Format: `list`
 
-### Editing a person : `edit`
+### Editing acandidate : `edit`
 
-Edits at least one existing person in the address book.
+Edits at least one existing candidate in the candidate list.
 
 Format: `edit INDEXES [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [pc/POSTAL_CODE] [t/TAG]…​`
 
-* Edits the people at the specified `INDEXES`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
+* Edits the candidatea at the specified `INDEXES`. The index refers to the index number shown in the displayed candidate list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one index must be provided and all the indexes provided must be valid inputs.
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person’s tags by typing `t/` without
+* When editing tags, the existing tags of the candidate will be removed i.e adding of tags is not cumulative.
+* You can remove all the candidate’s tags by typing `t/` without
   specifying any tags after it.
 
 Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
-*  `edit 1 2 3 t/python` Edits the tags of the 1st, 2nd and 3rd person to be replaced by python.
+*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st candidate to be `91234567` and `johndoe@example.com` respectively.
+*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd candidate to be `Betsy Crower` and clears all existing tags.
+*  `edit 1 2 3 t/python` Edits the tags of the 1st, 2nd and 3rd candidate to be replaced by python.
 
-### Locating persons by name: `find`
+### Locating candidates by name : `find`
 
-Finds persons whose names contain any of the given keywords.
+Finds candidates whose names contain any of the given keywords.
 
 Format: `find KEYWORD [MORE_KEYWORDS]`
 
@@ -123,36 +145,35 @@ Format: `find KEYWORD [MORE_KEYWORDS]`
 * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
 * Only the name is searched.
 * Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
+* cCandidates matching at least one keyword will be returned (i.e. `OR` search).
   e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
-* The search works on the CURRENT view of the Address Book, rather than the full Address Book.
+* The search works on the CURRENT view of the Candidate List, rather than the full Candidate List.
 
 Examples:
 * `find John` returns `john` and `John Doe`
 * `find carl ethan` returns `Carl Kurz`, `Ethan Lim` <br>
   ![result for 'find carl ethan'](images/findCarlEthanResult.png)
 
-### Locating persons by tag: `filter`
+### Locating candidates by tag: `filter`
 
-Finds persons who contains ALL of the given tags, and tags given in the tag combo.
+Finds candidates who contain ALL of the given tags, and tags given in the tag combo.
 
-Format: `filter t/TAG [t/TAG...] [tc/TAG_COMBO...]`
+Format: `filter {[t/TAG] [tc/TAG_COMBO]} [t/TAG]... [tc/TAG_COMBO]...`
 
 * The search is case-insensitive. e.g `hans` will match `Hans`.
-* The search works on the CURRENT view of the AddressBook, rather than the full AddressBook.
+* The search works on the CURRENT view of the Candidate List, rather than the full Candidate List.
 * The search requires at least 1 tag/tag combo to work.
-* The tag combo must exist to work, whereas an invalid tag will simply return 0 persons.
+* The tag combo must exist to work, whereas an invalid tag will simply return 0 candidates.
 
 Examples:
 * `filter tc/ml dev`
 * `filter t/java tc/ml dev`
-* `filter t/c` returns `Esther Lim`.
 * `filter t/Java t/Python` returns `Benson Meier`, `Natalie Lim`.
 * ![result for 'filter t/python t/java'](images/filterPythonJavaResult.png)
 
 ### Listing existing tags: `listtags`
 
-Lists all tags in descending order, along with their frequencies.
+Lists all tags in descending order of frequencies, along with their frequencies.
 
 * Order is not guaranteed in the case of ties.
 
@@ -160,7 +181,7 @@ Format: `listtags`
 
 ### Adding tag combos: `addtagcombo`
 
-Adds a tag combo to the Address Book.
+Adds a tag combo to the Tag Combo List.
 
 Format: `addtagcombo NAME t/TAG t/TAG [t/TAG]...`
 
@@ -173,7 +194,7 @@ Examples:
 
 ### Deleting tag combos: `deletetagcombo`
 
-Deletes a tag combo from the Address Book.
+Deletes a tag combo from the Tag Combo List.
 
 Format: `deletetagcombo INDEX`
 
@@ -186,29 +207,29 @@ Examples:
 
 ### Listing tag combos: `listtagcombo`
 
-Lists all tag combos in the right pane.
+Lists all tag combos in the Right Panel.
 
 Format: `listtagcombo`
 
 * ![result for 'listtagcombo'](images/listTagComboResult.png)
 
-### Deleting a person : `delete`
+### Deleting a candidate : `delete`
 
-Deletes the specified person from the address book.
+Deletes the specified candidate from the address book.
 
 Format: `delete INDEX`
 
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
+* Deletes the candidate at the specified `INDEX`.
+* The index refers to the index number shown in the displayed candidate list.
 * The index **must be a positive integer** 1, 2, 3, …​
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `list` followed by `delete 2` deletes the 2nd candidate in the address book.
+* `find Betsy` followed by `delete 1` deletes the 1st candidate in the results of the `find` command.
 
 ### Clearing all entries : `clear`
 
-Clears all entries from the address book.
+Clears all entries from the application (Candidate List, Outlet List, Tag Combo List)
 
 Format: `clear`
 
@@ -220,19 +241,19 @@ undo the last action performed will result in the message "Nothing to undo!".
 
 Format: `undo`
 
-* `add` Deletes the `Person` added.
-* `addcsv` Deletes all `Person`s added.
+* `add` Deletes the `Candidate` added.
+* `addcsv` Deletes all `Candidate`s added.
 * `outlet add` Deletes the `Outlet` added.
 * `addtagcombo` Deletes the `tagcombo` added.
-* `delete` Adds the `Person` deleted.
+* `delete` Adds the `Candidate` deleted.
 * `outlet delete` Adds the `Outlet` deleted.
 * `deletetagcombo` Adds the `tagcombo` deleted.
-* `edit` Returns the edited `Person` to original state.
+* `edit` Returns the edited `Candidate` to original state.
 * `outlet edit` Returns the edited `Outlet` to the original state.
-* `outlet assign` Unassigns the `Person` from the given `Outlet`.
-* `outlet unassign` Reassigns the `Person` to the previous `Outlet`.
+* `outlet assign` Unassigns the `Candidate` from the given `Outlet`.
+* `outlet unassign` Reassigns the `Candidate` to the previous `Outlet`.
 * `list`, `filter`, `find` Returns to the previous view of the Address Book.
-* `clear` Adds all `Person`s deleted.
+* `clear` Adds all `Candidate`s deleted.
 
 ### Comparing Candidates: `compare INDEX_1 INDEX_2`
 
@@ -256,19 +277,19 @@ To demonstrate:
 
 Format: `redo`
 
-* `add` Adds the `Person` deleted.
-* `addcsv` Adds all `Person`s deleted.
+* `add` Adds the `Candidate` deleted.
+* `addcsv` Adds all `Candidate`s deleted.
 * `outlet add` Adds the `Outlet` deleted.
 * `addtagcombo` Adds the `tagcombo` deleted.
-* `delete` Deletes the `Person` added.
+* `delete` Deletes the `Candidate` added.
 * `outlet delete` Deletes the `Outlet` added.
 * `deletetagcombo` Deletes the `tagcombo` added.
-* `edit` Returns the original `Person` to edited state.
+* `edit` Returns the original `Candidate` to edited state.
 * `outlet edit` Returns the original `Outlet` to the edited state.
-* `outlet assign` Reassigns the `Person` to the given `Outlet`.
-* `outlet unassign` Unassigns the `Person` from the previous `Outlet`.
+* `outlet assign` Reassigns the `Candidate` to the given `Outlet`.
+* `outlet unassign` Unassigns the `Candidate` from the previous `Outlet`.
 * `list`, `filter`, `find` Returns to the filtered view of the Address Book.
-* `clear` Deletes all `Person`s added.
+* `clear` Deletes all `Candidate`s added.
 
 ### Exiting the program : `exit`
 
@@ -351,30 +372,39 @@ AddressBook data are saved in the hard disk automatically after any command that
 
 ### Editing the data file
 
-AddressBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+HireLens data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
 <div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
-If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
-Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
+If your changes to the data file makes its format invalid, HireLens will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
+Furthermore, certain edits can cause HireLens to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </div>
-
-### Archiving data files `[coming in v2.0]`
-
-_Details coming soon ......_
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
 
 **Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
+**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous HireLens home folder.
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## Known issues
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
+
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
+
+3. Long command names<br>
+   Certain command names such as `addtagcombo` and `deletetagcombo` are relatively long and not well-suited for a typist-oriented UI. These longer names were intentionally chosen as default placeholders to support a future `rebind` feature, which would allow users to map frequently used commands to shorter aliases (e.g., `filter` → `f`). However, this feature has not yet been implemented. In practice, the impact of these longer command names is limited, as they mainly apply to low-frequency operations such as tag combo and outlet-related commands.
+
+4. Semantic ambiguity between `filter` and `find`
+   `filter` and `find` commands provide very similar functionality, with `filter` taking in `Tag`s or `TagCombo`s, and `find` taking in names. However, `find` works using partial matching, while `filter` works using case-insensitive full matching. While this overlap in purpose may introduce some redundancy, the commands remain functionally distinct due to their differing input types and matching strategies. As such, the potential for user confusion is limited, and both commands continue to serve valid use cases. Given this distinction, consolidating or refactoring them is considered a low priority, as the current design does not significantly impact usability.
+
+5. Showing candidates full details require clicking
+   As each candidate may contain many details, the application is designed to display full information only when required, achieved by clicking on a candidate in the list to reduce visual clutter. Additionally, full details are automatically shown for certain commands such as `add` and `edit`, ensuring that relevant information is surfaced when necessary.
+
+    However, this interaction model is not fully aligned with a typist-oriented UI, as it relies on mouse input for navigation. While this may introduce minor inefficiency for keyboard-focused users, the impact is limited since key workflows still surface the required details automatically. Enhancements to support keyboard-based navigation of candidate details are being considered for future iterations.
+
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -404,3 +434,4 @@ Action | Format, Examples
 **Delete Outlet** | `outlet delete <index>` <br> e.g., `outlet delete 1`
 **Edit Outlet** | `outlet edit <index> [n/NAME] [a/ADDRESS] [pc/POSTAL_CODE]` <br> e.g., `outlet edit 1 n/Techco`
 **List Outlets** | `outlet list`
+**Compare candidates** | `compare INDEX INDEX`<br> e.g. `compare 1 2`

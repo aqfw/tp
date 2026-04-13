@@ -24,6 +24,8 @@ import seedu.address.model.tag.TagComboName;
  */
 public class AddTagComboCommandParser implements Parser<AddTagComboCommand> {
 
+    public static final String INSUFFICIENT_TAGS_ERROR_MESSAGE = "A tag combo requires at least 2 unique tags!";
+
     /**
      * Parses the given {@code String} of arguments in the context of the AddTagComboCommand
      * and returns an AddTagComboCommand object for execution.
@@ -43,6 +45,10 @@ public class AddTagComboCommandParser implements Parser<AddTagComboCommand> {
 
         argMultimap.verifyDuplicatePrefixesPresent(PREFIX_TAG);
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
+
+        if (tagList.size() <= 1) {
+            throw new ParseException(INSUFFICIENT_TAGS_ERROR_MESSAGE);
+        }
 
         TagCombo tagCombo = new TagCombo(new TagComboName(argMultimap.getPreamble()), tagList);
 

@@ -10,6 +10,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_COMBO_NAME;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_PYTHON;
+import static seedu.address.logic.parser.AddTagComboCommandParser.INSUFFICIENT_TAGS_ERROR_MESSAGE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
@@ -72,5 +73,11 @@ public class AddTagComboCommandParserTest {
     public void parse_nonAlphaNumeric_throwsParseException() {
         assertParseFailure(parser, PREAMBLE_WHITESPACE + INVALID_TAG_COMBO_NAME + TAG_DESC_FRIEND
                         + TAG_DESC_HUSBAND, MESSAGE_CONSTRAINTS);
+    }
+
+    @Test
+    public void parse_duplicateTags_throwsParseException() {
+        assertParseFailure(parser, PREAMBLE_WHITESPACE + VALID_TAG_COMBO_NAME
+                        + TAG_DESC_FRIEND + TAG_DESC_FRIEND, INSUFFICIENT_TAGS_ERROR_MESSAGE);
     }
 }

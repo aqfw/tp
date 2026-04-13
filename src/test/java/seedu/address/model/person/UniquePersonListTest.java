@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
+import static seedu.address.model.person.UniquePersonList.MAX_LEN_PERSON_LIST;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BOB;
@@ -16,6 +17,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.model.person.exceptions.DuplicatePersonException;
+import seedu.address.model.person.exceptions.ExceededPersonListCapacityException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.testutil.PersonBuilder;
 
@@ -171,5 +173,14 @@ public class UniquePersonListTest {
     @Test
     public void toStringMethod() {
         assertEquals(uniquePersonList.asUnmodifiableObservableList().toString(), uniquePersonList.toString());
+    }
+
+    @Test
+    public void add_exceedsMaxCapacity_throwsExceededPersonListCapacityException() {
+        for (int i = 0; i < MAX_LEN_PERSON_LIST; i++) {
+            uniquePersonList.add(new PersonBuilder(ALICE).withEmail("user" + i + "@example.com")
+                    .withPhone("123456" + i).build());
+        }
+        assertThrows(ExceededPersonListCapacityException.class, () -> uniquePersonList.add(BOB));
     }
 }

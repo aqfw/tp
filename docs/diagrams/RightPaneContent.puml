@@ -1,0 +1,38 @@
+@startuml
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor MODEL_COLOR
+skinparam classBackgroundColor MODEL_COLOR
+
+package UI <<Rectangle>> {
+
+Class "<<interface>>\nRightPaneContent" as RightPaneContent
+
+Class PersonContent
+Class TagCountsContent
+Class ComparisonContent
+
+Class Person
+Class TagCounter
+
+Class I #FFFFFF
+}
+
+package Logic <<Rectangle>> {
+Class HiddenLogic #FFFFFF
+}
+
+RightPaneContent <|.. PersonContent
+RightPaneContent <|.. TagCountsContent
+RightPaneContent <|.. ComparisonContent
+
+PersonContent *--> "1" Person
+TagCountsContent *--> "1" TagCounter
+ComparisonContent *--> "2" Person
+
+Logic ..left> RightPaneContent : creates
+
+PersonContent -[hidden]up--> I
+TagCountsContent -[hidden]right-> I
+
+@enduml

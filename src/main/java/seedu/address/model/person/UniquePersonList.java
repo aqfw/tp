@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.index.Index;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
+import seedu.address.model.person.exceptions.ExceededPersonListCapacityException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 
 /**
@@ -25,6 +26,7 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
  */
 public class UniquePersonList implements Iterable<Person> {
 
+    public static final int MAX_LEN_PERSON_LIST = 999;
     private final ObservableList<Person> internalList = FXCollections.observableArrayList();
     private final ObservableList<Person> internalUnmodifiableList =
             FXCollections.unmodifiableObservableList(internalList);
@@ -45,6 +47,9 @@ public class UniquePersonList implements Iterable<Person> {
         requireNonNull(toAdd);
         if (contains(toAdd)) {
             throw new DuplicatePersonException();
+        }
+        if (internalList.size() >= MAX_LEN_PERSON_LIST) {
+            throw new ExceededPersonListCapacityException();
         }
         internalList.add(toAdd);
     }
